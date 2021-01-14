@@ -5,6 +5,7 @@ const {
 } = require("../models");
 const { generateToken } = require('../helpers/jwt');
 const { comparePassword } = require('../helpers/bcrypt');
+const serverUrl = require("../helpers/serverUrl");
 
 class UserController {
   static login = async (req, res, next) => {
@@ -42,7 +43,6 @@ class UserController {
         no_telp,
         tgl_lahir,
         no_ktp,
-        foto_profil,
         tipe,
         nama_vendor,
         alamat_vendor,
@@ -70,7 +70,7 @@ class UserController {
         no_telp,
         tgl_lahir,
         no_ktp,
-        foto_profil,
+        foto_profil: serverUrl + req.file.path,
         tipe,
         vendor_id
       });
