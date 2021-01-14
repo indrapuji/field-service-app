@@ -1,0 +1,71 @@
+const {
+  job_order,
+  vendor,
+  user
+} = require("../models");
+const vendor = require("../models/vendor");
+const createError = require('http-errors');
+
+class JobOrderController {
+  static createJobOrder = async (req, res, next) => {
+    try {
+      const {
+        nama_merchant,
+        alamat_merchant,
+        tipe_merchant,
+        kontak_person,
+        no_telp,
+        nama_bank,
+        tipe_terminal,
+        serial_number,
+        tipe,
+        status,
+        tanda_tangan,
+        tanggal_assign,
+        tanggal_selesai,
+        keterangan,
+        mid,
+        vendor_id,
+      } = req.body;
+      const vendorData = await vendor.findOne({ where: { id: vendor_id } });
+      if (!vendorData) throw createError(404, "Vendor Not Found");
+      const result = await job_order.create({
+        nama_merchant,
+        alamat_merchant,
+        tipe_merchant,
+        kontak_person,
+        no_telp,
+        nama_bank,
+        tipe_terminal,
+        serial_number,
+        tipe,
+        status,
+        tanda_tangan,
+        tanggal_assign,
+        tanggal_selesai,
+        keterangan,
+        mid,
+        vendor_id,
+      });
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+  static assignJobOrder = async (req, res, next) => {
+    try {
+      const { teknisi_id, job_order_id } = req.body;
+      if (!teknisi_id || !job_order_id) throw createError(400, "Input all fields");
+      const userData = await user.findOne({ where: { id: teknisi_id } });
+      if (!userData) throw createError(404, "User Not Found");
+      const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
+      if (!jobOrderData) throw createError(404, "User Not Found");
+      await job_order.update({ teknisi_id }, { where: { id: job_order_id } });
+      res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  }
+};
+
+module.exports = JobOrderController;

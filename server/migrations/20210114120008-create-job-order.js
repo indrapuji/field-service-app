@@ -74,6 +74,9 @@ module.exports = {
       vendor_id: {
         type: Sequelize.INTEGER
       },
+      teknisi_id: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

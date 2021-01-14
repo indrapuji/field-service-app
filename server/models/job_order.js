@@ -35,7 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     foto_3: DataTypes.STRING,
     foto_4: DataTypes.STRING,
     foto_5: DataTypes.STRING,
-    vendor_id: DataTypes.INTEGER
+    vendor_id: DataTypes.INTEGER,
+    teknisi_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'job_order',
