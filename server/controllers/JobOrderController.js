@@ -89,6 +89,28 @@ class JobOrderController {
       next(err);
     }
   }
+  static getAllJobOrder = async (req, res, next) => {
+    try {
+      let { tipe, page } = req.query;
+      if (!page || page < 1) page = 1;
+      const resPerPage = 15;
+      const offset = (resPerPage * page) - resPerPage;
+      let query = {};
+      if (tipe) query.where = { tipe };
+      const numOfResult = await job_order.count(query);
+      query.limit = resPerPage;
+      query.offset = offset;
+      const jobOrderData = await job_order.findAll(query);
+      res.status(200).json({
+        data: jobOrderData,
+        pages: Math.ceil(numOfResult / resPerPage),
+        currentPage: Number(page),
+        numOfResult
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 };
 
 module.exports = JobOrderController;
