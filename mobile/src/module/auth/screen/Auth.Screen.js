@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '@module/auth/assets/styles';
 
+import { AuthContext } from '../../../components/utilities/Context';
+
 const AuthScreen = ({ navigation }) => {
   const [value, setValue] = useState({
     username: '',
@@ -22,6 +24,8 @@ const AuthScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showModal, setShowModal] = useState(false);
+
+  const { signIn } = useContext(AuthContext);
 
   const seePass = () => {
     setShow(!show);
@@ -39,6 +43,10 @@ const AuthScreen = ({ navigation }) => {
         setShowModal(true);
       }, 2000);
     }
+  };
+
+  const loginHanddle = (username, password) => {
+    signIn(username, password);
   };
   return (
     <>
@@ -83,7 +91,11 @@ const AuthScreen = ({ navigation }) => {
                     <ActivityIndicator size="small" color="white" />
                   </View>
                 ) : (
-                  <TouchableOpacity style={styles.buttonSize} onPress={() => loginCheck()}>
+                  // <TouchableOpacity style={styles.buttonSize} onPress={() => loginCheck()}>
+                  <TouchableOpacity
+                    style={styles.buttonSize}
+                    onPress={() => loginHanddle(value.username, value.password)}
+                  >
                     <Text style={styles.buttonText}>Get Access</Text>
                   </TouchableOpacity>
                 )}

@@ -1,10 +1,21 @@
-import React from 'react';
-import { StatusBar, View, Text, SafeAreaView, Image, Dimensions } from 'react-native';
+import React, { useContext } from 'react';
+import {
+  StatusBar,
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+
+import { AuthContext } from '../../../components/utilities/Context';
 
 const { width, height } = Dimensions.get('screen');
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
+  const { signOut } = useContext(AuthContext);
   const list = [
     {
       nama_merchant: 'Polo Pondok Indah',
@@ -87,40 +98,41 @@ const ProfileScreen = () => {
       />
       <SafeAreaView style={{ flex: 1, backgroundColor: '#84ccf7' }}>
         <View style={{ flex: 1 }}>
-          <View
-            style={{
-              flex: 1,
-              // backgroundColor: 'white',
-            }}
-          >
+          <ScrollView showsVerticalScrollIndicator={false}>
             <View
               style={{
-                marginTop: 20,
-                marginHorizontal: 20,
-                alignItems: 'center',
-                justifyContent: 'center',
+                flex: 1,
+                // backgroundColor: 'white',
               }}
             >
-              <View style={{ alignItems: 'center' }}>
-                <Image
-                  source={require('../../../assets/images/profile.jpg')}
-                  style={{ width: 200, height: 200, borderRadius: 100 }}
-                />
-              </View>
-              <View style={{ marginTop: 20, alignItems: 'center' }}>
-                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Indra Puji Novirwan</Text>
-                <Text style={{ fontSize: 20, fontStyle: 'italic' }}>Technical Support</Text>
-              </View>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={{ marginBottom: 100 }}>
-                  <View
-                    style={{
-                      marginVertical: 20,
-                      flexDirection: 'row',
-                      justifyContent: 'space-evenly',
-                      flex: 1,
-                    }}
-                  >
+              <View
+                style={{
+                  marginTop: 20,
+                  marginHorizontal: 20,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <View style={{ alignItems: 'center' }}>
+                  <Image
+                    source={require('../../../assets/images/profile.jpg')}
+                    style={{ width: 200, height: 200, borderRadius: 100 }}
+                  />
+                </View>
+                <View style={{ marginTop: 20, alignItems: 'center' }}>
+                  <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Indra Puji Novirwan</Text>
+                  <Text style={{ fontSize: 20, fontStyle: 'italic' }}>Technical Support</Text>
+                </View>
+
+                <View
+                  style={{
+                    marginVertical: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    flex: 1,
+                  }}
+                >
+                  <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <View
                       style={{
                         backgroundColor: '#ff884b',
@@ -135,6 +147,8 @@ const ProfileScreen = () => {
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{list.length}</Text>
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Job Order</Text>
                     </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('Done')}>
                     <View
                       style={{
                         backgroundColor: '#cdfffc',
@@ -149,72 +163,87 @@ const ProfileScreen = () => {
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{list.length - 3}</Text>
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Done</Text>
                     </View>
-                  </View>
+                  </TouchableOpacity>
+                </View>
 
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      height: 100,
-                      width: width - 40,
-                      borderRadius: 20,
-                    }}
-                  >
-                    <View style={{ marginTop: 20, marginHorizontal: 10 }}>
-                      <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Alamat</Text>
-                      <Text style={{ marginTop: 10 }}>
-                        Jln Puyuh VII Blok F No. 241, Pondok Timur Indah
-                      </Text>
-                    </View>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    height: 100,
+                    width: width - 40,
+                    borderRadius: 20,
+                  }}
+                >
+                  <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Alamat</Text>
+                    <Text style={{ marginTop: 10 }}>
+                      Jln Puyuh VII Blok F No. 241, Pondok Timur Indah
+                    </Text>
                   </View>
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      height: 100,
-                      width: width - 40,
-                      borderRadius: 20,
-                      marginTop: 10,
-                    }}
-                  >
-                    <View style={{ marginTop: 20, marginHorizontal: 10 }}>
-                      <Text style={{ fontWeight: 'bold' }}>Telepon</Text>
-                      <Text style={{ marginTop: 10 }}>081996946467</Text>
-                    </View>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    height: 100,
+                    width: width - 40,
+                    borderRadius: 20,
+                    marginTop: 10,
+                  }}
+                >
+                  <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+                    <Text style={{ fontWeight: 'bold' }}>Telepon</Text>
+                    <Text style={{ marginTop: 10 }}>081996946467</Text>
                   </View>
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      height: 100,
-                      width: width - 40,
-                      borderRadius: 20,
-                      marginTop: 10,
-                    }}
-                  >
-                    <View style={{ marginTop: 20, marginHorizontal: 10 }}>
-                      <Text style={{ fontWeight: 'bold' }}>Email</Text>
-                      <Text style={{ marginTop: 10 }}>indrapuji@gmail.com</Text>
-                    </View>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    height: 100,
+                    width: width - 40,
+                    borderRadius: 20,
+                    marginTop: 10,
+                  }}
+                >
+                  <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+                    <Text style={{ fontWeight: 'bold' }}>Email</Text>
+                    <Text style={{ marginTop: 10 }}>indrapuji@gmail.com</Text>
                   </View>
-                  <View
-                    style={{
-                      backgroundColor: 'white',
-                      height: 100,
-                      width: width - 40,
-                      borderRadius: 20,
-                      marginTop: 10,
-                    }}
-                  >
-                    <View style={{ marginTop: 20, marginHorizontal: 10 }}>
-                      <Text style={{ fontWeight: 'bold' }}>No Rekening</Text>
-                      <View style={{ flexDirection: 'row' }}>
-                        <Text style={{ marginTop: 10 }}>BCA</Text>
-                        <Text style={{ marginTop: 10, marginLeft: 20 }}>8415093230</Text>
-                      </View>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    height: 100,
+                    width: width - 40,
+                    borderRadius: 20,
+                    marginTop: 10,
+                  }}
+                >
+                  <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+                    <Text style={{ fontWeight: 'bold' }}>No Rekening</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                      <Text style={{ marginTop: 10 }}>BCA</Text>
+                      <Text style={{ marginTop: 10, marginLeft: 20 }}>8415093230</Text>
                     </View>
                   </View>
                 </View>
-              </ScrollView>
+                <TouchableOpacity onPress={() => signOut()}>
+                  <View
+                    style={{
+                      backgroundColor: 'red',
+                      height: 40,
+                      width: width - 40,
+                      borderRadius: 20,
+                      marginVertical: 10,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 15 }}>Logout</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          </ScrollView>
         </View>
       </SafeAreaView>
     </>
