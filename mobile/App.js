@@ -2,10 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from '@module/auth/screen/Auth.Screen';
-import HomeScreen from '@module/home/screen/Home.Screen';
-import ProgressScreen from '@module/progress/screen/Progress.Screen';
-import DoneScreen from '@module/done/screen/Done.Screen';
-import ProfileScreen from '@module/profile/screen/Profile.Screen';
+import MainScreen from './src/navigations/BottomTab';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -18,23 +15,8 @@ const App = () => {
           options={{ title: null, headerShown: false }}
         />
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{ title: null, headerShown: false }}
-        />
-        <Stack.Screen
-          name="Progress"
-          component={ProgressScreen}
-          options={{ title: null, headerShown: false }}
-        />
-        <Stack.Screen
-          name="Done"
-          component={DoneScreen}
-          options={{ title: null, headerShown: false }}
-        />
-        <Stack.Screen
-          name="Profile"
-          component={ProfileScreen}
+          name="Main"
+          component={MainScreen}
           options={{ title: null, headerShown: false }}
         />
       </Stack.Navigator>

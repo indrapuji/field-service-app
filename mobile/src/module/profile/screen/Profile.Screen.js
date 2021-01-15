@@ -1,8 +1,82 @@
 import React from 'react';
-import { StatusBar, View, Text, SafeAreaView } from 'react-native';
-import BottomTab from '../../../components/utilities/BottomTab';
+import { StatusBar, View, Text, SafeAreaView, Image, Dimensions } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+
+const { width, height } = Dimensions.get('screen');
 
 const ProfileScreen = () => {
+  const list = [
+    {
+      nama_merchant: 'Polo Pondok Indah',
+      alamat: 'Mall Pondok Indah ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'iStore Pondok Indah',
+      alamat: 'Mall Pondok Indah ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'Guess Pondok Indah',
+      alamat: 'Mall Pondok Indah ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'H&M Pondok Indah',
+      alamat: 'Mall Pondok Indah ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'Nike Pondok Indah',
+      alamat: 'Mall Pondok Indah ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'Reebok Pondok Indah',
+      alamat: 'Mall Pondok Indah ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'Adidas Pondok Indah',
+      alamat: 'Mall Pondok Indah ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'Puma Gandaria City',
+      alamat: 'Mall Gandaria City ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'Eiger Gandaria City',
+      alamat: 'Mall Gandaria City ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+    {
+      nama_merchant: 'Cosmos Gandaria City',
+      alamat: 'Mall Gandaria City ',
+      type: 'PM',
+      MID: '0123456789',
+      TID: '0123456789',
+    },
+  ];
   return (
     <>
       <StatusBar
@@ -13,12 +87,134 @@ const ProfileScreen = () => {
       />
       <SafeAreaView style={{ flex: 1, backgroundColor: '#84ccf7' }}>
         <View style={{ flex: 1 }}>
-          <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text>Profile</Text>
+          <View
+            style={{
+              flex: 1,
+              // backgroundColor: 'white',
+            }}
+          >
+            <View
+              style={{
+                marginTop: 20,
+                marginHorizontal: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <View style={{ alignItems: 'center' }}>
+                <Image
+                  source={require('../../../assets/images/profile.jpg')}
+                  style={{ width: 200, height: 200, borderRadius: 100 }}
+                />
+              </View>
+              <View style={{ marginTop: 20, alignItems: 'center' }}>
+                <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Indra Puji Novirwan</Text>
+                <Text style={{ fontSize: 20, fontStyle: 'italic' }}>Technical Support</Text>
+              </View>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{ marginBottom: 100 }}>
+                  <View
+                    style={{
+                      marginVertical: 20,
+                      flexDirection: 'row',
+                      justifyContent: 'space-evenly',
+                      flex: 1,
+                    }}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: '#ff884b',
+                        height: 100,
+                        width: (width - 60) / 2,
+                        marginHorizontal: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 20,
+                      }}
+                    >
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{list.length}</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Job Order</Text>
+                    </View>
+                    <View
+                      style={{
+                        backgroundColor: '#cdfffc',
+                        height: 100,
+                        width: (width - 60) / 2,
+                        marginHorizontal: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 20,
+                      }}
+                    >
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{list.length - 3}</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Done</Text>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      backgroundColor: 'white',
+                      height: 100,
+                      width: width - 40,
+                      borderRadius: 20,
+                    }}
+                  >
+                    <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+                      <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Alamat</Text>
+                      <Text style={{ marginTop: 10 }}>
+                        Jln Puyuh VII Blok F No. 241, Pondok Timur Indah
+                      </Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: 'white',
+                      height: 100,
+                      width: width - 40,
+                      borderRadius: 20,
+                      marginTop: 10,
+                    }}
+                  >
+                    <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+                      <Text style={{ fontWeight: 'bold' }}>Telepon</Text>
+                      <Text style={{ marginTop: 10 }}>081996946467</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: 'white',
+                      height: 100,
+                      width: width - 40,
+                      borderRadius: 20,
+                      marginTop: 10,
+                    }}
+                  >
+                    <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+                      <Text style={{ fontWeight: 'bold' }}>Email</Text>
+                      <Text style={{ marginTop: 10 }}>indrapuji@gmail.com</Text>
+                    </View>
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: 'white',
+                      height: 100,
+                      width: width - 40,
+                      borderRadius: 20,
+                      marginTop: 10,
+                    }}
+                  >
+                    <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+                      <Text style={{ fontWeight: 'bold' }}>No Rekening</Text>
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text style={{ marginTop: 10 }}>BCA</Text>
+                        <Text style={{ marginTop: 10, marginLeft: 20 }}>8415093230</Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </ScrollView>
             </View>
           </View>
-          <BottomTab item={'profile'} />
         </View>
       </SafeAreaView>
     </>

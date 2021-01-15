@@ -31,7 +31,7 @@ const AuthScreen = ({ navigation }) => {
     if (value.username === 'indra' && value.password === 'indra') {
       setTimeout(() => {
         setLoading(false);
-        navigation.navigate('Home');
+        navigation.navigate('Main');
       }, 2000);
     } else {
       setTimeout(() => {
