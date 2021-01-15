@@ -16,7 +16,12 @@ module.exports = (sequelize, DataTypes) => {
   job_order.init({
     nama_merchant: DataTypes.STRING,
     alamat_merchant: DataTypes.STRING,
+    alamat_merchant_2: DataTypes.STRING,
     tipe_merchant: DataTypes.STRING,
+    kondisi_merchant: DataTypes.STRING,
+    manual_book: DataTypes.STRING,
+    sales_draft: DataTypes.STRING,
+    sticker: DataTypes.STRING,
     kontak_person: DataTypes.STRING,
     no_telp: DataTypes.STRING,
     nama_bank: DataTypes.STRING,
@@ -35,7 +40,8 @@ module.exports = (sequelize, DataTypes) => {
     foto_3: DataTypes.STRING,
     foto_4: DataTypes.STRING,
     foto_5: DataTypes.STRING,
-    vendor_id: DataTypes.INTEGER
+    vendor_id: DataTypes.INTEGER,
+    teknisi_id: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'job_order',

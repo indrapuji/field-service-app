@@ -14,7 +14,22 @@ module.exports = {
       alamat_merchant: {
         type: Sequelize.STRING
       },
+      alamat_merchant_2: {
+        type: Sequelize.STRING
+      },
       tipe_merchant: {
+        type: Sequelize.STRING
+      },
+      kondisi_merchant: {
+        type: Sequelize.STRING
+      },
+      manual_book: {
+        type: Sequelize.STRING
+      },
+      sales_draft: {
+        type: Sequelize.STRING
+      },
+      sticker: {
         type: Sequelize.STRING
       },
       kontak_person: {
@@ -72,6 +87,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       vendor_id: {
+        type: Sequelize.INTEGER
+      },
+      teknisi_id: {
         type: Sequelize.INTEGER
       },
       createdAt: {
