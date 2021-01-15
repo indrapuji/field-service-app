@@ -1,11 +1,27 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Modal,
+  Dimensions,
+  TouchableOpacityBase,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+const { width, height } = Dimensions.get('screen');
 const CardList = (props) => {
   const { list } = props;
+  const [showModal, setShowModal] = useState(false);
+  const [status, setStatus] = useState('');
   const navigation = useNavigation();
+
+  const openModal = (data) => {
+    setStatus(data.status);
+    setShowModal(true);
+  };
 
   const handdleDetail = (itemData) => {};
   return (
@@ -13,7 +29,11 @@ const CardList = (props) => {
       {list && list.length > 0 ? (
         list.map((item, idx) => {
           return (
-            <TouchableOpacity key={idx} onPress={() => handdleDetail(item)}>
+            <TouchableOpacity
+              key={idx}
+              onPress={() => handdleDetail(item)}
+              onLongPress={() => openModal(item)}
+            >
               <View
                 style={{
                   ...styles.cardContainer,
@@ -64,6 +84,31 @@ const CardList = (props) => {
       ) : (
         <Text style={styles.noText}>No Data</Text>
       )}
+      <Modal animationType="fade" transparent={true} visible={showModal}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={{ alignItems: 'center' }}>
+              <Text style={{ color: 'black' }}>{status}</Text>
+            </View>
+            <TouchableOpacity onPress={() => setShowModal(false)}>
+              <View style={{ alignItems: 'center', marginTop: 10 }}>
+                <View
+                  style={{
+                    backgroundColor: 'green',
+                    borderRadius: 20,
+                    height: 50,
+                    width: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text style={{ color: 'white', fontWeight: 'bold' }}>Close</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -106,5 +151,26 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontWeight: 'bold',
     fontSize: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    paddingVertical: 35,
+    width: width - 80,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
