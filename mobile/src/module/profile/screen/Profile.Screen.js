@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   StatusBar,
   View,
@@ -10,9 +10,12 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
+import { AuthContext } from '../../../components/utilities/Context';
+
 const { width, height } = Dimensions.get('screen');
 
 const ProfileScreen = ({ navigation }) => {
+  const { signOut } = useContext(AuthContext);
   const list = [
     {
       nama_merchant: 'Polo Pondok Indah',
@@ -223,7 +226,7 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => navigation.navigate('Auth')}>
+                <TouchableOpacity onPress={() => signOut()}>
                   <View
                     style={{
                       backgroundColor: 'red',
