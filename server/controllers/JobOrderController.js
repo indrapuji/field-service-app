@@ -54,13 +54,36 @@ class JobOrderController {
   }
   static assignJobOrder = async (req, res, next) => {
     try {
+      const { id } = req.UserData;
+      const userData = await user.findOne({ where: { id } });
       const { teknisi_id, job_order_id } = req.body;
       if (!teknisi_id || !job_order_id) throw createError(400, "Input all fields");
-      const userData = await user.findOne({ where: { id: teknisi_id } });
-      if (!userData) throw createError(404, "User Not Found");
+      const teknisiData = await user.findOne({ where: { id: teknisi_id } });
+      if (!teknisiData) throw createError(404, "User Not Found");
       const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
       if (!jobOrderData) throw createError(404, "User Not Found");
+      if (jobOrderData.vendor_id !== userData.vendor_id) throw createError(401, "You are unauthorized");
       await job_order.update({ teknisi_id }, { where: { id: job_order_id } });
+      res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  }
+  static changeStatus = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const user_id = req.UserData.id;
+      const userData = await user.findOne({ where: { id: user_id } });
+      const jobOrderData = await job_order.findOne({ where: { id } });
+      if (jobOrderData.teknisi_id !== userData.id) throw createError(401, "You are unauthorized");
+      await job_order.update({
+        status
+      }, {
+        where: {
+          id
+        }
+      });
       res.status(200).json({ msg: "Success" });
     } catch (err) {
       next(err);
