@@ -11,93 +11,40 @@ import {
 } from 'react-native';
 import CardList from '../../../components/utilities/CardList';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
+import host from '../../../utilities/host';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const CreScreen = () => {
+  const isFocused = useIsFocused();
   const [filtered, setFiltered] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const list = [
-    {
-      nama_merchant: 'Polo Pondok Indah',
-      alamat: 'Mall Pondok Indah ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'iStore Pondok Indah',
-      alamat: 'Mall Pondok Indah ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'Guess Pondok Indah',
-      alamat: 'Mall Pondok Indah ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'H&M Pondok Indah',
-      alamat: 'Mall Pondok Indah ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'Nike Pondok Indah',
-      alamat: 'Mall Pondok Indah ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'Reebok Pondok Indah',
-      alamat: 'Mall Pondok Indah ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'Adidas Pondok Indah',
-      alamat: 'Mall Pondok Indah ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'Puma Gandaria City',
-      alamat: 'Mall Gandaria City ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'Eiger Gandaria City',
-      alamat: 'Mall Gandaria City ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-    {
-      nama_merchant: 'Cosmos Gandaria City',
-      alamat: 'Mall Gandaria City ',
-      type: 'CM',
-      status: 'assign',
-      MID: '0123456789',
-      TID: '0123456789',
-    },
-  ];
+  const [list, setList] = useState(null);
+  const [page, setPage] = useState(null);
+  const [currentPage, setCurrentPage] = useState(null);
+
+  useEffect(() => {
+    // getData();
+    const getJobOrder = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        const { data } = await axios({
+          method: 'get',
+          url: `${host}/job-orders/all?status=Assign&tipe=CM`,
+          headers: { token },
+        });
+        setList(data.data);
+        setFiltered(data.data);
+        setPage(data.pages);
+        setCurrentPage(data.currentPage);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getJobOrder();
+  }, [isFocused]);
 
   const addMore = () => {
     setLoading(true);
@@ -162,21 +109,23 @@ const CreScreen = () => {
               <View style={{ flex: 1 }}>
                 <CardList list={filtered} />
               </View>
-              <View style={{ alignItems: 'center', marginVertical: 5 }}>
-                <TouchableOpacity
-                  style={{
-                    width: 100,
-                    height: 40,
-                    borderWidth: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 20,
-                  }}
-                  onPress={() => addMore()}
-                >
-                  {loading ? <ActivityIndicator size="small" color="white" /> : <Text>More</Text>}
-                </TouchableOpacity>
-              </View>
+              {page !== currentPage && (
+                <View style={{ alignItems: 'center', marginVertical: 5 }}>
+                  <TouchableOpacity
+                    style={{
+                      width: 100,
+                      height: 40,
+                      borderWidth: 1,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 20,
+                    }}
+                    onPress={() => addMore()}
+                  >
+                    {loading ? <ActivityIndicator size="small" color="white" /> : <Text>More</Text>}
+                  </TouchableOpacity>
+                </View>
+              )}
             </ScrollView>
           </View>
         </View>

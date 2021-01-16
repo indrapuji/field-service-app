@@ -1,15 +1,10 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Modal,
-  Dimensions,
-  TouchableOpacityBase,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
+import host from '../../utilities/host';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('screen');
 const CardList = (props) => {
@@ -18,9 +13,26 @@ const CardList = (props) => {
   const [status, setStatus] = useState('');
   const navigation = useNavigation();
 
-  const openModal = (data) => {
-    setStatus(data.status);
+  const changeStatus = async (dataID) => {
+    // getData();
+
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const { data } = await axios({
+        method: 'put',
+        url: `${host}/job-orders/change-status/${dataID}`,
+        data: { status: 'Progres' },
+        headers: { token },
+      });
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
     setShowModal(true);
+    setTimeout(() => {
+      setShowModal(false);
+    }, 1000);
+    props.update;
   };
 
   const handdleDetail = (itemData) => {};
@@ -32,7 +44,7 @@ const CardList = (props) => {
             <TouchableOpacity
               key={idx}
               onPress={() => handdleDetail(item)}
-              onLongPress={() => openModal(item)}
+              onLongPress={() => changeStatus(item.id)}
             >
               <View
                 style={{
@@ -45,13 +57,13 @@ const CardList = (props) => {
                     <View style={styles.flexRow}>
                       <Text style={styles.boldText}>{item.nama_merchant}</Text>
                     </View>
-                    <Text>{item.alamat}</Text>
+                    <Text>{item.alamat_merchant}</Text>
                     <View style={styles.flexRow}>
-                      <Text>TID {item.TID}</Text>
+                      <Text>TID {item.serial_number}</Text>
                       <View style={styles.dotted}>
                         <Icon name="circle" size={8} />
                       </View>
-                      <Text>MID {item.MID}</Text>
+                      <Text>MID {item.mid}</Text>
                     </View>
                   </View>
                   <View style={styles.centerJustify}>
@@ -59,8 +71,8 @@ const CardList = (props) => {
                       style={[
                         styles.borderStatus,
                         {
-                          borderColor: item.type === 'PM' ? 'green' : 'orange',
-                          backgroundColor: item.type === 'CM' ? 'orange' : 'white',
+                          borderColor: item.tipe === 'PM' ? 'green' : 'orange',
+                          backgroundColor: item.tipe === 'CM' ? 'orange' : 'white',
                         },
                       ]}
                     >
@@ -68,11 +80,11 @@ const CardList = (props) => {
                         style={[
                           styles.boldText,
                           {
-                            color: item.type === 'CM' ? 'white' : 'black',
+                            color: item.tipe === 'CM' ? 'white' : 'black',
                           },
                         ]}
                       >
-                        {item.type}
+                        {item.tipe}
                       </Text>
                     </View>
                   </View>
@@ -88,24 +100,8 @@ const CardList = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: 'black' }}>{status}</Text>
+              <Text style={{ color: 'black' }}>Job Status Change</Text>
             </View>
-            <TouchableOpacity onPress={() => setShowModal(false)}>
-              <View style={{ alignItems: 'center', marginTop: 10 }}>
-                <View
-                  style={{
-                    backgroundColor: 'green',
-                    borderRadius: 20,
-                    height: 50,
-                    width: 100,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text style={{ color: 'white', fontWeight: 'bold' }}>Close</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
           </View>
         </View>
       </Modal>
