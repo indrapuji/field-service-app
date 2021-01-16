@@ -13,6 +13,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '@module/auth/assets/styles';
 import axios from 'axios';
+import host from '../../../utilities/host';
 
 import { AuthContext } from '../../../components/utilities/Context';
 
@@ -41,9 +42,10 @@ const AuthScreen = () => {
   const loginHanddle = (username, password) => {
     // signIn(username, password);
     setLoading(true);
+    console.log('Sebelum login');
     axios({
       method: 'post',
-      url: 'http://localhost:3000/users/login',
+      url: `${host}/users/login`,
       data: {
         email: username,
         password: password,
@@ -51,13 +53,18 @@ const AuthScreen = () => {
       },
     })
       .then(({ data }) => {
+        console.log('Setelah Login then');
         setLoading(false);
         signIn(data.access_token);
       })
       .catch((err) => {
+        console.log('Setelah Login catch');
         setLoading(false);
         failLogin();
         console.log(err);
+      })
+      .finally(() => {
+        console.log('Finally');
       });
   };
   return (

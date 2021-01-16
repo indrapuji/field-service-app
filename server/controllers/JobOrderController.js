@@ -90,12 +90,16 @@ class JobOrderController {
   };
   static getAllJobOrder = async (req, res, next) => {
     try {
-      let { tipe, page } = req.query;
+      let { tipe, page, status } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
-      let query = {};
-      if (tipe) query.where = { tipe };
+      let query = {
+        where: {},
+      };
+      console.log(tipe, status);
+      if (tipe) query.where.tipe = tipe;
+      if (status) query.where.status = status;
       const numOfResult = await job_order.count(query);
       query.limit = resPerPage;
       query.offset = offset;
