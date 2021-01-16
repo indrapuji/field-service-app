@@ -6,6 +6,7 @@ import AuthScreen from '@module/auth/screen/Auth.Screen';
 import MainScreen from './src/navigations/BottomTab';
 
 import { AuthContext } from './src/components/utilities/Context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -26,7 +27,6 @@ const App = () => {
       case 'LOGIN':
         return {
           ...prevState,
-          userName: action.id,
           userToken: action.token,
           isLoading: false,
         };
@@ -44,24 +44,36 @@ const App = () => {
 
   const authContext = useMemo(
     () => ({
-      signIn: (userName, password) => {
-        let userToken;
-        userToken = null;
-        if (userName === 'indra' && password === 'indra') {
-          userToken = 'token';
+      signIn: async (userToken) => {
+        try {
+          await AsyncStorage.setItem('userToken', userToken);
+        } catch (e) {
+          console.log(e);
         }
-        dispatch({ type: 'LOGIN', id: userName, token: userToken });
+        dispatch({ type: 'LOGIN', token: userToken });
       },
-      signOut: () => {
+      signOut: async () => {
+        try {
+          await AsyncStorage.removeItem('userToken');
+        } catch (e) {
+          console.log(e);
+        }
         dispatch({ type: 'LOGOUT' });
       },
     }),
     []
   );
 
-  useState(() => {
-    setTimeout(() => {
-      dispatch({ type: 'RETRIVE_TOKEN', token: 'token' });
+  useEffect(() => {
+    setTimeout(async () => {
+      let userToken;
+      userToken = null;
+      try {
+        userToken = await AsyncStorage.getItem('userToken');
+      } catch (e) {
+        console.log(e);
+      }
+      dispatch({ type: 'RETRIVE_TOKEN', token: userToken });
     }, 1000);
   }, []);
   if (loginState.isLoading) {

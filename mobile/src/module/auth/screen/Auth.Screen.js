@@ -8,45 +8,57 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ImageBackground,
-  Modal,
   KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '@module/auth/assets/styles';
+import axios from 'axios';
 
 import { AuthContext } from '../../../components/utilities/Context';
 
-const AuthScreen = ({ navigation }) => {
+const AuthScreen = () => {
   const [value, setValue] = useState({
     username: '',
     password: '',
   });
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   const { signIn } = useContext(AuthContext);
 
   const seePass = () => {
     setShow(!show);
   };
-  const loginCheck = () => {
-    setLoading(true);
-    if (value.username === 'indra' && value.password === 'indra') {
-      setTimeout(() => {
-        setLoading(false);
-        navigation.navigate('Main');
-      }, 2000);
-    } else {
-      setTimeout(() => {
-        setLoading(false);
-        setShowModal(true);
-      }, 2000);
-    }
+
+  const failLogin = () => {
+    setFailed(true);
+    setTimeout(() => {
+      setFailed(false);
+    }, 2000);
   };
 
   const loginHanddle = (username, password) => {
-    signIn(username, password);
+    // signIn(username, password);
+    setLoading(true);
+    axios({
+      method: 'post',
+      url: 'http://localhost:3000/users/login',
+      data: {
+        email: username,
+        password: password,
+        tipe: 'Teknisi',
+      },
+    })
+      .then(({ data }) => {
+        setLoading(false);
+        signIn(data.access_token);
+      })
+      .catch((err) => {
+        setLoading(false);
+        failLogin();
+        console.log(err);
+      });
   };
   return (
     <>
@@ -85,13 +97,17 @@ const AuthScreen = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               </View>
+              <View style={{ marginLeft: 10, marginBottom: 10 }}>
+                {failed && (
+                  <Text style={{ color: 'red', fontSize: 15 }}>Username atau Password Salah</Text>
+                )}
+              </View>
               <View>
                 {loading ? (
                   <View style={styles.buttonSize}>
                     <ActivityIndicator size="small" color="white" />
                   </View>
                 ) : (
-                  // <TouchableOpacity style={styles.buttonSize} onPress={() => loginCheck()}>
                   <TouchableOpacity
                     style={styles.buttonSize}
                     onPress={() => loginHanddle(value.username, value.password)}
@@ -104,18 +120,6 @@ const AuthScreen = ({ navigation }) => {
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>
-      <Modal animationType="fade" transparent visible={showModal}>
-        <View style={styles.modalPosition}>
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalText}>Username atau Password salah </Text>
-            <TouchableOpacity onPress={() => setShowModal(!showModal)}>
-              <View style={styles.modalButton}>
-                <Text style={styles.textStyle}>OK</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </>
   );
 };

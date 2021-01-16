@@ -59,46 +59,6 @@ const styles = StyleSheet.create({
     color: 'white',
     justifyContent: 'center',
   },
-  modalPosition: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalContainer: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    paddingVertical: 35,
-    width: 300,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  modalText: {
-    fontSize: 16,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalButton: {
-    marginTop: 20,
-    borderRadius: 20,
-    width: 150,
-    height: 40,
-    elevation: 2,
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    backgroundColor: 'red',
-  },
 });
 
 export default styles;
