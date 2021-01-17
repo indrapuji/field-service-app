@@ -116,9 +116,9 @@ const ProfileScreen = ({ navigation }) => {
                   <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <View
                       style={{
-                        backgroundColor: '#ff884b',
+                        backgroundColor: '#bedcfa',
                         height: 100,
-                        width: (width - 60) / 2,
+                        width: (width - 60) / 3,
                         marginHorizontal: 20,
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -134,9 +134,27 @@ const ProfileScreen = ({ navigation }) => {
                   <TouchableOpacity onPress={() => navigation.navigate('Done')}>
                     <View
                       style={{
-                        backgroundColor: '#cdfffc',
+                        backgroundColor: '#98acf8',
                         height: 100,
-                        width: (width - 60) / 2,
+                        width: (width - 60) / 3,
+                        marginHorizontal: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 20,
+                      }}
+                    >
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
+                        {dataProfile.jobOrderDone}
+                      </Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Progress</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => navigation.navigate('Done')}>
+                    <View
+                      style={{
+                        backgroundColor: '#b088f9',
+                        height: 100,
+                        width: (width - 60) / 3,
                         marginHorizontal: 20,
                         alignItems: 'center',
                         justifyContent: 'center',

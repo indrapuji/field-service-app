@@ -40,6 +40,7 @@ const CardList = (props) => {
   const handdleDetail = (itemData) => {
     navigation.navigate('Detail', { itemData });
   };
+  console.log(list);
   return (
     <View>
       {list && list.length > 0 ? (
@@ -93,6 +94,7 @@ const CardList = (props) => {
                       </View>
                       <Text>MID: {item.mid}</Text>
                     </View>
+                    <Text>Keterangan: {item.keterangan}</Text>
                   </View>
                 </View>
               </View>
@@ -182,8 +184,8 @@ const styles = StyleSheet.create({
   },
   borderStatus: {
     borderWidth: 1,
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     justifyContent: 'center',
     alignItems: 'center',

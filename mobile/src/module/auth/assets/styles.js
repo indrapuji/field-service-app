@@ -29,6 +29,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  textVersi: {
+    fontSize: 13,
+    color: 'red',
+  },
   inputSize: {
     width: width / 1.12,
     height: 50,

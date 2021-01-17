@@ -75,6 +75,7 @@ const AuthScreen = () => {
           <Image source={require('@assets/images/trendcom-logo.png')} style={styles.logoSize} />
           <View style={styles.textMargin}>
             <Text style={styles.textTitle}>Field Service Application</Text>
+            <Text style={styles.textVersi}>Versi 1.0.0</Text>
           </View>
         </View>
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>

@@ -8,9 +8,20 @@ import {
   TextInput,
   Dimensions,
   Modal,
+  ScrollView,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CheckBox from '@react-native-community/checkbox';
+import {
+  options,
+  lokasi,
+  manual,
+  salesDraft,
+  sticker,
+  paperRoll,
+  edukasi,
+  status,
+} from '../assets/DetailData';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -27,91 +38,8 @@ const DetailScreen = ({ route, navigation }) => {
   const [statusChecked, setStatusChecked] = useState('Assign');
   const [showModal, setShowModal] = useState(false);
   const [edukasiText, setEdukasiText] = useState('Assign');
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   // console.log(itemData);
-  const options = [
-    {
-      key: 'buka',
-      text: 'Buka',
-    },
-    {
-      key: 'tutup',
-      text: 'Tutup',
-    },
-  ];
-  const lokasi = [
-    {
-      key: 'tetap',
-      text: 'Tetap',
-    },
-    {
-      key: 'pindah',
-      text: 'Pindah',
-    },
-  ];
-  const manual = [
-    {
-      key: 'iya',
-      text: 'Iya',
-    },
-    {
-      key: 'tidak',
-      text: 'Tidak',
-    },
-  ];
-  const salesDraft = [
-    {
-      key: 'iya',
-      text: 'Iya',
-    },
-    {
-      key: 'tidak',
-      text: 'Tidak',
-    },
-  ];
-  const sticker = [
-    {
-      key: 'iya',
-      text: 'Iya',
-    },
-    {
-      key: 'tidak',
-      text: 'Tidak',
-    },
-  ];
-  const paperRoll = [
-    {
-      key: 'iya',
-      text: 'Iya',
-    },
-    {
-      key: 'tidak',
-      text: 'Tidak',
-    },
-  ];
-  const edukasi = [
-    {
-      key: 'iya',
-      text: 'Iya',
-    },
-    {
-      key: 'tidak',
-      text: 'Tidak',
-    },
-  ];
-  const status = [
-    {
-      key: 'Assign',
-      text: 'Assign',
-    },
-    {
-      key: 'Progres',
-      text: 'Progres',
-    },
-    {
-      key: 'Done',
-      text: 'Done',
-    },
-  ];
 
   const handdleOption = (options) => {
     setChecked(options.key);
@@ -143,12 +71,13 @@ const DetailScreen = ({ route, navigation }) => {
     setShowModal(false);
   };
 
-  // console.log(locationChecked);
-  // console.log(checked);
-  // console.log(manualChecked);
-  // console.log(stickerChecked);
-  // console.log(paperRollChecked);
-  // console.log(edukasiChecked);
+  console.log('location ==>', locationChecked);
+  console.log('kondisi merchants ==>', checked);
+  console.log('manual book ==>', manualChecked);
+  console.log('sticker ==>', stickerChecked);
+  console.log('paper Roll ==>', paperRollChecked);
+  console.log('edukasi merchant ==>', edukasiChecked);
+  // console.log(toggleCheckBox);
   return (
     <>
       <StatusBar
@@ -536,6 +465,55 @@ const DetailScreen = ({ route, navigation }) => {
                     </View>
                   </View>
                   <View style={{ marginTop: 20 }}>
+                    <Text>Kelengkapan</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={{ marginRight: 20 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <CheckBox
+                            disabled={false}
+                            value={toggleCheckBox}
+                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                          />
+                          <Text>Adaptor</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <CheckBox
+                            disabled={false}
+                            value={toggleCheckBox}
+                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                          />
+                          <Text>Dongle Prepaid</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <CheckBox
+                            disabled={false}
+                            value={toggleCheckBox}
+                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                          />
+                          <Text>Kabel Power</Text>
+                        </View>
+                      </View>
+                      <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <CheckBox
+                            disabled={false}
+                            value={toggleCheckBox}
+                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                          />
+                          <Text>Kabel Telepon</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <CheckBox
+                            disabled={false}
+                            value={toggleCheckBox}
+                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                          />
+                          <Text>Materi Promosi</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={{ marginTop: 20 }}>
                     <Text>Keterangan</Text>
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
@@ -638,6 +616,7 @@ const DetailScreen = ({ route, navigation }) => {
                         backgroundColor: '#64dfdf',
                         justifyContent: 'center',
                         alignItems: 'center',
+                        borderRadius: 20,
                       }}
                     >
                       <Text>Simpan</Text>
