@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      vendor.hasMany(models.user, { foreignKey: "vendor_id" });
+      vendor.hasMany(models.job_order, { foreignKey: "vendor_id" });
     }
   };
   vendor.init({

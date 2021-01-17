@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      user.hasMany(models.job_order, { foreignKey: "teknisi_id" });
+      user.belongsTo(models.vendor, { foreignKey: "vendor_id" });
     }
   };
   user.init({

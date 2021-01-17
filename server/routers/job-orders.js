@@ -7,5 +7,6 @@ router.post("/", JobOrderController.createJobOrder);
 router.put("/assign", authentication, leaderAuth, JobOrderController.assignJobOrder);
 router.put("/change-status/:id", authentication, teknisiAuth, JobOrderController.changeStatus);
 router.get("/all", authentication, teknisiAuth, JobOrderController.getAllJobOrder);
+router.post("/done", authentication, teknisiAuth, JobOrderController.jobOrderDone);
 
 module.exports = router;

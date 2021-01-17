@@ -1,5 +1,5 @@
-const { job_order, vendor, user } = require('../models');
-const createError = require('http-errors');
+const { job_order, job_order_kelengkapan, vendor, user } = require("../models");
+const createError = require("http-errors");
 
 class JobOrderController {
   static createJobOrder = async (req, res, next) => {
@@ -23,7 +23,7 @@ class JobOrderController {
         vendor_id,
       } = req.body;
       const vendorData = await vendor.findOne({ where: { id: vendor_id } });
-      if (!vendorData) throw createError(404, 'Vendor Not Found');
+      if (!vendorData) throw createError(404, "Vendor Not Found");
       const result = await job_order.create({
         nama_merchant,
         alamat_merchant,
@@ -52,15 +52,14 @@ class JobOrderController {
       const { id } = req.UserData;
       const userData = await user.findOne({ where: { id } });
       const { teknisi_id, job_order_id } = req.body;
-      if (!teknisi_id || !job_order_id) throw createError(400, 'Input all fields');
+      if (!teknisi_id || !job_order_id) throw createError(400, "Input all fields");
       const teknisiData = await user.findOne({ where: { id: teknisi_id } });
-      if (!teknisiData) throw createError(404, 'User Not Found');
+      if (!teknisiData) throw createError(404, "User Not Found");
       const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
-      if (!jobOrderData) throw createError(404, 'User Not Found');
-      if (jobOrderData.vendor_id !== userData.vendor_id)
-        throw createError(401, 'You are unauthorized');
+      if (!jobOrderData) throw createError(404, "User Not Found");
+      if (jobOrderData.vendor_id !== userData.vendor_id) throw createError(401, "You are unauthorized");
       await job_order.update({ teknisi_id }, { where: { id: job_order_id } });
-      res.status(200).json({ msg: 'Success' });
+      res.status(200).json({ msg: "Success" });
     } catch (err) {
       next(err);
     }
@@ -72,7 +71,7 @@ class JobOrderController {
       const user_id = req.UserData.id;
       const userData = await user.findOne({ where: { id: user_id } });
       const jobOrderData = await job_order.findOne({ where: { id } });
-      if (jobOrderData.teknisi_id !== userData.id) throw createError(401, 'You are unauthorized');
+      if (jobOrderData.teknisi_id !== userData.id) throw createError(401, "You are unauthorized");
       await job_order.update(
         {
           status,
@@ -83,7 +82,7 @@ class JobOrderController {
           },
         }
       );
-      res.status(200).json({ msg: 'Success' });
+      res.status(200).json({ msg: "Success" });
     } catch (err) {
       next(err);
     }
@@ -109,6 +108,86 @@ class JobOrderController {
         currentPage: Number(page),
         numOfResult,
       });
+    } catch (err) {
+      next(err);
+    }
+  };
+  static jobOrderDone = async (req, res, next) => {
+    try {
+      const {
+        kontak_person,
+        no_telp,
+        serial_number_2,
+        sim_card,
+        kondisi_merchant,
+        alamat_merchant_2,
+        manual_book,
+        sales_draft,
+        sticker,
+        kertas_termal,
+        edukasi_merchant,
+        adaptor,
+        dongle_prepaid,
+        kabel_power,
+        kabel_telpon,
+        materi_promosi,
+        keterangan,
+        job_order_id,
+      } = req.body;
+      const { id } = req.UserData;
+      if (!job_order_id) throw createError(400, "Need Job Order Id");
+      const jobOrderData = await job_order.findOne({
+        where: { id: job_order_id },
+        include: [
+          {
+            model: job_order_kelengkapan,
+            required: false,
+          },
+        ],
+      });
+      if (!jobOrderData) throw createError(404, "Job Order Not Found");
+      if (jobOrderData.teknisi_id !== id) throw createError(401, "You are not authorized");
+      await job_order.update(
+        {
+          kontak_person,
+          no_telp,
+          serial_number_2,
+          kondisi_merchant,
+          alamat_merchant_2,
+          manual_book,
+          sales_draft,
+          sticker,
+          edukasi_merchant,
+          keterangan,
+        },
+        { where: { id: job_order_id } }
+      );
+      if (jobOrderData.job_order_kelengkapan) {
+        await job_order_kelengkapan.update(
+          {
+            adaptor,
+            dongle_prepaid,
+            kabel_power,
+            kabel_telpon,
+            materi_promosi,
+            kertas_termal,
+            sim_card,
+          },
+          { where: { job_order_id } }
+        );
+      } else {
+        await job_order_kelengkapan.create({
+          adaptor,
+          dongle_prepaid,
+          kabel_power,
+          kabel_telpon,
+          materi_promosi,
+          kertas_termal,
+          sim_card,
+          job_order_id,
+        });
+      }
+      res.status(200).json({ msg: "Success" });
     } catch (err) {
       next(err);
     }

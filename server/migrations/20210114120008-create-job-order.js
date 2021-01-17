@@ -95,6 +95,9 @@ module.exports = {
       teknisi_id: {
         type: Sequelize.INTEGER,
       },
+      edukasi_merchant: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

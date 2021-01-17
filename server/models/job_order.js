@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      job_order.hasOne(models.job_order_kelengkapan, { foreignKey: "job_order_id" });
+      job_order.belongsTo(models.user, { foreignKey: "teknisi_id" });
+      job_order.belongsTo(models.vendor, { foreignKey: "vendor_id" });
     }
   }
   job_order.init(
@@ -42,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       foto_5: DataTypes.STRING,
       vendor_id: DataTypes.INTEGER,
       teknisi_id: DataTypes.INTEGER,
+      edukasi_merchant: DataTypes.STRING,
     },
     {
       sequelize,

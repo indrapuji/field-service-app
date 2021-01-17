@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      job_order_kelengkapan.belongsTo(models.job_order, { foreignKey: "job_order_id" });
     }
   };
   job_order_kelengkapan.init({
@@ -22,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
     sim_card: DataTypes.STRING,
     sam_card: DataTypes.STRING,
     kertas_termal: DataTypes.STRING,
-    keterangan: DataTypes.STRING
+    keterangan: DataTypes.STRING,
+    materi_promosi: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'job_order_kelengkapan',

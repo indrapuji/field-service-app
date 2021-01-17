@@ -35,6 +35,9 @@ module.exports = {
       keterangan: {
         type: Sequelize.STRING
       },
+      materi_promosi: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
