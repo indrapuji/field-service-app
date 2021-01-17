@@ -1,5 +1,6 @@
 const { job_order, job_order_kelengkapan, vendor, user } = require("../models");
 const createError = require("http-errors");
+const serverUrl = require('../helpers/serverUrl');
 
 class JobOrderController {
   static createJobOrder = async (req, res, next) => {
@@ -136,6 +137,7 @@ class JobOrderController {
       } = req.body;
       const { id } = req.UserData;
       if (!job_order_id) throw createError(400, "Need Job Order Id");
+      console.log(req.files.foto_1);
       const jobOrderData = await job_order.findOne({
         where: { id: job_order_id },
         include: [
@@ -147,20 +149,28 @@ class JobOrderController {
       });
       if (!jobOrderData) throw createError(404, "Job Order Not Found");
       if (jobOrderData.teknisi_id !== id) throw createError(401, "You are not authorized");
-      await job_order.update(
-        {
-          kontak_person,
-          no_telp,
-          serial_number_2,
-          kondisi_merchant,
-          alamat_merchant_2,
-          manual_book,
-          sales_draft,
-          sticker,
-          edukasi_merchant,
-          keterangan,
-        },
-        { where: { id: job_order_id } }
+      const jobOrderQuery = {
+        kontak_person,
+        no_telp,
+        serial_number_2,
+        kondisi_merchant,
+        alamat_merchant_2,
+        manual_book,
+        sales_draft,
+        sticker,
+        edukasi_merchant,
+        keterangan,
+        tanggal_selesai: new Date(),
+      };
+      if (req.files) {
+        if (req.files.foto_1) jobOrderQuery.foto_1 = serverUrl + req.files.foto_1[0].path;
+        if (req.files.foto_2) jobOrderQuery.foto_2 = serverUrl + req.files.foto_2[0].path;
+        if (req.files.foto_3) jobOrderQuery.foto_3 = serverUrl + req.files.foto_3[0].path;
+        if (req.files.foto_4) jobOrderQuery.foto_4 = serverUrl + req.files.foto_4[0].path;
+        if (req.files.foto_5) jobOrderQuery.foto_5 = serverUrl + req.files.foto_5[0].path;
+        if (req.files.tanda_tangan) jobOrderQuery.tanda_tangan = serverUrl + req.files.tanda_tangan[0].path;
+      }
+      await job_order.update(jobOrderQuery,{ where: { id: job_order_id } }
       );
       if (jobOrderData.job_order_kelengkapan) {
         await job_order_kelengkapan.update(
