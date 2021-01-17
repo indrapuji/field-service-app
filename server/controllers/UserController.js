@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const { user, vendor } = require('../models');
+const { user, vendor, job_order } = require('../models');
 const { generateToken } = require('../helpers/jwt');
 const { comparePassword } = require('../helpers/bcrypt');
 const serverUrl = require('../helpers/serverUrl');
@@ -78,6 +78,23 @@ class UserController {
       next(err);
     }
   };
+  static getUserProfile = async (req, res, next) => {
+    try {
+      const { id } = req.UserData;
+      const userData = await user.findOne({
+        where: { id }
+      });
+      const jobOrderCount = await job_order.count({ where: { teknisi_id: id } });
+      const jobOrderDone = await job_order.count({ where: { teknisi_id: id, status: "Done" } });
+      res.status(200).json({
+        userData,
+        jobOrderCount,
+        jobOrderDone
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = UserController;

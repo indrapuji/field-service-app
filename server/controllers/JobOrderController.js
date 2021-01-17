@@ -97,7 +97,6 @@ class JobOrderController {
       let query = {
         where: {},
       };
-      console.log(tipe, status);
       if (tipe) query.where.tipe = tipe;
       if (status) query.where.status = status;
       const numOfResult = await job_order.count(query);
