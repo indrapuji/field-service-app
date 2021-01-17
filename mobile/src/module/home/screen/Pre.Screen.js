@@ -147,7 +147,7 @@ const PreScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1 }}>
-                  <CardList list={filtered} source={true} update={update} />
+                  <CardList list={filtered} source={true} update={update} done={true} />
                 </View>
                 {page > currentPage && (
                   <View style={{ alignItems: 'center', marginVertical: 5 }}>
