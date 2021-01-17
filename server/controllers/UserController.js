@@ -86,10 +86,12 @@ class UserController {
       });
       const jobOrderCount = await job_order.count({ where: { teknisi_id: id } });
       const jobOrderDone = await job_order.count({ where: { teknisi_id: id, status: "Done" } });
+      const jobOrderProgres = await job_order.count({ where: { teknisi_id: id, status: "Progres" } });
       res.status(200).json({
         userData,
         jobOrderCount,
-        jobOrderDone
+        jobOrderDone,
+        jobOrderProgres
       });
     } catch (err) {
       next(err);
