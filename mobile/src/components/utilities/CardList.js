@@ -8,12 +8,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('screen');
 const CardList = (props) => {
-  const { list } = props;
+  const { list, source } = props;
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState('');
+  const [merchantName, setmerchantName] = useState('');
   const navigation = useNavigation();
 
-  const changeStatus = async (dataID) => {
+  const changeStatus = async (dataID, dataName) => {
     // getData();
 
     try {
@@ -25,6 +25,8 @@ const CardList = (props) => {
         headers: { token },
       });
       console.log(data);
+      setmerchantName(dataName);
+      props.update(dataID);
     } catch (err) {
       console.log(err);
     }
@@ -32,7 +34,6 @@ const CardList = (props) => {
     setTimeout(() => {
       setShowModal(false);
     }, 1000);
-    props.update;
   };
 
   const handdleDetail = (itemData) => {};
@@ -44,7 +45,7 @@ const CardList = (props) => {
             <TouchableOpacity
               key={idx}
               onPress={() => handdleDetail(item)}
-              onLongPress={() => changeStatus(item.id)}
+              onLongPress={() => (source ? changeStatus(item.id, item.nama_merchant) : null)}
             >
               <View
                 style={{
@@ -100,7 +101,7 @@ const CardList = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: 'black' }}>Job Status Change</Text>
+              <Text style={{ color: 'black' }}>{merchantName} Status Change</Text>
             </View>
           </View>
         </View>
