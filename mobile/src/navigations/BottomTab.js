@@ -21,9 +21,9 @@ const MainScreen = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: () => {
-            return null;
-          },
+          // tabBarLabel: () => {
+          //   return null;
+          // },
           tabBarIcon: ({ focused, color, size }) => (
             <Icon name="home" color={focused ? 'black' : 'white'} size={25} />
           ),
@@ -33,9 +33,9 @@ const MainScreen = () => {
         name="Progress"
         component={ProgressScreen}
         options={{
-          tabBarLabel: () => {
-            return null;
-          },
+          // tabBarLabel: () => {
+          //   return null;
+          // },
           tabBarIcon: ({ focused, color, size }) => (
             <Icon name="refresh" color={focused ? 'black' : 'white'} size={25} />
           ),
@@ -45,9 +45,9 @@ const MainScreen = () => {
         name="Done"
         component={DoneScreen}
         options={{
-          tabBarLabel: () => {
-            return null;
-          },
+          // tabBarLabel: () => {
+          //   return null;
+          // },
           tabBarIcon: ({ focused, color, size }) => (
             <Icon name="check" color={focused ? 'black' : 'white'} size={25} />
           ),
@@ -57,9 +57,9 @@ const MainScreen = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarLabel: () => {
-            return null;
-          },
+          // tabBarLabel: () => {
+          //   return null;
+          // },
           tabBarIcon: ({ focused, color, size }) => (
             <Icon name="user-o" color={focused ? 'black' : 'white'} size={25} />
           ),

@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('screen');
 const CardList = (props) => {
-  const { list, source } = props;
+  const { list, source, done } = props;
   const [showModal, setShowModal] = useState(false);
   const [merchantName, setMerchantName] = useState('');
   const [newDataID, setNewDataID] = useState('');
@@ -47,7 +47,7 @@ const CardList = (props) => {
           return (
             <TouchableOpacity
               key={idx}
-              onPress={() => handdleDetail(item)}
+              onPress={() => (done ? handdleDetail(item) : null)}
               onLongPress={() => (source ? openModal(item.id, item.nama_merchant) : null)}
             >
               <View
@@ -85,12 +85,13 @@ const CardList = (props) => {
                       <Text style={styles.boldText}>{item.nama_merchant}</Text>
                     </View>
                     <Text>{item.alamat_merchant}</Text>
+                    <Text>{item.nama_bank}</Text>
                     <View style={styles.flexRow}>
-                      <Text>TID {item.serial_number}</Text>
+                      <Text>TID: {item.serial_number}</Text>
                       <View style={styles.dotted}>
                         <Icon name="circle" size={8} />
                       </View>
-                      <Text>MID {item.mid}</Text>
+                      <Text>MID: {item.mid}</Text>
                     </View>
                   </View>
                 </View>
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
   contentPosition: {
     marginHorizontal: 20,
     flexDirection: 'row',
-    marginVertical: 20,
+    marginVertical: 10,
   },
   centerJustify: {
     justifyContent: 'center',
