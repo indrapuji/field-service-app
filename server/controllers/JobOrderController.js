@@ -161,6 +161,7 @@ class JobOrderController {
         edukasi_merchant,
         keterangan,
         tanggal_selesai: new Date(),
+        status: "Done"
       };
       if (req.files) {
         if (req.files.foto_1) jobOrderQuery.foto_1 = serverUrl + req.files.foto_1[0].path;
