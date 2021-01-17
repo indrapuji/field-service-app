@@ -10,33 +10,36 @@ const { width, height } = Dimensions.get('screen');
 const CardList = (props) => {
   const { list, source } = props;
   const [showModal, setShowModal] = useState(false);
-  const [merchantName, setmerchantName] = useState('');
+  const [merchantName, setMerchantName] = useState('');
+  const [newDataID, setNewDataID] = useState('');
   const navigation = useNavigation();
 
-  const changeStatus = async (dataID, dataName) => {
-    // getData();
+  const openModal = (dataID, dataName) => {
+    setMerchantName(dataName);
+    setNewDataID(dataID);
+    setShowModal(true);
+  };
 
+  const changeStatus = async () => {
+    // getData();
     try {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'put',
-        url: `${host}/job-orders/change-status/${dataID}`,
+        url: `${host}/job-orders/change-status/${newDataID}`,
         data: { status: 'Progres' },
         headers: { token },
       });
-      console.log(data);
-      setmerchantName(dataName);
-      props.update(dataID);
+      setShowModal(false);
+      props.update(newDataID);
     } catch (err) {
       console.log(err);
     }
-    setShowModal(true);
-    setTimeout(() => {
-      setShowModal(false);
-    }, 1000);
   };
 
-  const handdleDetail = (itemData) => {};
+  const handdleDetail = (itemData) => {
+    navigation.navigate('Detail', { itemData });
+  };
   return (
     <View>
       {list && list.length > 0 ? (
@@ -45,28 +48,16 @@ const CardList = (props) => {
             <TouchableOpacity
               key={idx}
               onPress={() => handdleDetail(item)}
-              onLongPress={() => (source ? changeStatus(item.id, item.nama_merchant) : null)}
+              onLongPress={() => (source ? openModal(item.id, item.nama_merchant) : null)}
             >
               <View
                 style={{
                   ...styles.cardContainer,
-                  borderColor: item.type === 'PM' ? 'green' : 'orange',
+                  borderColor: item.tipe === 'PM' ? 'green' : 'orange',
+                  borderTopWidth: idx === 0 ? 1 : 0,
                 }}
               >
                 <View style={styles.contentPosition}>
-                  <View style={styles.centerJustify}>
-                    <View style={styles.flexRow}>
-                      <Text style={styles.boldText}>{item.nama_merchant}</Text>
-                    </View>
-                    <Text>{item.alamat_merchant}</Text>
-                    <View style={styles.flexRow}>
-                      <Text>TID {item.serial_number}</Text>
-                      <View style={styles.dotted}>
-                        <Icon name="circle" size={8} />
-                      </View>
-                      <Text>MID {item.mid}</Text>
-                    </View>
-                  </View>
                   <View style={styles.centerJustify}>
                     <View
                       style={[
@@ -89,6 +80,19 @@ const CardList = (props) => {
                       </Text>
                     </View>
                   </View>
+                  <View style={styles.centerJustify}>
+                    <View style={styles.flexRow}>
+                      <Text style={styles.boldText}>{item.nama_merchant}</Text>
+                    </View>
+                    <Text>{item.alamat_merchant}</Text>
+                    <View style={styles.flexRow}>
+                      <Text>TID {item.serial_number}</Text>
+                      <View style={styles.dotted}>
+                        <Icon name="circle" size={8} />
+                      </View>
+                      <Text>MID {item.mid}</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
             </TouchableOpacity>
@@ -101,7 +105,44 @@ const CardList = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: 'black' }}>{merchantName} Status Change</Text>
+              <Text style={{ color: 'black' }}>{merchantName} Change Status</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                marginTop: 20,
+                marginHorizontal: 20,
+              }}
+            >
+              <TouchableOpacity onPress={() => changeStatus()}>
+                <View
+                  style={{
+                    width: 80,
+                    height: 30,
+                    backgroundColor: '#80ffdb',
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text>Ya</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setShowModal(false)}>
+                <View
+                  style={{
+                    width: 80,
+                    height: 30,
+                    backgroundColor: '#64dfdf',
+                    borderRadius: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text>Tidak</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -114,15 +155,15 @@ export default CardList;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    borderRadius: 10,
     backgroundColor: 'white',
-    marginVertical: 5,
+    borderBottomWidth: 1,
     borderLeftWidth: 10,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
   },
   contentPosition: {
     marginHorizontal: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     marginVertical: 20,
   },
   centerJustify: {
@@ -140,8 +181,12 @@ const styles = StyleSheet.create({
   },
   borderStatus: {
     borderWidth: 1,
-    padding: 10,
-    borderRadius: 10,
+    width: 50,
+    height: 50,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20,
   },
   noText: {
     textAlign: 'center',

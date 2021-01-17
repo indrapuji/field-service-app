@@ -38,33 +38,49 @@ const CreScreen = () => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+  const getJobOrder = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const { data } = await axios({
+        method: 'get',
+        url: `${host}/job-orders/all?status=Assign&tipe=CM`,
+        headers: { token },
+      });
+      setList(data.data);
+      setFiltered(data.data);
+      setPage(data.pages);
+      setCurrentPage(data.currentPage);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getMoreOrder = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const { data } = await axios({
+        method: 'get',
+        url: `${host}/job-orders/all?status=Assign&tipe=CM&page=${currentPage + 1}`,
+        headers: { token },
+      });
+      setList(list.concat(data.data));
+      setFiltered(filtered.concat(data.data));
+      setPage(data.pages);
+      setCurrentPage(data.currentPage);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     // getData();
-    const getJobOrder = async () => {
-      try {
-        const token = await AsyncStorage.getItem('userToken');
-        const { data } = await axios({
-          method: 'get',
-          url: `${host}/job-orders/all?status=Assign&tipe=CM`,
-          headers: { token },
-        });
-        setList(data.data);
-        setFiltered(data.data);
-        setPage(data.pages);
-        setCurrentPage(data.currentPage);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     getJobOrder();
-  }, []);
+  }, [refreshing]);
 
   const addMore = () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setFiltered(filtered.concat(list));
-    }, 2000);
+    getMoreOrder();
   };
 
   useEffect(() => {
@@ -94,13 +110,13 @@ const CreScreen = () => {
         hidden={false}
         backgroundColor="white"
       />
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#84ccf7' }}>
-        <ScrollView
-          contentContainerStyle={{
-            flex: 1,
-          }}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        >
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+        }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
           <View style={{ flex: 1 }}>
             <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
               <View style={{ position: 'relative' }}>
@@ -115,6 +131,8 @@ const CreScreen = () => {
                     paddingLeft: 50,
                     paddingRight: 100,
                     backgroundColor: 'white',
+                    borderWidth: 1,
+                    borderColor: '#f8f1f1',
                   }}
                 />
                 <Icon
@@ -158,8 +176,8 @@ const CreScreen = () => {
               </ScrollView>
             </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ScrollView>
     </>
   );
 };

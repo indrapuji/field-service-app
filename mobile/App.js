@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from '@module/auth/screen/Auth.Screen';
 import MainScreen from './src/navigations/BottomTab';
+import DetailScreen from './src/module/detail/screen/Detail.Screen';
 
 import { AuthContext } from './src/components/utilities/Context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -88,11 +89,18 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Auth" headerMode="screen">
           {loginState.userToken !== null ? (
-            <Stack.Screen
-              name="Main"
-              component={MainScreen}
-              options={{ title: null, headerShown: false }}
-            />
+            <>
+              <Stack.Screen
+                name="Main"
+                component={MainScreen}
+                options={{ title: null, headerShown: false }}
+              />
+              <Stack.Screen
+                name="Detail"
+                component={DetailScreen}
+                options={{ title: null, headerShown: false }}
+              />
+            </>
           ) : (
             <Stack.Screen
               name="Auth"

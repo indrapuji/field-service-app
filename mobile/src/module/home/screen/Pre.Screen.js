@@ -15,7 +15,6 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import host from '../../../utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -24,7 +23,6 @@ const wait = (timeout) => {
 };
 
 const PreScreen = () => {
-  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,17 +52,32 @@ const PreScreen = () => {
       console.log(err);
     }
   };
+
+  const getMoreOrder = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const { data } = await axios({
+        method: 'get',
+        url: `${host}/job-orders/all?status=Assign&tipe=PM&page=${currentPage + 1}`,
+        headers: { token },
+      });
+      setList(list.concat(data.data));
+      setFiltered(filtered.concat(data.data));
+      setPage(data.pages);
+      setCurrentPage(data.currentPage);
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   useEffect(() => {
     // getData();
     getJobOrder();
-  }, []);
+  }, [refreshing]);
 
   const addMore = () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setFiltered(filtered.concat(list));
-    }, 2000);
+    getMoreOrder();
   };
 
   useEffect(() => {
@@ -94,15 +107,15 @@ const PreScreen = () => {
         hidden={false}
         backgroundColor="white"
       />
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#84ccf7' }}>
-        <ScrollView
-          contentContainerStyle={{
-            flex: 1,
-          }}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-        >
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+        }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
           <View style={{ flex: 1 }}>
-            <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
+            <View style={{ paddingVertical: 10, marginHorizontal: 10 }}>
               <View style={{ position: 'relative' }}>
                 <TextInput
                   placeholder="Cari Nama Merchants"
@@ -115,6 +128,8 @@ const PreScreen = () => {
                     paddingLeft: 50,
                     paddingRight: 100,
                     backgroundColor: 'white',
+                    borderWidth: 1,
+                    borderColor: '#f8f1f1',
                   }}
                 />
                 <Icon
@@ -134,7 +149,7 @@ const PreScreen = () => {
                 <View style={{ flex: 1 }}>
                   <CardList list={filtered} source={true} update={update} />
                 </View>
-                {page !== currentPage && (
+                {page > currentPage && (
                   <View style={{ alignItems: 'center', marginVertical: 5 }}>
                     <TouchableOpacity
                       style={{
@@ -158,8 +173,8 @@ const PreScreen = () => {
               </ScrollView>
             </View>
           </View>
-        </ScrollView>
-      </SafeAreaView>
+        </SafeAreaView>
+      </ScrollView>
     </>
   );
 };
