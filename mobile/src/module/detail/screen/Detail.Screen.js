@@ -19,6 +19,9 @@ import {
   paperRoll,
   edukasi,
 } from '../assets/DetailData';
+import axios from 'axios';
+import host from '../../../utilities/host';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const { width, height } = Dimensions.get('screen');
@@ -43,8 +46,7 @@ const DetailScreen = ({ route, navigation }) => {
     kabel_telpon: false,
     materi_promosi: false,
     keterangan: '',
-    tanggal_selesai: new Date(),
-    job_order_id: 0,
+    job_order_id: itemData.id,
   });
 
   const [checked, setChecked] = useState(null);
@@ -82,8 +84,24 @@ const DetailScreen = ({ route, navigation }) => {
     setValue({ ...value, edukasi_merchant: edukasi.key });
   };
 
-  const simpan = () => {
-    console.log(value);
+  const sendData = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const { data } = await axios({
+        method: 'put',
+        url: `${host}/job-orders/done`,
+        data: value,
+        headers: { token },
+      });
+      console.log('berhasil');
+      navigation.navigate('Home');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const hanndleDone = () => {
+    sendData();
   };
 
   // console.log('location ==>', locationChecked);
@@ -92,7 +110,7 @@ const DetailScreen = ({ route, navigation }) => {
   // console.log('sticker ==>', stickerChecked);
   // console.log('paper Roll ==>', paperRollChecked);
   // console.log('edukasi merchant ==>', edukasiChecked);
-  console.log(value);
+
   return (
     <>
       <StatusBar
@@ -600,7 +618,7 @@ const DetailScreen = ({ route, navigation }) => {
                     ></View>
                   </View>
 
-                  <TouchableOpacity onPress={() => simpan()}>
+                  <TouchableOpacity onPress={() => hanndleDone()}>
                     <View
                       style={{
                         marginTop: 20,

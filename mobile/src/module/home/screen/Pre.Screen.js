@@ -163,7 +163,7 @@ const PreScreen = () => {
                       onPress={() => addMore()}
                     >
                       {loading ? (
-                        <ActivityIndicator size="small" color="white" />
+                        <ActivityIndicator size="small" color="black" />
                       ) : (
                         <Text>More</Text>
                       )}

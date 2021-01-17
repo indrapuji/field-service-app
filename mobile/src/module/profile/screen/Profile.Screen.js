@@ -12,12 +12,14 @@ import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import host from '../../../utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 import { AuthContext } from '../../../components/utilities/Context';
 
 const { width, height } = Dimensions.get('screen');
 
 const ProfileScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const { signOut } = useContext(AuthContext);
   const [dataProfile, setDataProfile] = useState({
     jobOrderCount: 0,
@@ -44,7 +46,7 @@ const ProfileScreen = ({ navigation }) => {
         url: `${host}/users/profile`,
         headers: { token },
       });
-      console.log(data);
+      // console.log(data);
       setDataProfile({
         jobOrderCount: data.jobOrderCount,
         jobOrderDone: data.jobOrderDone,
@@ -68,7 +70,7 @@ const ProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [isFocused]);
   return (
     <>
       <StatusBar

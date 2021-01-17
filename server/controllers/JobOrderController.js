@@ -1,5 +1,5 @@
-const { job_order, job_order_kelengkapan, vendor, user } = require("../models");
-const createError = require("http-errors");
+const { job_order, job_order_kelengkapan, vendor, user } = require('../models');
+const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
 
 class JobOrderController {
@@ -24,7 +24,7 @@ class JobOrderController {
         vendor_id,
       } = req.body;
       const vendorData = await vendor.findOne({ where: { id: vendor_id } });
-      if (!vendorData) throw createError(404, "Vendor Not Found");
+      if (!vendorData) throw createError(404, 'Vendor Not Found');
       const result = await job_order.create({
         nama_merchant,
         alamat_merchant,
@@ -53,14 +53,15 @@ class JobOrderController {
       const { id } = req.UserData;
       const userData = await user.findOne({ where: { id } });
       const { teknisi_id, job_order_id } = req.body;
-      if (!teknisi_id || !job_order_id) throw createError(400, "Input all fields");
+      if (!teknisi_id || !job_order_id) throw createError(400, 'Input all fields');
       const teknisiData = await user.findOne({ where: { id: teknisi_id } });
-      if (!teknisiData) throw createError(404, "User Not Found");
+      if (!teknisiData) throw createError(404, 'User Not Found');
       const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
-      if (!jobOrderData) throw createError(404, "User Not Found");
-      if (jobOrderData.vendor_id !== userData.vendor_id) throw createError(401, "You are unauthorized");
+      if (!jobOrderData) throw createError(404, 'User Not Found');
+      if (jobOrderData.vendor_id !== userData.vendor_id)
+        throw createError(401, 'You are unauthorized');
       await job_order.update({ teknisi_id }, { where: { id: job_order_id } });
-      res.status(200).json({ msg: "Success" });
+      res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
     }
@@ -72,7 +73,7 @@ class JobOrderController {
       const user_id = req.UserData.id;
       const userData = await user.findOne({ where: { id: user_id } });
       const jobOrderData = await job_order.findOne({ where: { id } });
-      if (jobOrderData.teknisi_id !== userData.id) throw createError(401, "You are unauthorized");
+      if (jobOrderData.teknisi_id !== userData.id) throw createError(401, 'You are unauthorized');
       await job_order.update(
         {
           status,
@@ -83,7 +84,7 @@ class JobOrderController {
           },
         }
       );
-      res.status(200).json({ msg: "Success" });
+      res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
     }
@@ -136,8 +137,8 @@ class JobOrderController {
         job_order_id,
       } = req.body;
       const { id } = req.UserData;
-      if (!job_order_id) throw createError(400, "Need Job Order Id");
-      console.log(req.files.foto_1);
+      if (!job_order_id) throw createError(400, 'Need Job Order Id');
+      // console.log(req.files.foto_1);
       const jobOrderData = await job_order.findOne({
         where: { id: job_order_id },
         include: [
@@ -147,8 +148,8 @@ class JobOrderController {
           },
         ],
       });
-      if (!jobOrderData) throw createError(404, "Job Order Not Found");
-      if (jobOrderData.teknisi_id !== id) throw createError(401, "You are not authorized");
+      if (!jobOrderData) throw createError(404, 'Job Order Not Found');
+      if (jobOrderData.teknisi_id !== id) throw createError(401, 'You are not authorized');
       const jobOrderQuery = {
         kontak_person,
         no_telp,
@@ -161,7 +162,7 @@ class JobOrderController {
         edukasi_merchant,
         keterangan,
         tanggal_selesai: new Date(),
-        status: "Done"
+        status: 'Done',
       };
       if (req.files) {
         if (req.files.foto_1) jobOrderQuery.foto_1 = serverUrl + req.files.foto_1[0].path;
@@ -169,10 +170,10 @@ class JobOrderController {
         if (req.files.foto_3) jobOrderQuery.foto_3 = serverUrl + req.files.foto_3[0].path;
         if (req.files.foto_4) jobOrderQuery.foto_4 = serverUrl + req.files.foto_4[0].path;
         if (req.files.foto_5) jobOrderQuery.foto_5 = serverUrl + req.files.foto_5[0].path;
-        if (req.files.tanda_tangan) jobOrderQuery.tanda_tangan = serverUrl + req.files.tanda_tangan[0].path;
+        if (req.files.tanda_tangan)
+          jobOrderQuery.tanda_tangan = serverUrl + req.files.tanda_tangan[0].path;
       }
-      await job_order.update(jobOrderQuery,{ where: { id: job_order_id } }
-      );
+      await job_order.update(jobOrderQuery, { where: { id: job_order_id } });
       if (jobOrderData.job_order_kelengkapan) {
         await job_order_kelengkapan.update(
           {
@@ -198,7 +199,7 @@ class JobOrderController {
           job_order_id,
         });
       }
-      res.status(200).json({ msg: "Success" });
+      res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
     }

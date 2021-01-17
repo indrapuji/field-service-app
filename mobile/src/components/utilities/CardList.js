@@ -40,7 +40,7 @@ const CardList = (props) => {
   const handdleDetail = (itemData) => {
     navigation.navigate('Detail', { itemData });
   };
-  console.log(list);
+  // console.log(list);
   return (
     <View>
       {list && list.length > 0 ? (

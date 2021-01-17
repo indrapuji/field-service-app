@@ -42,7 +42,7 @@ const AuthScreen = () => {
   const loginHanddle = (username, password) => {
     // signIn(username, password);
     setLoading(true);
-    console.log('Sebelum login');
+    // console.log('Sebelum login');
     axios({
       method: 'post',
       url: `${host}/users/login`,
@@ -53,12 +53,12 @@ const AuthScreen = () => {
       },
     })
       .then(({ data }) => {
-        console.log('Setelah Login then');
+        // console.log('Setelah Login then');
         setLoading(false);
         signIn(data.access_token);
       })
       .catch((err) => {
-        console.log('Setelah Login catch');
+        // console.log('Setelah Login catch');
         setLoading(false);
         failLogin();
         console.log(err);

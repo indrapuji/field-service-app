@@ -8,7 +8,7 @@ class UserController {
   static login = async (req, res, next) => {
     try {
       const { email, password, tipe } = req.body;
-      console.log(email, password, tipe);
+      // console.log(email, password, tipe);
       if (!email || !password || !tipe) throw createError(400, 'Wrong Username/Password');
       const userData = await user.findOne({
         where: {
@@ -82,21 +82,23 @@ class UserController {
     try {
       const { id } = req.UserData;
       const userData = await user.findOne({
-        where: { id }
+        where: { id },
       });
       const jobOrderCount = await job_order.count({ where: { teknisi_id: id } });
-      const jobOrderDone = await job_order.count({ where: { teknisi_id: id, status: "Done" } });
-      const jobOrderProgres = await job_order.count({ where: { teknisi_id: id, status: "Progres" } });
+      const jobOrderDone = await job_order.count({ where: { teknisi_id: id, status: 'Done' } });
+      const jobOrderProgres = await job_order.count({
+        where: { teknisi_id: id, status: 'Progres' },
+      });
       res.status(200).json({
         userData,
         jobOrderCount,
         jobOrderDone,
-        jobOrderProgres
+        jobOrderProgres,
       });
     } catch (err) {
       next(err);
     }
-  }
+  };
 }
 
 module.exports = UserController;

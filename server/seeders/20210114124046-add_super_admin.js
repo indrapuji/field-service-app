@@ -40,7 +40,7 @@ module.exports = {
           updatedAt: new Date(),
         },
         {
-          nama_lengkap: 'Teknisi',
+          nama_lengkap: 'Rahmat Hardian',
           email: 'teknisi@teknisi.com',
           password: hashPassword('testing'),
           gender: 'Male',
