@@ -20,8 +20,9 @@ const { width, height } = Dimensions.get('screen');
 const ProfileScreen = ({ navigation }) => {
   const { signOut } = useContext(AuthContext);
   const [dataProfile, setDataProfile] = useState({
-    jobOrderCount: 20,
-    jobOrderDone: 2,
+    jobOrderCount: 0,
+    jobOrderDone: 0,
+    jobOrderProgres: 0,
     alamat: '',
     email: '',
     foto_profil: '',
@@ -47,6 +48,7 @@ const ProfileScreen = ({ navigation }) => {
       setDataProfile({
         jobOrderCount: data.jobOrderCount,
         jobOrderDone: data.jobOrderDone,
+        jobOrderProgres: data.jobOrderProgres,
         alamat: data.userData.alamat,
         email: data.userData.email,
         foto_profil: data.userData.foto_profil,
@@ -144,7 +146,7 @@ const ProfileScreen = ({ navigation }) => {
                       }}
                     >
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                        {dataProfile.jobOrderDone}
+                        {dataProfile.jobOrderProgres}
                       </Text>
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Progress</Text>
                     </View>

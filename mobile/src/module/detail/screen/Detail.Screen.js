@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   Dimensions,
-  Modal,
   ScrollView,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
@@ -19,7 +18,6 @@ import {
   sticker,
   paperRoll,
   edukasi,
-  status,
 } from '../assets/DetailData';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -27,57 +25,74 @@ const { width, height } = Dimensions.get('screen');
 
 const DetailScreen = ({ route, navigation }) => {
   const { itemData } = route.params;
-  const [value, onChangeText] = useState('');
-  const [checked, setChecked] = useState('buka');
-  const [locationChecked, setLocationChecked] = useState('tetap');
-  const [manualChecked, setManualChecked] = useState('tidak');
-  const [salesDraftChecked, setSalesDraftChecked] = useState('tidak');
-  const [stickerChecked, setStickerChecked] = useState('tidak');
-  const [paperRollChecked, setPaperRollChecked] = useState('tidak');
-  const [edukasiChecked, setEdukasiChecked] = useState('tidak');
-  const [statusChecked, setStatusChecked] = useState('Assign');
-  const [showModal, setShowModal] = useState(false);
-  const [edukasiText, setEdukasiText] = useState('Assign');
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [value, setValue] = useState({
+    kontak_person: '',
+    no_telp: '',
+    serial_number_2: '',
+    sim_card: '',
+    kondisi_merchant: '',
+    alamat_merchant_2: '',
+    manual_book: '',
+    sales_draft: 0,
+    sticker: '',
+    kertas_termal: 0,
+    edukasi_merchant: '',
+    adaptor: false,
+    dongle_prepaid: false,
+    kabel_power: false,
+    kabel_telpon: false,
+    materi_promosi: false,
+    keterangan: '',
+    tanggal_selesai: new Date(),
+    job_order_id: 0,
+  });
+
+  const [checked, setChecked] = useState(null);
+  const [locationChecked, setLocationChecked] = useState(null);
+  const [manualChecked, setManualChecked] = useState(null);
+  const [salesDraftChecked, setSalesDraftChecked] = useState(null);
+  const [stickerChecked, setStickerChecked] = useState(null);
+  const [paperRollChecked, setPaperRollChecked] = useState(null);
+  const [edukasiChecked, setEdukasiChecked] = useState(null);
   // console.log(itemData);
 
   const handdleOption = (options) => {
     setChecked(options.key);
+    setValue({ ...value, kondisi_merchant: options.key });
   };
   const handdleLokasi = (lokasi) => {
     setLocationChecked(lokasi.key);
   };
   const handdleManual = (manual) => {
     setManualChecked(manual.key);
+    setValue({ ...value, manual_book: manual.key });
   };
   const handdleSalesDraft = (salesDraft) => {
     setSalesDraftChecked(salesDraft.key);
   };
   const handdleSticker = (sticker) => {
     setStickerChecked(sticker.key);
+    setValue({ ...value, sticker: sticker.key });
   };
   const handdlePaperRoll = (paperRoll) => {
     setPaperRollChecked(paperRoll.key);
   };
   const handdleEdukasi = (edukasi) => {
     setEdukasiChecked(edukasi.key);
-  };
-  const openModal = () => {
-    setShowModal(true);
-  };
-  const handdleStatus = (status) => {
-    setStatusChecked(status.key);
-    setEdukasiText(status.text);
-    setShowModal(false);
+    setValue({ ...value, edukasi_merchant: edukasi.key });
   };
 
-  console.log('location ==>', locationChecked);
-  console.log('kondisi merchants ==>', checked);
-  console.log('manual book ==>', manualChecked);
-  console.log('sticker ==>', stickerChecked);
-  console.log('paper Roll ==>', paperRollChecked);
-  console.log('edukasi merchant ==>', edukasiChecked);
-  // console.log(toggleCheckBox);
+  const simpan = () => {
+    console.log(value);
+  };
+
+  // console.log('location ==>', locationChecked);
+  // console.log('kondisi merchants ==>', checked);
+  // console.log('manual book ==>', manualChecked);
+  // console.log('sticker ==>', stickerChecked);
+  // console.log('paper Roll ==>', paperRollChecked);
+  // console.log('edukasi merchant ==>', edukasiChecked);
+  console.log(value);
   return (
     <>
       <StatusBar
@@ -118,40 +133,40 @@ const DetailScreen = ({ route, navigation }) => {
                     <Text>Nama PIC</Text>
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                      onChangeText={(text) => onChangeText(text)}
-                      value={value}
+                      onChangeText={(text) => setValue({ ...value, kontak_person: text })}
+                      value={value.kontak_person}
                     />
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>No Telp PIC</Text>
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                      onChangeText={(text) => onChangeText(text)}
-                      value={value}
+                      onChangeText={(text) => setValue({ ...value, no_telp: text })}
+                      value={value.no_telp}
                     />
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>TID</Text>
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                      onChangeText={(text) => onChangeText(text)}
-                      value={value}
+                      onChangeText={(text) => setValue({ ...value, serial_number_2: text })}
+                      value={value.serial_number_2}
                     />
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>MID</Text>
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                      onChangeText={(text) => onChangeText(text)}
-                      value={value}
+                      value={itemData.mid}
+                      editable={false}
                     />
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>ICCID SIM</Text>
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                      onChangeText={(text) => onChangeText(text)}
-                      value={value}
+                      onChangeText={(text) => setValue({ ...value, sim_card: text })}
+                      value={value.sim_card}
                     />
                   </View>
                   <View style={{ marginTop: 20 }}>
@@ -239,7 +254,7 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Alamat Baru</Text>
                       <TextInput
                         style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                        onChangeText={(text) => onChangeText(text)}
+                        onChangeText={(text) => setValue({ ...value, alamat_merchant_2: text })}
                         value={value}
                       />
                     </View>
@@ -329,7 +344,7 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Jumlah</Text>
                       <TextInput
                         style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                        onChangeText={(text) => onChangeText(text)}
+                        onChangeText={(text) => setValue({ ...value, sales_draft: Number(text) })}
                         value={value}
                       />
                     </View>
@@ -419,7 +434,7 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Jumlah</Text>
                       <TextInput
                         style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                        onChangeText={(text) => onChangeText(text)}
+                        onChangeText={(text) => setValue({ ...value, kertas_termal: Number(text) })}
                         value={value}
                       />
                     </View>
@@ -471,24 +486,28 @@ const DetailScreen = ({ route, navigation }) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <CheckBox
                             disabled={false}
-                            value={toggleCheckBox}
-                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                            value={value.adaptor}
+                            onValueChange={(newValue) => setValue({ ...value, adaptor: newValue })}
                           />
                           <Text>Adaptor</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <CheckBox
                             disabled={false}
-                            value={toggleCheckBox}
-                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                            value={value.dongle_prepaid}
+                            onValueChange={(newValue) =>
+                              setValue({ ...value, dongle_prepaid: newValue })
+                            }
                           />
                           <Text>Dongle Prepaid</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <CheckBox
                             disabled={false}
-                            value={toggleCheckBox}
-                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                            value={value.kabel_power}
+                            onValueChange={(newValue) =>
+                              setValue({ ...value, kabel_power: newValue })
+                            }
                           />
                           <Text>Kabel Power</Text>
                         </View>
@@ -497,16 +516,20 @@ const DetailScreen = ({ route, navigation }) => {
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <CheckBox
                             disabled={false}
-                            value={toggleCheckBox}
-                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                            value={value.kabel_telpon}
+                            onValueChange={(newValue) =>
+                              setValue({ ...value, kabel_telpon: newValue })
+                            }
                           />
                           <Text>Kabel Telepon</Text>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                           <CheckBox
                             disabled={false}
-                            value={toggleCheckBox}
-                            onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                            value={value.materi_promosi}
+                            onValueChange={(newValue) =>
+                              setValue({ ...value, materi_promosi: newValue })
+                            }
                           />
                           <Text>Materi Promosi</Text>
                         </View>
@@ -517,7 +540,7 @@ const DetailScreen = ({ route, navigation }) => {
                     <Text>Keterangan</Text>
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                      onChangeText={(text) => onChangeText(text)}
+                      onChangeText={(text) => setValue({ ...value, keterangan: text })}
                       value={value}
                     />
                   </View>
@@ -576,38 +599,8 @@ const DetailScreen = ({ route, navigation }) => {
                       }}
                     ></View>
                   </View>
-                  {/* <View style={{ position: 'relative' }}>
-                    <View style={{ marginTop: 20, marginBottom: 50 }}>
-                      <Text>Status</Text>
-                      <View
-                        style={{
-                          position: 'absolute',
-                          top: 15,
-                          width: width - 40,
-                          borderWidth: 1,
-                          marginTop: 10,
-                        }}
-                      >
-                        <TouchableOpacity onPress={() => openModal()}>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                            }}
-                          >
-                            <Text style={{ color: 'orange', fontWeight: 'bold', paddingLeft: 10 }}>
-                              {edukasiText}
-                            </Text>
-                            <View>
-                              <Icon name="keyboard-arrow-down" size={40} color="orange" />
-                            </View>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View> */}
-                  <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+
+                  <TouchableOpacity onPress={() => simpan()}>
                     <View
                       style={{
                         marginTop: 20,
@@ -626,66 +619,6 @@ const DetailScreen = ({ route, navigation }) => {
               </ScrollView>
             </View>
           </View>
-          <Modal animationType="slide" transparent={true} visible={showModal}>
-            <View
-              style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 22 }}
-            >
-              <View
-                style={{
-                  margin: 20,
-                  backgroundColor: 'white',
-                  borderRadius: 10,
-                  paddingVertical: 35,
-                  paddingLeft: 20,
-                  width: width - 80,
-                  shadowColor: '#000',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
-                  elevation: 5,
-                }}
-              >
-                {status.map((item) => {
-                  return (
-                    <View key={item.key} style={{ marginBottom: 20 }}>
-                      <TouchableOpacity onPress={() => handdleStatus(item)}>
-                        <View style={{ flexDirection: 'row' }}>
-                          <View
-                            style={{
-                              height: 20,
-                              width: 20,
-                              borderRadius: 10,
-                              borderWidth: 1,
-                              borderColor: 'orange',
-                              justifyContent: 'flex-start',
-                              marginRight: 20,
-                            }}
-                          >
-                            {statusChecked === item.key && (
-                              <View
-                                style={{
-                                  width: 14,
-                                  height: 14,
-                                  borderRadius: 7,
-                                  left: 2,
-                                  top: 2,
-                                  backgroundColor: 'orange',
-                                }}
-                              />
-                            )}
-                          </View>
-                          <Text>{item.text}</Text>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                })}
-              </View>
-            </View>
-          </Modal>
         </View>
       </SafeAreaView>
     </>

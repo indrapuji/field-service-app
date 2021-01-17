@@ -68,17 +68,3 @@ export const edukasi = [
     text: 'Tidak',
   },
 ];
-export const status = [
-  {
-    key: 'Assign',
-    text: 'Assign',
-  },
-  {
-    key: 'Progres',
-    text: 'Progres',
-  },
-  {
-    key: 'Done',
-    text: 'Done',
-  },
-];
