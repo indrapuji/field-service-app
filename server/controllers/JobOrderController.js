@@ -118,6 +118,20 @@ class JobOrderController {
       const offset = resPerPage * page - resPerPage;
       let query = {
         where: {},
+        include: [
+          {
+            model: job_order_kelengkapan,
+            required: false,
+          },
+          {
+            model: job_order_edc_bank,
+            required: false,
+          },
+          {
+            model: job_order_kondisi_merchant,
+            required: false,
+          },
+        ],
       };
       if (tipe) query.where.tipe = tipe;
       if (status) query.where.status = status;
@@ -131,6 +145,35 @@ class JobOrderController {
         currentPage: Number(page),
         numOfResult,
       });
+    } catch (err) {
+      next(err);
+    }
+  };
+  static getSingleOrder = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const user_id = req.UserData.id;
+      const result = await job_order.findOne({
+        where: {
+          id,
+        },
+        include: [
+          {
+            model: job_order_kelengkapan,
+            required: false,
+          },
+          {
+            model: job_order_edc_bank,
+            required: false,
+          },
+          {
+            model: job_order_kondisi_merchant,
+            required: false,
+          },
+        ],
+      });
+      if (!result) throw createError(404, 'Data not found');
+      res.status(200).json(result);
     } catch (err) {
       next(err);
     }

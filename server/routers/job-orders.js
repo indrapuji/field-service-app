@@ -1,17 +1,19 @@
-const router = require("express").Router();
-const JobOrderController = require("../controllers/JobOrderController");
-const authentication = require("../middlewares/authentication");
-const { leaderAuth, teknisiAuth } = require("../middlewares/authorization");
-const storage = require("../helpers/multer");
-const multer = require("multer");
+const router = require('express').Router();
+const JobOrderController = require('../controllers/JobOrderController');
+const authentication = require('../middlewares/authentication');
+const { leaderAuth, teknisiAuth } = require('../middlewares/authorization');
+const storage = require('../helpers/multer');
+const multer = require('multer');
 
-const upload = multer({ storage })
+const upload = multer({ storage });
 
-router.post("/", JobOrderController.createJobOrder);
-router.put("/assign", authentication, leaderAuth, JobOrderController.assignJobOrder);
-router.put("/change-status/:id", authentication, teknisiAuth, JobOrderController.changeStatus);
-router.get("/all", authentication, teknisiAuth, JobOrderController.getAllJobOrder);
-router.put("/done",
+router.post('/', JobOrderController.createJobOrder);
+router.put('/assign', authentication, leaderAuth, JobOrderController.assignJobOrder);
+router.put('/change-status/:id', authentication, teknisiAuth, JobOrderController.changeStatus);
+router.get('/all', authentication, teknisiAuth, JobOrderController.getAllJobOrder);
+router.get('/single/:id', authentication, teknisiAuth, JobOrderController.getSingleOrder);
+router.put(
+  '/done',
   authentication,
   teknisiAuth,
   upload.fields([
@@ -22,6 +24,7 @@ router.put("/done",
     { name: 'foto_5' },
     { name: 'tanda_tangan' },
   ]),
-  JobOrderController.jobOrderDone);
+  JobOrderController.jobOrderDone
+);
 
 module.exports = router;
