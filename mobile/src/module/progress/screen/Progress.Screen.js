@@ -115,7 +115,7 @@ const ProgressScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1 }}>
-                  <CardList list={filtered} source={false} done={true} />
+                  <CardList list={filtered} source={'progres'} />
                 </View>
               </ScrollView>
             </View>

@@ -48,8 +48,10 @@ const CardList = (props) => {
           return (
             <TouchableOpacity
               key={idx}
-              onPress={() => (done ? handdleDetail(item) : null)}
-              onLongPress={() => (source ? openModal(item.id, item.nama_merchant) : null)}
+              onPress={() => (source !== 'done' ? handdleDetail(item) : null)}
+              onLongPress={() =>
+                source === 'home' ? openModal(item.id, item.nama_merchant) : null
+              }
             >
               <View
                 style={{

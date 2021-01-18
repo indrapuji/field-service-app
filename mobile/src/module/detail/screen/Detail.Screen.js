@@ -737,13 +737,13 @@ const DetailScreen = ({ route, navigation }) => {
             </View>
           </View>
         </View>
-        <BottomSheet
-          ref={sheetRef}
-          snapPoints={[0, 200]}
-          borderRadius={10}
-          renderContent={renderContent}
-        />
       </SafeAreaView>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[0, 200]}
+        borderRadius={10}
+        renderContent={renderContent}
+      />
     </>
   );
 };

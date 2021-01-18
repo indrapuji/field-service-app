@@ -115,7 +115,7 @@ const DoneScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1 }}>
-                  <CardList list={filtered} source={false} done={false} />
+                  <CardList list={filtered} source={'done'} />
                 </View>
               </ScrollView>
             </View>
