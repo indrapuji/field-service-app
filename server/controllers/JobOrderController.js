@@ -1,4 +1,11 @@
-const { job_order, job_order_kelengkapan, vendor, user } = require('../models');
+const {
+  job_order,
+  job_order_kelengkapan,
+  vendor,
+  user,
+  job_order_edc_bank,
+  job_order_kondisi_merchant,
+} = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
 
@@ -22,6 +29,13 @@ class JobOrderController {
         keterangan,
         mid,
         vendor_id,
+        jenis_mesin_edc,
+        lokasi_mesin_edc,
+        posisi_mesin_edc,
+        keluhan,
+        status_edc,
+        kondisi_edc,
+        status_kunjungan,
       } = req.body;
       const vendorData = await vendor.findOne({ where: { id: vendor_id } });
       if (!vendorData) throw createError(404, 'Vendor Not Found');
@@ -42,6 +56,13 @@ class JobOrderController {
         keterangan,
         mid,
         vendor_id,
+        jenis_mesin_edc,
+        lokasi_mesin_edc,
+        posisi_mesin_edc,
+        keluhan,
+        status_edc,
+        kondisi_edc,
+        status_kunjungan,
       });
       res.status(201).json(result);
     } catch (err) {
@@ -135,6 +156,15 @@ class JobOrderController {
         materi_promosi,
         keterangan,
         job_order_id,
+        jenis_mesin_edc,
+        lokasi_mesin_edc,
+        posisi_mesin_edc,
+        keluhan,
+        status_kertas_termal,
+        edc_bank,
+        status_edc,
+        kondisi_edc,
+        status_kunjungan,
       } = req.body;
       const { id } = req.UserData;
       if (!job_order_id) throw createError(400, 'Need Job Order Id');
@@ -154,7 +184,6 @@ class JobOrderController {
         kontak_person,
         no_telp,
         serial_number_2,
-        kondisi_merchant,
         alamat_merchant_2,
         manual_book,
         sales_draft,
@@ -163,6 +192,13 @@ class JobOrderController {
         keterangan,
         tanggal_selesai: new Date(),
         status: 'Done',
+        jenis_mesin_edc,
+        lokasi_mesin_edc,
+        posisi_mesin_edc,
+        status_edc,
+        kondisi_edc,
+        keluhan,
+        status_kunjungan,
       };
       if (req.files) {
         if (req.files.foto_1) jobOrderQuery.foto_1 = serverUrl + req.files.foto_1[0].path;
@@ -184,6 +220,7 @@ class JobOrderController {
             materi_promosi,
             kertas_termal,
             sim_card,
+            status_kertas_termal,
           },
           { where: { job_order_id } }
         );
@@ -196,9 +233,28 @@ class JobOrderController {
           materi_promosi,
           kertas_termal,
           sim_card,
+          status_kertas_termal,
           job_order_id,
         });
       }
+      const edcBankData = JSON.parse(edc_bank);
+      await Promise.all(
+        edcBankData.map(async (data) => {
+          const validation = await job_order_edc_bank.findOne({ where: { nama_bank: data } });
+          if (validation) return;
+          await job_order_edc_bank.create({ nama_bank: data, job_order_id });
+        })
+      );
+      const kondisiMerchantData = JSON.parse(kondisi_merchant);
+      await Promise.all(
+        kondisiMerchantData.map(async (data) => {
+          const validation = await job_order_kondisi_merchant.findOne({
+            where: { keterangan: data },
+          });
+          if (validation) return;
+          await job_order_kondisi_merchant.create({ keterangan: data, job_order_id });
+        })
+      );
       res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);

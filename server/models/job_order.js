@@ -9,9 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      job_order.hasOne(models.job_order_kelengkapan, { foreignKey: "job_order_id" });
-      job_order.belongsTo(models.user, { foreignKey: "teknisi_id" });
-      job_order.belongsTo(models.vendor, { foreignKey: "vendor_id" });
+      job_order.hasOne(models.job_order_kelengkapan, { foreignKey: 'job_order_id' });
+      job_order.belongsTo(models.user, { foreignKey: 'teknisi_id' });
+      job_order.belongsTo(models.vendor, { foreignKey: 'vendor_id' });
+      job_order.hasMany(models.job_order_edc_bank, { foreignKey: 'job_order_id' });
+      job_order.hasMany(models.job_order_kondisi_merchant, { foreignKey: 'job_order_id' });
     }
   }
   job_order.init(
@@ -20,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       alamat_merchant: DataTypes.STRING,
       alamat_merchant_2: DataTypes.STRING,
       tipe_merchant: DataTypes.STRING,
-      kondisi_merchant: DataTypes.STRING,
       manual_book: DataTypes.STRING,
       sales_draft: DataTypes.STRING,
       sticker: DataTypes.STRING,
@@ -46,6 +47,13 @@ module.exports = (sequelize, DataTypes) => {
       vendor_id: DataTypes.INTEGER,
       teknisi_id: DataTypes.INTEGER,
       edukasi_merchant: DataTypes.STRING,
+      jenis_mesin_edc: DataTypes.STRING,
+      lokasi_mesin_edc: DataTypes.STRING,
+      posisi_mesin_edc: DataTypes.STRING,
+      keluhan: DataTypes.STRING,
+      status_edc: DataTypes.STRING,
+      kondisi_edc: DataTypes.STRING,
+      status_kunjungan: DataTypes.STRING,
     },
     {
       sequelize,

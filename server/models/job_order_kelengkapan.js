@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class job_order_kelengkapan extends Model {
     /**
@@ -11,23 +9,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      job_order_kelengkapan.belongsTo(models.job_order, { foreignKey: "job_order_id" });
+      job_order_kelengkapan.belongsTo(models.job_order, { foreignKey: 'job_order_id' });
     }
-  };
-  job_order_kelengkapan.init({
-    job_order_id: DataTypes.INTEGER,
-    adaptor: DataTypes.STRING,
-    dongle_prepaid: DataTypes.STRING,
-    kabel_telpon: DataTypes.STRING,
-    kabel_power: DataTypes.STRING,
-    sim_card: DataTypes.STRING,
-    sam_card: DataTypes.STRING,
-    kertas_termal: DataTypes.STRING,
-    keterangan: DataTypes.STRING,
-    materi_promosi: DataTypes.STRING,
-  }, {
-    sequelize,
-    modelName: 'job_order_kelengkapan',
-  });
+  }
+  job_order_kelengkapan.init(
+    {
+      job_order_id: DataTypes.INTEGER,
+      adaptor: DataTypes.STRING,
+      dongle_prepaid: DataTypes.STRING,
+      kabel_telpon: DataTypes.STRING,
+      kabel_power: DataTypes.STRING,
+      sim_card: DataTypes.STRING,
+      sam_card: DataTypes.STRING,
+      kertas_termal: DataTypes.STRING,
+      keterangan: DataTypes.STRING,
+      materi_promosi: DataTypes.STRING,
+      status_kertas_termal: DataTypes.STRING,
+    },
+    {
+      sequelize,
+      modelName: 'job_order_kelengkapan',
+    }
+  );
   return job_order_kelengkapan;
 };

@@ -20,9 +20,6 @@ module.exports = {
       tipe_merchant: {
         type: Sequelize.STRING,
       },
-      kondisi_merchant: {
-        type: Sequelize.STRING,
-      },
       manual_book: {
         type: Sequelize.STRING,
       },
@@ -96,6 +93,27 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       edukasi_merchant: {
+        type: Sequelize.STRING,
+      },
+      jenis_mesin_edc: {
+        type: Sequelize.STRING,
+      },
+      lokasi_mesin_edc: {
+        type: Sequelize.STRING,
+      },
+      posisi_mesin_edc: {
+        type: Sequelize.STRING,
+      },
+      keluhan: {
+        type: Sequelize.STRING,
+      },
+      status_edc: {
+        type: Sequelize.STRING,
+      },
+      kondisi_edc: {
+        type: Sequelize.STRING,
+      },
+      status_kunjungan: {
         type: Sequelize.STRING,
       },
       createdAt: {

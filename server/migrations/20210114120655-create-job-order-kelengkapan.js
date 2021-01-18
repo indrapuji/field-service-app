@@ -6,49 +6,52 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       job_order_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       adaptor: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       dongle_prepaid: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       kabel_telpon: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       kabel_power: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       sim_card: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       sam_card: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       kertas_termal: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       keterangan: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       materi_promosi: {
         type: Sequelize.STRING,
       },
+      status_kertas_termal: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('job_order_kelengkapans');
-  }
+  },
 };
