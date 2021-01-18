@@ -8,6 +8,7 @@ import {
   TextInput,
   Dimensions,
   ScrollView,
+  Alert,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {
@@ -23,6 +24,7 @@ import axios from 'axios';
 import host from '../../../utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
+import BottomSheet from 'reanimated-bottom-sheet';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -85,18 +87,22 @@ const DetailScreen = ({ route, navigation }) => {
   };
 
   const sendData = async () => {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const { data } = await axios({
-        method: 'put',
-        url: `${host}/job-orders/done`,
-        data: value,
-        headers: { token },
-      });
-      console.log('berhasil');
-      navigation.navigate('Home');
-    } catch (err) {
-      console.log(err);
+    if (value.keterangan !== '') {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        const { data } = await axios({
+          method: 'put',
+          url: `${host}/job-orders/done`,
+          data: value,
+          headers: { token },
+        });
+        console.log('berhasil');
+        navigation.navigate('Home');
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      Alert.alert('Keterangan tidak boleh kosong');
     }
   };
 
@@ -111,6 +117,61 @@ const DetailScreen = ({ route, navigation }) => {
   // console.log('paper Roll ==>', paperRollChecked);
   // console.log('edukasi merchant ==>', edukasiChecked);
 
+  const renderContent = () => (
+    <View
+      style={{
+        backgroundColor: 'white',
+        paddingHorizontal: 20,
+        height: 205,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderWidth: 1,
+        borderColor: '#64dfdf',
+      }}
+    >
+      <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
+        <View
+          style={{
+            backgroundColor: 'grey',
+            height: 5,
+            width: 70,
+            borderRadius: 10,
+          }}
+        />
+      </View>
+      <View
+        style={{
+          backgroundColor: '#64dfdf',
+          height: 50,
+          borderRadius: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 20,
+          marginTop: 20,
+        }}
+      >
+        <Text style={{ fontWeight: 'bold', color: 'white' }}>Open Galery</Text>
+      </View>
+      <View
+        style={{
+          backgroundColor: '#64dfdf',
+          height: 50,
+          borderRadius: 20,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Text style={{ fontWeight: 'bold', color: 'white' }}>Open Camera</Text>
+      </View>
+    </View>
+  );
+
+  const sheetRef = React.useRef(null);
+
+  const handdleImage = (id) => {
+    sheetRef.current.snapTo(1);
+    console.log(id);
+  };
   return (
     <>
       <StatusBar
@@ -167,8 +228,8 @@ const DetailScreen = ({ route, navigation }) => {
                     <Text>TID</Text>
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                      onChangeText={(text) => setValue({ ...value, serial_number_2: text })}
-                      value={value.serial_number_2}
+                      value={itemData.serial_number}
+                      editable={false}
                     />
                   </View>
                   <View style={{ marginTop: 20 }}>
@@ -177,6 +238,14 @@ const DetailScreen = ({ route, navigation }) => {
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
                       value={itemData.mid}
                       editable={false}
+                    />
+                  </View>
+                  <View style={{ marginTop: 20 }}>
+                    <Text>Serial Number</Text>
+                    <TextInput
+                      style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
+                      onChangeText={(text) => setValue({ ...value, serial_number_2: text })}
+                      value={value.serial_number_2}
                     />
                   </View>
                   <View style={{ marginTop: 20 }}>
@@ -501,54 +570,76 @@ const DetailScreen = ({ route, navigation }) => {
                     <Text>Kelengkapan</Text>
                     <View style={{ flexDirection: 'row' }}>
                       <View style={{ marginRight: 20 }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <CheckBox
-                            disabled={false}
-                            value={value.adaptor}
-                            onValueChange={(newValue) => setValue({ ...value, adaptor: newValue })}
-                          />
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}
+                        >
+                          <View style={{ marginRight: 5 }}>
+                            <CheckBox
+                              disabled={false}
+                              value={value.adaptor}
+                              onValueChange={(newValue) =>
+                                setValue({ ...value, adaptor: newValue })
+                              }
+                            />
+                          </View>
                           <Text>Adaptor</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <CheckBox
-                            disabled={false}
-                            value={value.dongle_prepaid}
-                            onValueChange={(newValue) =>
-                              setValue({ ...value, dongle_prepaid: newValue })
-                            }
-                          />
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}
+                        >
+                          <View style={{ marginRight: 5 }}>
+                            <CheckBox
+                              disabled={false}
+                              value={value.dongle_prepaid}
+                              onValueChange={(newValue) =>
+                                setValue({ ...value, dongle_prepaid: newValue })
+                              }
+                            />
+                          </View>
                           <Text>Dongle Prepaid</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <CheckBox
-                            disabled={false}
-                            value={value.kabel_power}
-                            onValueChange={(newValue) =>
-                              setValue({ ...value, kabel_power: newValue })
-                            }
-                          />
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}
+                        >
+                          <View style={{ marginRight: 5 }}>
+                            <CheckBox
+                              disabled={false}
+                              value={value.kabel_power}
+                              onValueChange={(newValue) =>
+                                setValue({ ...value, kabel_power: newValue })
+                              }
+                            />
+                          </View>
                           <Text>Kabel Power</Text>
                         </View>
                       </View>
                       <View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <CheckBox
-                            disabled={false}
-                            value={value.kabel_telpon}
-                            onValueChange={(newValue) =>
-                              setValue({ ...value, kabel_telpon: newValue })
-                            }
-                          />
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}
+                        >
+                          <View style={{ marginRight: 5 }}>
+                            <CheckBox
+                              disabled={false}
+                              value={value.kabel_telpon}
+                              onValueChange={(newValue) =>
+                                setValue({ ...value, kabel_telpon: newValue })
+                              }
+                            />
+                          </View>
                           <Text>Kabel Telepon</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <CheckBox
-                            disabled={false}
-                            value={value.materi_promosi}
-                            onValueChange={(newValue) =>
-                              setValue({ ...value, materi_promosi: newValue })
-                            }
-                          />
+                        <View
+                          style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}
+                        >
+                          <View style={{ marginRight: 5 }}>
+                            <CheckBox
+                              disabled={false}
+                              value={value.materi_promosi}
+                              onValueChange={(newValue) =>
+                                setValue({ ...value, materi_promosi: newValue })
+                              }
+                            />
+                          </View>
                           <Text>Materi Promosi</Text>
                         </View>
                       </View>
@@ -559,7 +650,7 @@ const DetailScreen = ({ route, navigation }) => {
                     <TextInput
                       style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
                       onChangeText={(text) => setValue({ ...value, keterangan: text })}
-                      value={value}
+                      value={value.keterangan}
                     />
                   </View>
                   <View
@@ -575,47 +666,55 @@ const DetailScreen = ({ route, navigation }) => {
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>Foto Bagian Depan Merchant</Text>
-                    <View
-                      style={{
-                        marginTop: 10,
-                        width: width - 40,
-                        height: 250,
-                        backgroundColor: 'grey',
-                      }}
-                    ></View>
+                    <TouchableOpacity onPress={() => handdleImage('Foto Bagian Depan Merchant')}>
+                      <View
+                        style={{
+                          marginTop: 10,
+                          width: width - 40,
+                          height: 250,
+                          backgroundColor: 'grey',
+                        }}
+                      ></View>
+                    </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: 20 }}>
-                    <Text>Foto Bagian Belakang Mesin EDC</Text>
-                    <View
-                      style={{
-                        marginTop: 10,
-                        width: width - 40,
-                        height: 250,
-                        backgroundColor: 'grey',
-                      }}
-                    ></View>
+                    <Text>Foto SN Mesin EDC</Text>
+                    <TouchableOpacity onPress={() => handdleImage('Foto SN Mesin EDC')}>
+                      <View
+                        style={{
+                          marginTop: 10,
+                          width: width - 40,
+                          height: 250,
+                          backgroundColor: 'grey',
+                        }}
+                      ></View>
+                    </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>Foto Bagian Depan Mesin EDC</Text>
-                    <View
-                      style={{
-                        marginTop: 10,
-                        width: width - 40,
-                        height: 250,
-                        backgroundColor: 'grey',
-                      }}
-                    ></View>
+                    <TouchableOpacity onPress={() => handdleImage('Foto Bagian Depan Mesin EDC')}>
+                      <View
+                        style={{
+                          marginTop: 10,
+                          width: width - 40,
+                          height: 250,
+                          backgroundColor: 'grey',
+                        }}
+                      ></View>
+                    </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>Foto Transaksi</Text>
-                    <View
-                      style={{
-                        marginTop: 10,
-                        width: width - 40,
-                        height: 250,
-                        backgroundColor: 'grey',
-                      }}
-                    ></View>
+                    <TouchableOpacity onPress={() => handdleImage('Foto Transaksi')}>
+                      <View
+                        style={{
+                          marginTop: 10,
+                          width: width - 40,
+                          height: 250,
+                          backgroundColor: 'grey',
+                        }}
+                      ></View>
+                    </TouchableOpacity>
                   </View>
 
                   <TouchableOpacity onPress={() => hanndleDone()}>
@@ -638,6 +737,12 @@ const DetailScreen = ({ route, navigation }) => {
             </View>
           </View>
         </View>
+        <BottomSheet
+          ref={sheetRef}
+          snapPoints={[0, 200]}
+          borderRadius={10}
+          renderContent={renderContent}
+        />
       </SafeAreaView>
     </>
   );

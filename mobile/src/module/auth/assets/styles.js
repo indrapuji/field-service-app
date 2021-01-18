@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const { height, width } = Dimensions.get('screen');
+const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   background: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   contentPosition: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 40,
+    marginBottom: 10,
   },
   textMargin: {
     alignItems: 'center',

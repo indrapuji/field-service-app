@@ -9,7 +9,7 @@ function HomeScreen() {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        labelStyle: { fontSize: 20, fontWeight: 'bold' },
+        labelStyle: { fontSize: 15, fontWeight: 'bold' },
         style: { backgroundColor: '#84ccf7' },
       }}
     >

@@ -104,11 +104,12 @@ const CardList = (props) => {
       ) : (
         <Text style={styles.noText}>No Data</Text>
       )}
-      <Modal animationType="fade" transparent={true} visible={showModal}>
+      <Modal animationType="slide" transparent={true} visible={showModal}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: 'black' }}>{merchantName} Change Status</Text>
+              <Text style={{ color: 'black', fontWeight: 'bold' }}>{merchantName}</Text>
+              <Text style={{ color: 'black' }}>Change Status to Progress</Text>
             </View>
             <View
               style={{
