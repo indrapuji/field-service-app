@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   StatusBar,
   View,
@@ -9,6 +9,7 @@ import {
   Dimensions,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {
@@ -25,6 +26,8 @@ import host from '../../../utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Icon from 'react-native-vector-icons/MaterialIcons';
 import BottomSheet from 'reanimated-bottom-sheet';
+// import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import * as ImagePicker from 'react-native-image-picker';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -38,9 +41,9 @@ const DetailScreen = ({ route, navigation }) => {
     kondisi_merchant: '',
     alamat_merchant_2: '',
     manual_book: '',
-    sales_draft: 0,
+    sales_draft: '',
     sticker: '',
-    kertas_termal: 0,
+    kertas_termal: '',
     edukasi_merchant: '',
     adaptor: false,
     dongle_prepaid: false,
@@ -58,6 +61,11 @@ const DetailScreen = ({ route, navigation }) => {
   const [stickerChecked, setStickerChecked] = useState(null);
   const [paperRollChecked, setPaperRollChecked] = useState(null);
   const [edukasiChecked, setEdukasiChecked] = useState(null);
+  const [imageStatus, setImageStatus] = useState(null);
+  const [bagianDepan, setBagianDepan] = useState(null);
+  const [SNMesin, setSNMesin] = useState(null);
+  const [depanMesin, setDepanMesin] = useState(null);
+  const [transaksi, setTransaksi] = useState(null);
   // console.log(itemData);
 
   const handdleOption = (options) => {
@@ -89,11 +97,40 @@ const DetailScreen = ({ route, navigation }) => {
   const sendData = async () => {
     if (value.keterangan !== '') {
       try {
+        const foto_1 = {
+          uri: bagianDepan,
+          type: 'image/jpeg',
+          name: 'foto_1.jpg',
+        };
+        const foto_2 = {
+          uri: SNMesin,
+          type: 'image/jpeg',
+          name: 'foto_1.jpg',
+        };
+        const foto_3 = {
+          uri: depanMesin,
+          type: 'image/jpeg',
+          name: 'foto_1.jpg',
+        };
+        const foto_4 = {
+          uri: transaksi,
+          type: 'image/jpeg',
+          name: 'foto_1.jpg',
+        };
+        var formData = new FormData();
+        formData.append('foto_1', foto_1);
+        formData.append('foto_2', foto_2);
+        formData.append('foto_3', foto_3);
+        formData.append('foto_4', foto_4);
+
+        for (let key in value) {
+          formData.append(`${key}`, value[key]);
+        }
         const token = await AsyncStorage.getItem('userToken');
         const { data } = await axios({
           method: 'put',
           url: `${host}/job-orders/done`,
-          data: value,
+          data: formData,
           headers: { token },
         });
         console.log('berhasil');
@@ -139,38 +176,94 @@ const DetailScreen = ({ route, navigation }) => {
           }}
         />
       </View>
-      <View
-        style={{
-          backgroundColor: '#64dfdf',
-          height: 50,
-          borderRadius: 20,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: 20,
-          marginTop: 20,
-        }}
-      >
-        <Text style={{ fontWeight: 'bold', color: 'white' }}>Open Galery</Text>
-      </View>
-      <View
-        style={{
-          backgroundColor: '#64dfdf',
-          height: 50,
-          borderRadius: 20,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Text style={{ fontWeight: 'bold', color: 'white' }}>Open Camera</Text>
-      </View>
+      <TouchableOpacity onPress={() => handdleGalery()}>
+        <View
+          style={{
+            backgroundColor: '#64dfdf',
+            height: 50,
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 20,
+            marginTop: 20,
+          }}
+        >
+          <Text style={{ fontWeight: 'bold', color: 'white' }}>Open Galery</Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => handdleCamera()}>
+        <View
+          style={{
+            backgroundColor: '#64dfdf',
+            height: 50,
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ fontWeight: 'bold', color: 'white' }}>Open Camera</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 
-  const sheetRef = React.useRef(null);
+  const sheetRef = useRef(null);
 
-  const handdleImage = (id) => {
+  const handdleImage = (imagePos) => {
     sheetRef.current.snapTo(1);
-    console.log(id);
+    setImageStatus(imagePos);
+  };
+
+  const handdleGalery = () => {
+    sheetRef.current.snapTo(0);
+    ImagePicker.launchImageLibrary(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: width - 40,
+        maxWidth: ((width - 40) / 4) * 3,
+      },
+      (response) => {
+        if (imageStatus === 'bagianDepan') {
+          setBagianDepan(response.uri);
+        }
+        if (imageStatus === 'SNMesin') {
+          setSNMesin(response.uri);
+        }
+        if (imageStatus === 'depanMesin') {
+          setDepanMesin(response.uri);
+        }
+        if (imageStatus === 'transaksi') {
+          setTransaksi(response.uri);
+        }
+      }
+    );
+  };
+
+  const handdleCamera = () => {
+    sheetRef.current.snapTo(0);
+    ImagePicker.launchCamera(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+        maxHeight: width - 40,
+        maxWidth: ((width - 40) / 4) * 3,
+      },
+      (response) => {
+        if (imageStatus === 'bagianDepan') {
+          setBagianDepan(response.uri);
+        }
+        if (imageStatus === 'SNMesin') {
+          setSNMesin(response.uri);
+        }
+        if (imageStatus === 'depanMesin') {
+          setDepanMesin(response.uri);
+        }
+        if (imageStatus === 'transaksi') {
+          setTransaksi(response.uri);
+        }
+      }
+    );
   };
   return (
     <>
@@ -342,7 +435,7 @@ const DetailScreen = ({ route, navigation }) => {
                       <TextInput
                         style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
                         onChangeText={(text) => setValue({ ...value, alamat_merchant_2: text })}
-                        value={value}
+                        value={value.alamat_merchant_2}
                       />
                     </View>
                   )}
@@ -431,8 +524,8 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Jumlah</Text>
                       <TextInput
                         style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                        onChangeText={(text) => setValue({ ...value, sales_draft: Number(text) })}
-                        value={value}
+                        onChangeText={(text) => setValue({ ...value, sales_draft: text })}
+                        value={value.sales_draft}
                       />
                     </View>
                   )}
@@ -521,8 +614,8 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Jumlah</Text>
                       <TextInput
                         style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                        onChangeText={(text) => setValue({ ...value, kertas_termal: Number(text) })}
-                        value={value}
+                        onChangeText={(text) => setValue({ ...value, kertas_termal: text })}
+                        value={value.kertas_termal}
                       />
                     </View>
                   )}
@@ -666,54 +759,82 @@ const DetailScreen = ({ route, navigation }) => {
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>Foto Bagian Depan Merchant</Text>
-                    <TouchableOpacity onPress={() => handdleImage('Foto Bagian Depan Merchant')}>
-                      <View
-                        style={{
-                          marginTop: 10,
-                          width: width - 40,
-                          height: 250,
-                          backgroundColor: 'grey',
-                        }}
-                      ></View>
+                    <TouchableOpacity onPress={() => handdleImage('bagianDepan')}>
+                      {bagianDepan ? (
+                        <Image
+                          source={{ uri: bagianDepan }}
+                          style={{ width: width - 40, height: ((width - 40) / 4) * 3 }}
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            marginTop: 10,
+                            width: width - 40,
+                            height: ((width - 40) / 4) * 3,
+                            backgroundColor: 'grey',
+                          }}
+                        />
+                      )}
                     </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>Foto SN Mesin EDC</Text>
-                    <TouchableOpacity onPress={() => handdleImage('Foto SN Mesin EDC')}>
-                      <View
-                        style={{
-                          marginTop: 10,
-                          width: width - 40,
-                          height: 250,
-                          backgroundColor: 'grey',
-                        }}
-                      ></View>
+                    <TouchableOpacity onPress={() => handdleImage('SNMesin')}>
+                      {SNMesin ? (
+                        <Image
+                          source={{ uri: SNMesin }}
+                          style={{ width: width - 40, height: ((width - 40) / 4) * 3 }}
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            marginTop: 10,
+                            width: width - 40,
+                            height: ((width - 40) / 4) * 3,
+                            backgroundColor: 'grey',
+                          }}
+                        />
+                      )}
                     </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>Foto Bagian Depan Mesin EDC</Text>
-                    <TouchableOpacity onPress={() => handdleImage('Foto Bagian Depan Mesin EDC')}>
-                      <View
-                        style={{
-                          marginTop: 10,
-                          width: width - 40,
-                          height: 250,
-                          backgroundColor: 'grey',
-                        }}
-                      ></View>
+                    <TouchableOpacity onPress={() => handdleImage('depanMesin')}>
+                      {depanMesin ? (
+                        <Image
+                          source={{ uri: depanMesin }}
+                          style={{ width: width - 40, height: ((width - 40) / 4) * 3 }}
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            marginTop: 10,
+                            width: width - 40,
+                            height: ((width - 40) / 4) * 3,
+                            backgroundColor: 'grey',
+                          }}
+                        />
+                      )}
                     </TouchableOpacity>
                   </View>
                   <View style={{ marginTop: 20 }}>
                     <Text>Foto Transaksi</Text>
-                    <TouchableOpacity onPress={() => handdleImage('Foto Transaksi')}>
-                      <View
-                        style={{
-                          marginTop: 10,
-                          width: width - 40,
-                          height: 250,
-                          backgroundColor: 'grey',
-                        }}
-                      ></View>
+                    <TouchableOpacity onPress={() => handdleImage('transaksi')}>
+                      {transaksi ? (
+                        <Image
+                          source={{ uri: transaksi }}
+                          style={{ width: width - 40, height: ((width - 40) / 4) * 3 }}
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            marginTop: 10,
+                            width: width - 40,
+                            height: ((width - 40) / 4) * 3,
+                            backgroundColor: 'grey',
+                          }}
+                        />
+                      )}
                     </TouchableOpacity>
                   </View>
 
