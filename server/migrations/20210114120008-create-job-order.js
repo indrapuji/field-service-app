@@ -116,6 +116,9 @@ module.exports = {
       status_kunjungan: {
         type: Sequelize.STRING,
       },
+      kondisi_merchant: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

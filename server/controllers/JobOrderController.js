@@ -36,6 +36,7 @@ class JobOrderController {
         status_edc,
         kondisi_edc,
         status_kunjungan,
+        kondisi_merchant
       } = req.body;
       const vendorData = await vendor.findOne({ where: { id: vendor_id } });
       if (!vendorData) throw createError(404, 'Vendor Not Found');
@@ -63,6 +64,7 @@ class JobOrderController {
         status_edc,
         kondisi_edc,
         status_kunjungan,
+        kondisi_merchant
       });
       res.status(201).json(result);
     } catch (err) {
@@ -211,7 +213,6 @@ class JobOrderController {
       } = req.body;
       const { id } = req.UserData;
       if (!job_order_id) throw createError(400, 'Need Job Order Id');
-      // console.log(req.files.foto_1);
       const jobOrderData = await job_order.findOne({
         where: { id: job_order_id },
         include: [
@@ -242,6 +243,7 @@ class JobOrderController {
         kondisi_edc,
         keluhan,
         status_kunjungan,
+        kondisi_merchant
       };
       if (req.files) {
         if (req.files.foto_1) jobOrderQuery.foto_1 = serverUrl + req.files.foto_1[0].path;
@@ -286,16 +288,6 @@ class JobOrderController {
           const validation = await job_order_edc_bank.findOne({ where: { nama_bank: data } });
           if (validation) return;
           await job_order_edc_bank.create({ nama_bank: data, job_order_id });
-        })
-      );
-      const kondisiMerchantData = JSON.parse(kondisi_merchant);
-      await Promise.all(
-        kondisiMerchantData.map(async (data) => {
-          const validation = await job_order_kondisi_merchant.findOne({
-            where: { keterangan: data },
-          });
-          if (validation) return;
-          await job_order_kondisi_merchant.create({ keterangan: data, job_order_id });
         })
       );
       res.status(200).json({ msg: 'Success' });
