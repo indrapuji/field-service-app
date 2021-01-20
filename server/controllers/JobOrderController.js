@@ -4,7 +4,6 @@ const {
   vendor,
   user,
   job_order_edc_bank,
-  job_order_kondisi_merchant,
 } = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
@@ -129,10 +128,6 @@ class JobOrderController {
             model: job_order_edc_bank,
             required: false,
           },
-          {
-            model: job_order_kondisi_merchant,
-            required: false,
-          },
         ],
       };
       if (tipe) query.where.tipe = tipe;
@@ -166,10 +161,6 @@ class JobOrderController {
           },
           {
             model: job_order_edc_bank,
-            required: false,
-          },
-          {
-            model: job_order_kondisi_merchant,
             required: false,
           },
         ],
@@ -210,6 +201,8 @@ class JobOrderController {
         status_edc,
         kondisi_edc,
         status_kunjungan,
+        latitude,
+        longitude
       } = req.body;
       const { id } = req.UserData;
       if (!job_order_id) throw createError(400, 'Need Job Order Id');
@@ -243,7 +236,9 @@ class JobOrderController {
         kondisi_edc,
         keluhan,
         status_kunjungan,
-        kondisi_merchant
+        kondisi_merchant,
+        latitude,
+        longitude
       };
       if (req.files) {
         if (req.files.foto_1) jobOrderQuery.foto_1 = serverUrl + req.files.foto_1[0].path;
