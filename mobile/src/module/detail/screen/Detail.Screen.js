@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   StatusBar,
   View,
@@ -31,17 +31,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomSheet from 'reanimated-bottom-sheet';
 import * as ImagePicker from 'react-native-image-picker';
 import Signature from 'react-native-signature-canvas';
+import GetLocation from 'react-native-get-location';
+import { useIsFocused } from '@react-navigation/native';
 
 const { width } = Dimensions.get('screen');
 
 const DetailScreen = ({ route, navigation }) => {
   const { itemData } = route.params;
+  const isFocused = useIsFocused();
   const [value, setValue] = useState({
     kontak_person: '',
     no_telp: '',
     serial_number_2: '',
     sim_card: '',
-    job_order_kondisi_merchants: '',
+    kondisi_merchant: '',
     alamat_merchant_2: '',
     jenis_mesin_edc: '',
     status_edc: '',
@@ -59,7 +62,9 @@ const DetailScreen = ({ route, navigation }) => {
     keterangan: '',
     keluhan: '',
     job_order_id: itemData.id,
-    job_order_edc_banks: [],
+    edc_bank: [],
+    latitude: '',
+    longitude: '',
   });
 
   const [checked, setChecked] = useState(null);
@@ -77,7 +82,7 @@ const DetailScreen = ({ route, navigation }) => {
   const [SNMesin, setSNMesin] = useState(null);
   const [depanMesin, setDepanMesin] = useState(null);
   const [transaksi, setTransaksi] = useState(null);
-  const [signature, setSign] = useState(null);
+  const [signature, setSignature] = useState(null);
   const [kelengkapan, setKelengkapan] = useState({
     adaptor: false,
     dongle_prepaid: false,
@@ -101,20 +106,24 @@ const DetailScreen = ({ route, navigation }) => {
     lainnya: false,
   });
 
-  const handleSignature = (signature) => {
-    console.log(signature);
-    setSign(signature);
-  };
-
-  const handleEmpty = () => {
-    console.log('Empty');
-  };
-
-  const style = `.m-signature-pad--footer
-    .button {
-      background-color: red;
-      color: #FFF;
-    }`;
+  useEffect(() => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then((location) => {
+        console.log(location);
+        console.log(location.latitude);
+        console.log(location.longitude);
+        setValue({ ...value, latitude: location.latitude, longitude: location.longitude });
+      })
+      .catch((error) => {
+        const { code, message } = error;
+        console.log(code, message);
+        navigation.navigate('Home');
+      });
+  }, [isFocused]);
+  // console.log(value);
 
   const handdleJenisEDC = (JenisEDC) => {
     setEdc(JenisEDC.key);
@@ -130,34 +139,12 @@ const DetailScreen = ({ route, navigation }) => {
       status_edc: statusEDC.key,
     });
   };
-  // const handdleOption = (options) => {
-  //   setChecked(options.key);
-  //   setValue({
-  //     ...value,
-  //     job_order_kondisi_merchants: [options.key],
-  //   });
-  // };
-  // const handdleOptionNext = (optionsBuka) => {
-  //   setMerchantChecked(optionsBuka.key);
-  //   if (value.job_order_kondisi_merchants.length === 2) {
-  //     value.job_order_kondisi_merchants.pop();
-  //     setValue({
-  //       ...value,
-  //       job_order_kondisi_merchants: value.job_order_kondisi_merchants.concat(optionsBuka.key),
-  //     });
-  //   } else {
-  //     setValue({
-  //       ...value,
-  //       job_order_kondisi_merchants: value.job_order_kondisi_merchants.concat(optionsBuka.key),
-  //     });
-  //   }
-  // };
   const handdleOption = (options) => {
     setChecked(options.key);
   };
   const handdleOptionNext = (optionsBuka) => {
     setMerchantChecked(optionsBuka.key);
-    setValue({ ...value, job_order_kondisi_merchants: optionsBuka.key });
+    setValue({ ...value, kondisi_merchant: optionsBuka.key });
   };
   const handdleLokasi = (lokasi) => {
     setLocationChecked(lokasi.key);
@@ -189,11 +176,11 @@ const DetailScreen = ({ route, navigation }) => {
       if (newValue === true) {
         setValue({
           ...value,
-          job_order_edc_banks: value.job_order_edc_banks.concat(name),
+          edc_bank: value.edc_bank.concat(name),
         });
       } else {
-        const newLain = value.job_order_edc_banks.filter((x) => x !== name);
-        setValue({ ...value, job_order_edc_banks: newLain });
+        const newLain = value.edc_bank.filter((x) => x !== name);
+        setValue({ ...value, edc_bank: newLain });
       }
     }
     if (name === 'mandiri') {
@@ -201,11 +188,11 @@ const DetailScreen = ({ route, navigation }) => {
       if (newValue === true) {
         setValue({
           ...value,
-          job_order_edc_banks: value.job_order_edc_banks.concat(name),
+          edc_bank: value.edc_bank.concat(name),
         });
       } else {
-        const newLain = value.job_order_edc_banks.filter((x) => x !== name);
-        setValue({ ...value, job_order_edc_banks: newLain });
+        const newLain = value.edc_bank.filter((x) => x !== name);
+        setValue({ ...value, edc_bank: newLain });
       }
     }
     if (name === 'bri') {
@@ -213,11 +200,11 @@ const DetailScreen = ({ route, navigation }) => {
       if (newValue === true) {
         setValue({
           ...value,
-          job_order_edc_banks: value.job_order_edc_banks.concat(name),
+          edc_bank: value.edc_bank.concat(name),
         });
       } else {
-        const newLain = value.job_order_edc_banks.filter((x) => x !== name);
-        setValue({ ...value, job_order_edc_banks: newLain });
+        const newLain = value.edc_bank.filter((x) => x !== name);
+        setValue({ ...value, edc_bank: newLain });
       }
     }
     if (name === 'bni') {
@@ -225,11 +212,11 @@ const DetailScreen = ({ route, navigation }) => {
       if (newValue === true) {
         setValue({
           ...value,
-          job_order_edc_banks: value.job_order_edc_banks.concat(name),
+          edc_bank: value.edc_bank.concat(name),
         });
       } else {
-        const newLain = value.job_order_edc_banks.filter((x) => x !== name);
-        setValue({ ...value, job_order_edc_banks: newLain });
+        const newLain = value.edc_bank.filter((x) => x !== name);
+        setValue({ ...value, edc_bank: newLain });
       }
     }
     if (name === 'cimb') {
@@ -237,11 +224,11 @@ const DetailScreen = ({ route, navigation }) => {
       if (newValue === true) {
         setValue({
           ...value,
-          job_order_edc_banks: value.job_order_edc_banks.concat(name),
+          edc_bank: value.edc_bank.concat(name),
         });
       } else {
-        const newLain = value.job_order_edc_banks.filter((x) => x !== name);
-        setValue({ ...value, job_order_edc_banks: newLain });
+        const newLain = value.edc_bank.filter((x) => x !== name);
+        setValue({ ...value, edc_bank: newLain });
       }
     }
     if (name === 'lainnya') {
@@ -249,11 +236,11 @@ const DetailScreen = ({ route, navigation }) => {
       if (newValue === true) {
         setValue({
           ...value,
-          job_order_edc_banks: value.job_order_edc_banks.concat(name),
+          edc_bank: value.edc_bank.concat(name),
         });
       } else {
-        const newLain = value.job_order_edc_banks.filter((x) => x !== name);
-        setValue({ ...value, job_order_edc_banks: newLain });
+        const newLain = value.edc_bank.filter((x) => x !== name);
+        setValue({ ...value, edc_bank: newLain });
       }
     }
   };
@@ -302,52 +289,53 @@ const DetailScreen = ({ route, navigation }) => {
   };
 
   const sendData = async () => {
-    // if (value.keterangan !== '') {
-    //   try {
-    const foto_1 = {
-      uri: bagianDepan,
-      type: 'image/jpeg',
-      name: 'foto_1.jpg',
-    };
-    const foto_2 = {
-      uri: SNMesin,
-      type: 'image/jpeg',
-      name: 'foto_1.jpg',
-    };
-    const foto_3 = {
-      uri: depanMesin,
-      type: 'image/jpeg',
-      name: 'foto_1.jpg',
-    };
-    const foto_4 = {
-      uri: transaksi,
-      type: 'image/jpeg',
-      name: 'foto_1.jpg',
-    };
-    //     var formData = new FormData();
-    //     formData.append('foto_1', foto_1);
-    //     formData.append('foto_2', foto_2);
-    //     formData.append('foto_3', foto_3);
-    //     formData.append('foto_4', foto_4);
-    //     for (let key in value) {
-    //       formData.append(`${key}`, value[key]);
-    //     }
-    //     const token = await AsyncStorage.getItem('userToken');
-    //     const { data } = await axios({
-    //       method: 'put',
-    //       url: `${host}/job-orders/done`,
-    //       data: formData,
-    //       headers: { token },
-    //     });
-    //     console.log('berhasil');
-    //     navigation.navigate('Home');
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // } else {
-    //   Alert.alert('Keterangan tidak boleh kosong');
-    // }
-    console.log(value, foto_1, foto_2, foto_3, foto_4);
+    if (value.keterangan !== '') {
+      try {
+        const foto_1 = {
+          uri: bagianDepan,
+          type: 'image/jpeg',
+          name: 'foto_1.jpg',
+        };
+        const foto_2 = {
+          uri: SNMesin,
+          type: 'image/jpeg',
+          name: 'foto_1.jpg',
+        };
+        const foto_3 = {
+          uri: depanMesin,
+          type: 'image/jpeg',
+          name: 'foto_1.jpg',
+        };
+        const foto_4 = {
+          uri: transaksi,
+          type: 'image/jpeg',
+          name: 'foto_1.jpg',
+        };
+        var formData = new FormData();
+        formData.append('foto_1', foto_1);
+        formData.append('foto_2', foto_2);
+        formData.append('foto_3', foto_3);
+        formData.append('foto_4', foto_4);
+        for (let key in value) {
+          if (key === 'edc_bank') formData.append(`${key}`, JSON.stringify(value[key]));
+          else formData.append(`${key}`, value[key]);
+        }
+        const token = await AsyncStorage.getItem('userToken');
+        const { data } = await axios({
+          method: 'put',
+          url: `${host}/job-orders/done`,
+          data: formData,
+          headers: { token },
+        });
+        console.log('berhasil');
+        navigation.navigate('Home');
+        Alert.alert('recorded');
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      Alert.alert('Keterangan tidak boleh kosong');
+    }
   };
 
   const hanndleDone = () => {
@@ -422,6 +410,7 @@ const DetailScreen = ({ route, navigation }) => {
         includeBase64: false,
         maxHeight: width - 40,
         maxWidth: ((width - 40) / 4) * 3,
+        quality: 1,
       },
       (response) => {
         if (imageStatus === 'bagianDepan') {
@@ -448,6 +437,8 @@ const DetailScreen = ({ route, navigation }) => {
         includeBase64: false,
         maxHeight: width - 40,
         maxWidth: ((width - 40) / 4) * 3,
+        quality: 1,
+        // saveToPhotos: true,
       },
       (response) => {
         if (imageStatus === 'bagianDepan') {
@@ -1474,33 +1465,34 @@ const DetailScreen = ({ route, navigation }) => {
                       </TouchableOpacity>
                     </View>
                   </View>
-                  <View
-                    style={{
-                      width: width - 40,
-                      height: 200,
-                      backgroundColor: '#F8F8F8',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      marginTop: 15,
-                    }}
-                  >
-                    {signature ? (
-                      <Image
-                        resizeMode={'contain'}
-                        style={{ width: width - 40, height: 200 }}
-                        source={{ uri: signature }}
-                      />
-                    ) : null}
+                  <View style={{ marginTop: 20 }}>
+                    <Text style={{ textAlign: 'center' }}>Tanda tangan Merchant</Text>
+                    <View
+                      style={{
+                        width: width - 40,
+                        height: 200,
+                        backgroundColor: '#F8F8F8',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 15,
+                      }}
+                    >
+                      {signature ? (
+                        <Image
+                          resizeMode={'contain'}
+                          style={{ width: width - 40, height: 200 }}
+                          source={{ uri: signature }}
+                        />
+                      ) : null}
+                    </View>
+                    <Signature
+                      onOK={setSignature}
+                      onEmpty={() => console.log('onEmpty')}
+                      onClear={() => setSignature(null)}
+                      autoClear={true}
+                      imageType={'image/png+xml'}
+                    />
                   </View>
-                  <Signature
-                    onOK={handleSignature}
-                    onEmpty={handleEmpty}
-                    descriptionText="Sign"
-                    clearText="Clear"
-                    confirmText="Save"
-                    webStyle={style}
-                    backgroundColor={'red'}
-                  />
                   <TouchableOpacity onPress={() => hanndleDone()}>
                     <View
                       style={{
