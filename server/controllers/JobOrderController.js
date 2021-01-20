@@ -4,7 +4,6 @@ const {
   vendor,
   user,
   job_order_edc_bank,
-  job_order_kondisi_merchant,
 } = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
@@ -129,10 +128,6 @@ class JobOrderController {
             model: job_order_edc_bank,
             required: false,
           },
-          {
-            model: job_order_kondisi_merchant,
-            required: false,
-          },
         ],
       };
       if (tipe) query.where.tipe = tipe;
@@ -166,10 +161,6 @@ class JobOrderController {
           },
           {
             model: job_order_edc_bank,
-            required: false,
-          },
-          {
-            model: job_order_kondisi_merchant,
             required: false,
           },
         ],
