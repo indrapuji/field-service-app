@@ -6,7 +6,7 @@ module.exports = {
       'vendors',
       [
         {
-          nama: 'Vendor 1',
+          nama: 'Trendcom',
           alamat: 'Jakarta',
           createdAt: new Date(),
           updatedAt: new Date(),
