@@ -54,6 +54,8 @@ module.exports = (sequelize, DataTypes) => {
       kondisi_edc: DataTypes.STRING,
       status_kunjungan: DataTypes.STRING,
       kondisi_merchant: DataTypes.STRING,
+      latitude: DataTypes.STRING,
+      longitude: DataTypes.STRING,
     },
     {
       sequelize,
