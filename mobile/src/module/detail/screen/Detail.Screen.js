@@ -33,6 +33,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import Signature from 'react-native-signature-canvas';
 import GetLocation from 'react-native-get-location';
 import { useIsFocused } from '@react-navigation/native';
+import ModalLoad from '../../../components/utilities/ModalLoad';
 
 const { width } = Dimensions.get('screen');
 
@@ -83,6 +84,8 @@ const DetailScreen = ({ route, navigation }) => {
   const [depanMesin, setDepanMesin] = useState(null);
   const [transaksi, setTransaksi] = useState(null);
   const [signature, setSignature] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [mError, setMError] = useState(false);
   const [kelengkapan, setKelengkapan] = useState({
     adaptor: false,
     dongle_prepaid: false,
@@ -140,7 +143,12 @@ const DetailScreen = ({ route, navigation }) => {
     });
   };
   const handdleOption = (options) => {
-    setChecked(options.key);
+    if (options.key === 'tidak ditemukan') {
+      setChecked(options.key);
+      setValue({ ...value, kondisi_merchant: options.key });
+    } else {
+      setChecked(options.key);
+    }
   };
   const handdleOptionNext = (optionsBuka) => {
     setMerchantChecked(optionsBuka.key);
@@ -289,6 +297,7 @@ const DetailScreen = ({ route, navigation }) => {
   };
 
   const sendData = async () => {
+    setLoading(true);
     if (value.keterangan !== '') {
       try {
         const foto_1 = {
@@ -327,11 +336,15 @@ const DetailScreen = ({ route, navigation }) => {
           data: formData,
           headers: { token },
         });
+        setLoading(false);
         console.log('berhasil');
         navigation.navigate('Home');
-        Alert.alert('recorded');
       } catch (err) {
         console.log(err);
+        setMError(true);
+        setTimeout(() => {
+          setMError(false);
+        }, 2000);
       }
     } else {
       Alert.alert('Keterangan tidak boleh kosong');
@@ -467,6 +480,8 @@ const DetailScreen = ({ route, navigation }) => {
       />
       <SafeAreaView style={{ flex: 1, backgroundColor: '#84ccf7' }}>
         <View style={{ flex: 1 }}>
+          {loading && <ModalLoad title={'sending data'} progres={true} />}
+          {mError && <ModalLoad title={'Failed sending'} progres={false} />}
           <View style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={{ flex: 1 }}>
               <View
@@ -672,6 +687,32 @@ const DetailScreen = ({ route, navigation }) => {
                         value={itemData.alamat_merchant}
                         editable={false}
                       />
+
+                      {value.latitude !== '' && (
+                        <View
+                          style={{
+                            marginTop: 20,
+                            flexDirection: 'row',
+                          }}
+                        >
+                          <View style={{ marginRight: 40 }}>
+                            <Text>latitude</Text>
+                            <View
+                              style={{ marginTop: 10, padding: 10, backgroundColor: '#F8F8F8' }}
+                            >
+                              <Text>{value.latitude}</Text>
+                            </View>
+                          </View>
+                          <View>
+                            <Text>longitude</Text>
+                            <View
+                              style={{ marginTop: 10, padding: 10, backgroundColor: '#F8F8F8' }}
+                            >
+                              <Text>{value.longitude}</Text>
+                            </View>
+                          </View>
+                        </View>
+                      )}
                     </View>
                     <View style={{ marginTop: 20 }}>
                       <Text>Alamat Merchant saat ini</Text>

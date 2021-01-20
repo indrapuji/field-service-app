@@ -75,6 +75,10 @@ export const options = [
     key: 'tutup',
     text: 'Tutup',
   },
+  {
+    key: 'tidak ditemukan',
+    text: 'Tidak Ditemukan',
+  },
 ];
 export const optionsBuka = [
   {
