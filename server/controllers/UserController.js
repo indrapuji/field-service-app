@@ -48,7 +48,7 @@ class UserController {
       } = req.body;
       if (!nama_lengkap || !email || !password || !tipe)
         throw createError(400, 'Input all required field');
-      if (tipe === 'Admin') {
+      if (tipe === 'Admin Vendor' || tipe === 'Super Admin') {
         if (vendor_id) {
           const vendorData = await vendor.findOne({ where: { id: vendor_id } });
           if (!vendorData) throw createError(404, 'Vendor Not Found');
