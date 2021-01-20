@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       job_order.belongsTo(models.user, { foreignKey: 'teknisi_id' });
       job_order.belongsTo(models.vendor, { foreignKey: 'vendor_id' });
       job_order.hasMany(models.job_order_edc_bank, { foreignKey: 'job_order_id' });
-      job_order.hasMany(models.job_order_kondisi_merchant, { foreignKey: 'job_order_id' });
     }
   }
   job_order.init(
@@ -54,6 +53,7 @@ module.exports = (sequelize, DataTypes) => {
       status_edc: DataTypes.STRING,
       kondisi_edc: DataTypes.STRING,
       status_kunjungan: DataTypes.STRING,
+      kondisi_merchant: DataTypes.STRING,
     },
     {
       sequelize,
