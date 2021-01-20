@@ -30,6 +30,7 @@ import host from '../../../utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomSheet from 'reanimated-bottom-sheet';
 import * as ImagePicker from 'react-native-image-picker';
+import Signature from 'react-native-signature-canvas';
 
 const { width } = Dimensions.get('screen');
 
@@ -76,6 +77,7 @@ const DetailScreen = ({ route, navigation }) => {
   const [SNMesin, setSNMesin] = useState(null);
   const [depanMesin, setDepanMesin] = useState(null);
   const [transaksi, setTransaksi] = useState(null);
+  const [signature, setSign] = useState(null);
   const [kelengkapan, setKelengkapan] = useState({
     adaptor: false,
     dongle_prepaid: false,
@@ -98,6 +100,21 @@ const DetailScreen = ({ route, navigation }) => {
     cimb: false,
     lainnya: false,
   });
+
+  const handleSignature = (signature) => {
+    console.log(signature);
+    setSign(signature);
+  };
+
+  const handleEmpty = () => {
+    console.log('Empty');
+  };
+
+  const style = `.m-signature-pad--footer
+    .button {
+      background-color: red;
+      color: #FFF;
+    }`;
 
   const handdleJenisEDC = (JenisEDC) => {
     setEdc(JenisEDC.key);
@@ -1457,6 +1474,33 @@ const DetailScreen = ({ route, navigation }) => {
                       </TouchableOpacity>
                     </View>
                   </View>
+                  <View
+                    style={{
+                      width: width - 40,
+                      height: 200,
+                      backgroundColor: '#F8F8F8',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginTop: 15,
+                    }}
+                  >
+                    {signature ? (
+                      <Image
+                        resizeMode={'contain'}
+                        style={{ width: width - 40, height: 200 }}
+                        source={{ uri: signature }}
+                      />
+                    ) : null}
+                  </View>
+                  <Signature
+                    onOK={handleSignature}
+                    onEmpty={handleEmpty}
+                    descriptionText="Sign"
+                    clearText="Clear"
+                    confirmText="Save"
+                    webStyle={style}
+                    backgroundColor={'red'}
+                  />
                   <TouchableOpacity onPress={() => hanndleDone()}>
                     <View
                       style={{
