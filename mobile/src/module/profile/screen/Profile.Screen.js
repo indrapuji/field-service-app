@@ -14,7 +14,7 @@ import host from '../../../utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 
-import { AuthContext } from '../../../components/utilities/Context';
+import { AuthContext } from '../../../components/Context';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -98,7 +98,7 @@ const ProfileScreen = ({ navigation }) => {
               >
                 <View style={{ alignItems: 'center' }}>
                   <Image
-                    source={require('../../../assets/images/profile.jpg')}
+                    source={require('../../../assets/images/default-image.png')}
                     style={{ width: 200, height: 200, borderRadius: 100 }}
                   />
                 </View>

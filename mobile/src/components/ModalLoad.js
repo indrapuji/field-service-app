@@ -7,10 +7,10 @@ const ModalLoad = (props) => {
     <Modal animationType="fade" transparent={true}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <View style={{ alignItems: 'center' }}>
-            <Text style={{ color: 'black', fontWeight: 'bold' }}>{title}</Text>
+          <View style={styles.titlePosition}>
+            <Text style={styles.title}>{title}</Text>
             {progres && (
-              <View style={{ marginTop: 20 }}>
+              <View style={styles.loadMargin}>
                 <ActivityIndicator size="large" color="black" />
               </View>
             )}
@@ -43,6 +43,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  titlePosition: {
+    alignItems: 'center',
+  },
+  title: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  loadMargin: {
+    marginTop: 20,
   },
 });
 

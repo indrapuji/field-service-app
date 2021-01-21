@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import HomeScreen from '@module/home/screen/Home.Screen';
-import ProgressScreen from '@module/progress/screen/Progress.Screen';
-import DoneScreen from '@module/done/screen/Done.Screen';
-import ProfileScreen from '@module/profile/screen/Profile.Screen';
+import HomeScreen from '../module/home/screen/Home.Screen';
+import ProgressScreen from '../module/progress/screen/Progress.Screen';
+import DoneScreen from '../module/done/screen/Done.Screen';
+import ProfileScreen from '../module/profile/screen/Profile.Screen';
 
 const Tab = createBottomTabNavigator();
 

@@ -3,10 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal, Dimensions } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
-import host from '../../utilities/host';
+import host from '../utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width, height } = Dimensions.get('screen');
 const CardList = (props) => {
   const { list, source, done } = props;
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +20,6 @@ const CardList = (props) => {
   };
 
   const changeStatus = async () => {
-    // getData();
     try {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
@@ -40,7 +38,7 @@ const CardList = (props) => {
   const handdleDetail = (itemData) => {
     navigation.navigate('Detail', { itemData });
   };
-  // console.log(list);
+
   return (
     <View>
       {list && list.length > 0 ? (
@@ -56,30 +54,26 @@ const CardList = (props) => {
               <View
                 style={{
                   ...styles.cardContainer,
-                  borderColor: item.tipe === 'PM' ? 'green' : 'orange',
+                  borderColor: item.tipe === 'Kunjungan' ? 'green' : 'orange',
                   borderTopWidth: idx === 0 ? 1 : 0,
                 }}
               >
                 <View style={styles.contentPosition}>
                   <View style={styles.centerJustify}>
                     <View
-                      style={[
-                        styles.borderStatus,
-                        {
-                          borderColor: item.tipe === 'PM' ? 'green' : 'orange',
-                          backgroundColor: item.tipe === 'CM' ? 'orange' : 'white',
-                        },
-                      ]}
+                      style={{
+                        ...styles.borderStatus,
+                        borderColor: item.tipe === 'Kunjungan' ? 'green' : 'orange',
+                        backgroundColor: item.tipe === 'Pickup' ? 'orange' : 'white',
+                      }}
                     >
                       <Text
-                        style={[
-                          styles.boldText,
-                          {
-                            color: item.tipe === 'CM' ? 'white' : 'black',
-                          },
-                        ]}
+                        style={{
+                          ...styles.boldText,
+                          color: item.tipe === 'Pickup' ? 'white' : 'black',
+                        }}
                       >
-                        {item.tipe}
+                        {item.tipe === 'Kunjungan' ? 'K' : 'P'}
                       </Text>
                     </View>
                   </View>
@@ -110,26 +104,15 @@ const CardList = (props) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={{ alignItems: 'center' }}>
-              <Text style={{ color: 'black', fontWeight: 'bold' }}>{merchantName}</Text>
-              <Text style={{ color: 'black' }}>Change Status to Progress</Text>
+              <Text style={styles.merchantTitle}>{merchantName}</Text>
+              <Text>Change Status to Progress</Text>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginTop: 20,
-                marginHorizontal: 20,
-              }}
-            >
+            <View style={styles.buttonPosition}>
               <TouchableOpacity onPress={() => changeStatus()}>
                 <View
                   style={{
-                    width: 80,
-                    height: 30,
+                    ...styles.modalButton,
                     backgroundColor: '#80ffdb',
-                    borderRadius: 10,
-                    alignItems: 'center',
-                    justifyContent: 'center',
                   }}
                 >
                   <Text>Ya</Text>
@@ -138,12 +121,8 @@ const CardList = (props) => {
               <TouchableOpacity onPress={() => setShowModal(false)}>
                 <View
                   style={{
-                    width: 80,
-                    height: 30,
+                    ...styles.modalButton,
                     backgroundColor: '#64dfdf',
-                    borderRadius: 10,
-                    alignItems: 'center',
-                    justifyContent: 'center',
                   }}
                 >
                   <Text>Tidak</Text>
@@ -158,6 +137,8 @@ const CardList = (props) => {
 };
 
 export default CardList;
+
+const { width } = Dimensions.get('screen');
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -220,5 +201,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  merchantTitle: {
+    color: 'black',
+    fontWeight: 'bold',
+  },
+  buttonPosition: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginTop: 20,
+    marginHorizontal: 20,
+  },
+  modalButton: {
+    width: 80,
+    height: 30,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

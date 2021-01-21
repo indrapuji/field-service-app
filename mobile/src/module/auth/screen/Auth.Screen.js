@@ -11,11 +11,11 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '@module/auth/assets/styles';
+import styles from '../assets/styles';
 import axios from 'axios';
 import host from '../../../utilities/host';
 
-import { AuthContext } from '../../../components/utilities/Context';
+import { AuthContext } from '../../../components/Context';
 
 const AuthScreen = () => {
   const [value, setValue] = useState({

@@ -8,8 +8,9 @@ import {
   ScrollView,
   RefreshControl,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
-import CardList from '../../../components/utilities/CardList';
+import CardList from '../../../components/CardList';
 import axios from 'axios';
 import host from '../../../utilities/host';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -26,8 +27,11 @@ const DoneScreen = () => {
   const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [list, setList] = useState(null);
+  const [page, setPage] = useState(null);
+  const [currentPage, setCurrentPage] = useState(null);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -44,15 +48,39 @@ const DoneScreen = () => {
       });
       setList(data.data);
       setFiltered(data.data);
+      setPage(data.pages);
+      setCurrentPage(data.currentPage);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getMoreOrder = async () => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const { data } = await axios({
+        method: 'get',
+        url: `${host}/job-orders/all?status=Done&page=${currentPage + 1}`,
+        headers: { token },
+      });
+      setList(list.concat(data.data));
+      setFiltered(filtered.concat(data.data));
+      setPage(data.pages);
+      setCurrentPage(data.currentPage);
+      setLoading(false);
     } catch (err) {
       console.log(err);
     }
   };
 
   useEffect(() => {
-    // getData();
     getJobOrder();
   }, [isFocused, refreshing]);
+
+  const addMore = () => {
+    setLoading(true);
+    getMoreOrder();
+  };
 
   useEffect(() => {
     if (list !== null && list !== undefined) {
@@ -117,6 +145,27 @@ const DoneScreen = () => {
                 <View style={{ flex: 1 }}>
                   <CardList list={filtered} source={'done'} />
                 </View>
+                {page > currentPage && (
+                  <View style={{ alignItems: 'center', marginVertical: 5 }}>
+                    <TouchableOpacity
+                      style={{
+                        width: 100,
+                        height: 40,
+                        borderWidth: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 20,
+                      }}
+                      onPress={() => addMore()}
+                    >
+                      {loading ? (
+                        <ActivityIndicator size="small" color="black" />
+                      ) : (
+                        <Text>More</Text>
+                      )}
+                    </TouchableOpacity>
+                  </View>
+                )}
               </ScrollView>
             </View>
           </View>

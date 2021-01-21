@@ -10,12 +10,11 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
-import CardList from '../../../components/utilities/CardList';
+import CardList from '../../../components/CardList';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import host from '../../../utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -24,7 +23,6 @@ const wait = (timeout) => {
 };
 
 const CreScreen = () => {
-  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -43,7 +41,7 @@ const CreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Assign&tipe=CM`,
+        url: `${host}/job-orders/all?status=Assign&tipe=Pickup`,
         headers: { token },
       });
       setList(data.data);
@@ -60,7 +58,7 @@ const CreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Assign&tipe=CM&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?status=Assign&tipe=Pickup&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
@@ -152,7 +150,7 @@ const CreScreen = () => {
                 <View style={{ flex: 1 }}>
                   <CardList list={filtered} source={'home'} update={update} />
                 </View>
-                {page !== currentPage && (
+                {page > currentPage && (
                   <View style={{ alignItems: 'center', marginVertical: 5 }}>
                     <TouchableOpacity
                       style={{
@@ -166,7 +164,7 @@ const CreScreen = () => {
                       onPress={() => addMore()}
                     >
                       {loading ? (
-                        <ActivityIndicator size="small" color="white" />
+                        <ActivityIndicator size="small" color="black" />
                       ) : (
                         <Text>More</Text>
                       )}

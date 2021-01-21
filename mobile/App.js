@@ -2,18 +2,18 @@ import React, { useState, useEffect, useMemo, useReducer } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AuthScreen from '@module/auth/screen/Auth.Screen';
+import AuthScreen from './src/module/auth/screen/Auth.Screen';
 import MainScreen from './src/navigations/BottomTab';
 import DetailScreen from './src/module/detail/screen/Detail.Screen';
 
-import { AuthContext } from './src/components/utilities/Context';
+import { AuthContext } from './src/components/Context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 const App = () => {
   const initialLoginState = {
     isLoading: true,
-    userName: null,
+    // userName: null,
     userToken: null,
   };
 
@@ -34,7 +34,7 @@ const App = () => {
       case 'LOGOUT':
         return {
           ...prevState,
-          userName: null,
+          // userName: null,
           userToken: null,
           isLoading: false,
         };

@@ -9,12 +9,12 @@ function HomeScreen() {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        labelStyle: { fontSize: 15, fontWeight: 'bold' },
+        labelStyle: { fontSize: 13, fontWeight: 'bold' },
         style: { backgroundColor: '#84ccf7' },
       }}
     >
-      <Tab.Screen name="PM" component={PreScreen} />
-      <Tab.Screen name="CM" component={CreScreen} />
+      <Tab.Screen name="Kunjungan" component={PreScreen} />
+      <Tab.Screen name="Pickup" component={CreScreen} />
     </Tab.Navigator>
   );
 }

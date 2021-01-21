@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from 'react-native';
-import CardList from '../../../components/utilities/CardList';
+import CardList from '../../../components/CardList';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import host from '../../../utilities/host';
@@ -41,7 +41,7 @@ const PreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Assign&tipe=PM`,
+        url: `${host}/job-orders/all?status=Assign&tipe=Kunjungan`,
         headers: { token },
       });
       setList(data.data);
@@ -58,7 +58,7 @@ const PreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Assign&tipe=PM&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?status=Assign&tipe=Kunjungan&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
