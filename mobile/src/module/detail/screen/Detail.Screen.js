@@ -55,6 +55,7 @@ const DetailScreen = ({ route, navigation }) => {
   const [SNMesin, setSNMesin] = useState(null);
   const [depanMesin, setDepanMesin] = useState(null);
   const [transaksi, setTransaksi] = useState(null);
+  const [scrollEnabled, setScrollEnabled] = useState(true);
   const [signature, setSignature] = useState(null);
   const [loading, setLoading] = useState(false);
   const [mError, setMError] = useState(false);
@@ -109,6 +110,8 @@ const DetailScreen = ({ route, navigation }) => {
     cimb: false,
     lainnya: false,
   });
+
+  console.log(itemData.id);
 
   // get location
   useEffect(() => {
@@ -339,6 +342,7 @@ const DetailScreen = ({ route, navigation }) => {
         navigation.navigate('Home');
       } catch (err) {
         console.log(err);
+        setLoading(false);
         setMError(true);
         setTimeout(() => {
           setMError(false);
@@ -350,11 +354,13 @@ const DetailScreen = ({ route, navigation }) => {
         setNotComplete(false);
       }, 2000);
     }
+    setLoading(false);
   };
 
   const hanndleDone = () => {
     sendData();
   };
+  console.log(bagianDepan);
 
   const renderContent = () => (
     <View
@@ -509,7 +515,7 @@ const DetailScreen = ({ route, navigation }) => {
                 <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{itemData.nama_merchant}</Text>
                 <Text>{itemData.alamat_merchant}</Text>
               </View>
-              <ScrollView>
+              <ScrollView scrollEnabled={scrollEnabled}>
                 <View style={{ marginVertical: 20, marginHorizontal: 20 }}>
                   {/* Data Merchants */}
                   <View>
@@ -1525,32 +1531,27 @@ const DetailScreen = ({ route, navigation }) => {
                     </View>
                   </View>
                   <View style={{ marginTop: 20 }}>
-                    <Text style={{ textAlign: 'center' }}>Tanda tangan Merchant</Text>
-                    <View
-                      style={{
-                        width: width - 40,
-                        height: 200,
-                        backgroundColor: '#F8F8F8',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: 15,
-                      }}
-                    >
-                      {signature ? (
-                        <Image
-                          resizeMode={'contain'}
-                          style={{ width: width - 40, height: 200 }}
-                          source={{ uri: signature }}
-                        />
-                      ) : null}
+                    <Text style={{ textAlign: 'center' }}>Tanda tangan PIC</Text>
+                    <View style={{ marginTop: 10, width: width - 40, height: 300 }}>
+                      <Signature
+                        // onOK={setSignature}
+                        onOK={(e) => console.log(e)}
+                        onEmpty={() => console.log('onEmpty')}
+                        // onClear={() => setSignature(null)}
+                        onBegin={() => setScrollEnabled(false)}
+                        onEnd={() => setScrollEnabled(true)}
+                        // autoClear={true}
+                        imageType={'image/png+xml'}
+                        descriptionText="Sign"
+                        clearText="Clear"
+                        confirmText="Save"
+                        webStyle={`.m-signature-pad--footer
+                      .button {
+                        background-color: red;
+                        color: #FFF;
+                      }`}
+                      />
                     </View>
-                    <Signature
-                      onOK={setSignature}
-                      onEmpty={() => console.log('onEmpty')}
-                      onClear={() => setSignature(null)}
-                      autoClear={true}
-                      imageType={'image/png+xml'}
-                    />
                   </View>
                   <TouchableOpacity onPress={() => hanndleDone()}>
                     <View
@@ -1564,7 +1565,7 @@ const DetailScreen = ({ route, navigation }) => {
                         borderRadius: 20,
                       }}
                     >
-                      <Text>Simpan</Text>
+                      <Text>Proses</Text>
                     </View>
                   </TouchableOpacity>
                 </View>

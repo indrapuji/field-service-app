@@ -30,7 +30,7 @@ const MainScreen = () => {
         }}
       />
       <Tab.Screen
-        name="Progress"
+        name="Progres"
         component={ProgressScreen}
         options={{
           // tabBarLabel: () => {

@@ -135,7 +135,7 @@ const ProfileScreen = ({ navigation }) => {
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Job Order</Text>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => navigation.navigate('Done')}>
+                  <TouchableOpacity onPress={() => navigation.navigate('Progres')}>
                     <View
                       style={{
                         backgroundColor: '#98acf8',
