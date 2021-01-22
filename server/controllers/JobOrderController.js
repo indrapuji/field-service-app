@@ -1,10 +1,4 @@
-const {
-  job_order,
-  job_order_kelengkapan,
-  vendor,
-  user,
-  job_order_edc_bank,
-} = require('../models');
+const { job_order, job_order_kelengkapan, vendor, user, job_order_edc_bank } = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
 
@@ -35,7 +29,7 @@ class JobOrderController {
         status_edc,
         kondisi_edc,
         status_kunjungan,
-        kondisi_merchant
+        kondisi_merchant,
       } = req.body;
       const vendorData = await vendor.findOne({ where: { id: vendor_id } });
       if (!vendorData) throw createError(404, 'Vendor Not Found');
@@ -63,7 +57,7 @@ class JobOrderController {
         status_edc,
         kondisi_edc,
         status_kunjungan,
-        kondisi_merchant
+        kondisi_merchant,
       });
       res.status(201).json(result);
     } catch (err) {
@@ -172,7 +166,6 @@ class JobOrderController {
     }
   };
   static jobOrderDone = async (req, res, next) => {
-    console.log("MASUKKKKKKK \n")
     try {
       const {
         kontak_person,
@@ -203,7 +196,8 @@ class JobOrderController {
         kondisi_edc,
         status_kunjungan,
         latitude,
-        longitude
+        longitude,
+        tanda_tangan,
       } = req.body;
       const { id } = req.UserData;
       if (!job_order_id) throw createError(400, 'Need Job Order Id');
@@ -239,7 +233,7 @@ class JobOrderController {
         status_kunjungan,
         kondisi_merchant,
         latitude,
-        longitude
+        longitude,
       };
       if (req.files) {
         if (req.files.foto_1) jobOrderQuery.foto_1 = serverUrl + req.files.foto_1[0].path;
@@ -247,8 +241,12 @@ class JobOrderController {
         if (req.files.foto_3) jobOrderQuery.foto_3 = serverUrl + req.files.foto_3[0].path;
         if (req.files.foto_4) jobOrderQuery.foto_4 = serverUrl + req.files.foto_4[0].path;
         if (req.files.foto_5) jobOrderQuery.foto_5 = serverUrl + req.files.foto_5[0].path;
-        if (req.files.tanda_tangan)
-          jobOrderQuery.tanda_tangan = serverUrl + req.files.tanda_tangan[0].path;
+      }
+      if (tanda_tangan) {
+        var base64Data = tanda_tangan.replace(/^data:image\/png;base64,/, '');
+        const path = `uploads/${Date.now()}.jpg`;
+        require('fs').writeFileSync(path, base64Data, 'base64');
+        jobOrderQuery.tanda_tangan = serverUrl + path;
       }
       await job_order.update(jobOrderQuery, { where: { id: job_order_id } });
       if (jobOrderData.job_order_kelengkapan) {

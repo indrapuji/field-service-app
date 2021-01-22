@@ -111,7 +111,7 @@ const DetailScreen = ({ route, navigation }) => {
     lainnya: false,
   });
 
-  console.log(itemData.id);
+  // console.log(itemData.id);
 
   // get location
   useEffect(() => {
@@ -297,6 +297,10 @@ const DetailScreen = ({ route, navigation }) => {
     }
   };
 
+  const changeSignature = (data) => {
+    setSignature(data);
+  };
+
   const sendData = async () => {
     if (value.keterangan !== '') {
       setLoading(true);
@@ -322,26 +326,44 @@ const DetailScreen = ({ route, navigation }) => {
           name: 'foto_1.jpg',
         };
         var formData = new FormData();
-        formData.append('foto_1', foto_1);
-        formData.append('foto_2', foto_2);
-        formData.append('foto_3', foto_3);
-        formData.append('foto_4', foto_4);
+        if (bagianDepan) formData.append('foto_1', foto_1);
+        if (SNMesin) formData.append('foto_2', foto_2);
+        if (depanMesin) formData.append('foto_3', foto_3);
+        if (transaksi) formData.append('foto_4', foto_4);
+        if (signature) formData.append('tanda_tangan', signature);
         for (let key in value) {
           if (key === 'edc_bank') formData.append(`${key}`, JSON.stringify(value[key]));
           else formData.append(`${key}`, value[key]);
         }
         const token = await AsyncStorage.getItem('userToken');
+        console.log('AXIOS');
         const { data } = await axios({
           method: 'put',
           url: `${host}/job-orders/done`,
           data: formData,
           headers: { token },
         });
+        console.log(data);
         setLoading(false);
         console.log('berhasil');
         navigation.navigate('Home');
-      } catch (err) {
-        console.log(err);
+      } catch (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(JSON.stringify(error.response.data));
+          console.log(JSON.stringify(error.response.status));
+          console.log(JSON.stringify(error.response.headers));
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(JSON.stringify(error.request));
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(JSON.stringify(error.config));
         setLoading(false);
         setMError(true);
         setTimeout(() => {
@@ -360,7 +382,6 @@ const DetailScreen = ({ route, navigation }) => {
   const hanndleDone = () => {
     sendData();
   };
-  console.log(bagianDepan);
 
   const renderContent = () => (
     <View
@@ -1535,13 +1556,12 @@ const DetailScreen = ({ route, navigation }) => {
                     <View style={{ marginTop: 10, width: width - 40, height: 300 }}>
                       <Signature
                         // onOK={setSignature}
-                        onOK={(e) => console.log(e)}
+                        onOK={changeSignature}
                         onEmpty={() => console.log('onEmpty')}
                         // onClear={() => setSignature(null)}
                         onBegin={() => setScrollEnabled(false)}
                         onEnd={() => setScrollEnabled(true)}
                         // autoClear={true}
-                        imageType={'image/png+xml'}
                         descriptionText="Sign"
                         clearText="Clear"
                         confirmText="Save"
@@ -1553,7 +1573,7 @@ const DetailScreen = ({ route, navigation }) => {
                       />
                     </View>
                   </View>
-                  <TouchableOpacity onPress={() => hanndleDone()}>
+                  <TouchableOpacity onPress={() => sendData()}>
                     <View
                       style={{
                         marginTop: 20,

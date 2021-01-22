@@ -22,7 +22,6 @@ router.put(
     { name: 'foto_3' },
     { name: 'foto_4' },
     { name: 'foto_5' },
-    { name: 'tanda_tangan' },
   ]),
   JobOrderController.jobOrderDone
 );
