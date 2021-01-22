@@ -172,6 +172,7 @@ class JobOrderController {
     }
   };
   static jobOrderDone = async (req, res, next) => {
+    console.log("MASUKKKKKKK \n")
     try {
       const {
         kontak_person,
@@ -277,14 +278,16 @@ class JobOrderController {
           job_order_id,
         });
       }
-      const edcBankData = JSON.parse(edc_bank);
-      await Promise.all(
-        edcBankData.map(async (data) => {
-          const validation = await job_order_edc_bank.findOne({ where: { nama_bank: data } });
-          if (validation) return;
-          await job_order_edc_bank.create({ nama_bank: data, job_order_id });
-        })
-      );
+      if (edc_bank) {
+        const edcBankData = JSON.parse(edc_bank);
+        await Promise.all(
+          edcBankData.map(async (data) => {
+            const validation = await job_order_edc_bank.findOne({ where: { nama_bank: data } });
+            if (validation) return;
+            await job_order_edc_bank.create({ nama_bank: data, job_order_id });
+          })
+        );
+      }
       res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
