@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CContainer,
   CRow,
@@ -18,8 +18,26 @@ import {
   CInputFile,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
+import axios from "axios";
+import { HostUrl } from "../../reusable";
 
 const Register = () => {
+  const [vendorsList, setVendorsList] = useState(null);
+  useEffect(() => {
+    getVendorsList();
+  }, []);
+
+  const getVendorsList = async () => {
+    try {
+      const { data } = await axios({
+        method: "GET",
+        url: HostUrl + "/vendors",
+      });
+      setVendorsList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <CContainer>
       <CRow className="justify-content-center">
@@ -33,10 +51,20 @@ const Register = () => {
               <CForm action="" method="post">
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel>Vendor</CLabel>
+                    <CLabel htmlFor="select">Nama Vendor</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <p className="form-control-static">Nama Vendor</p>
+                    <CSelect custom name="select" id="select">
+                      <option value="0">Please select</option>
+                      {
+                        vendorsList &&
+                        vendorsList.data.map(data => {
+                          return (
+                            <option value={data}>{data}</option>
+                          )
+                        })
+                      }
+                    </CSelect>
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>

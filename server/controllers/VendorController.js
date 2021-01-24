@@ -24,6 +24,18 @@ class VendorController {
       next(err);
     }
   }
+  static createVendor = async (req, res, next) => {
+    try {
+      const { nama, alamat } = req.body;
+      const result = await vendor.create({
+        nama,
+        alamat
+      });
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
 };
 
 module.exports = VendorController;

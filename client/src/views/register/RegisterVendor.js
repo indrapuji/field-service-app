@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   CContainer,
   CRow,
@@ -15,8 +15,35 @@ import {
   CCardHeader,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
+import axios from "axios";
+import { HostUrl } from "../../reusable";
 
 const RegisterVendor = () => {
+  const [formData, setFormData] = useState({
+    nama: "",
+    alamat: ""
+  });
+  const onFormChange = (event) => {
+    const { value, name } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  }
+  const submitForm = async () => {
+    try {
+      const { nama, alamat } = formData;
+      if (nama === "" || alamat === "") return;
+      await axios({
+        method: "POST",
+        url: HostUrl + "/vendors/create",
+        data: formData
+      });
+      console.log("BERHASIL");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <CContainer>
       <CRow className="justify-content-center">
@@ -33,7 +60,7 @@ const RegisterVendor = () => {
                     <CLabel htmlFor="text-input">Nama Vendor</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Nama Vendor" />
+                    <CInput placeholder="Nama Vendor" name="nama" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -41,14 +68,14 @@ const RegisterVendor = () => {
                     <CLabel htmlFor="textarea-input">Alamat</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CTextarea rows="9" placeholder="Alamat..." />
+                    <CTextarea rows="9" placeholder="Alamat..." name="alamat" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
               </CForm>
             </CCardBody>
             <CCardFooter>
               <CButton type="submit" size="sm" color="primary">
-                <CIcon name="cil-scrubber" /> Submit
+                <CIcon name="cil-scrubber" onClick={ submitForm } /> Submit
               </CButton>
             </CCardFooter>
           </CCard>

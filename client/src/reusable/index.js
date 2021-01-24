@@ -1,5 +1,7 @@
 import DocsLink from './DocsLink'
+import HostUrl from './HostUrl'
 
 export {
-  DocsLink
+  DocsLink,
+  HostUrl
 }
