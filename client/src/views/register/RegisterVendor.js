@@ -33,7 +33,7 @@ const RegisterVendor = () => {
                     <CLabel htmlFor="text-input">Nama Vendor</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="Text" />
+                    <CInput placeholder="Nama Vendor" />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -41,14 +41,14 @@ const RegisterVendor = () => {
                     <CLabel htmlFor="textarea-input">Alamat</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CTextarea name="textarea-input" id="textarea-input" rows="9" placeholder="Alamat..." />
+                    <CTextarea rows="9" placeholder="Alamat..." />
                   </CCol>
                 </CFormGroup>
               </CForm>
             </CCardBody>
             <CCardFooter>
               <CButton type="submit" size="sm" color="primary">
-                <CIcon name="cil-scrubber" /> Kirim
+                <CIcon name="cil-scrubber" /> Submit
               </CButton>
             </CCardFooter>
           </CCard>

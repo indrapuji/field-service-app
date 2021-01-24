@@ -44,7 +44,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Nama Lengkap</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="Text" />
+                    <CInput name="text-input" placeholder="Masukkan Nama Lengkap..." />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -52,7 +52,7 @@ const Register = () => {
                     <CLabel htmlFor="email-input">Email</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="email" id="email-input" name="email-input" placeholder="Enter Email" autoComplete="email" />
+                    <CInput type="email" placeholder="Masukkan Email..." autoComplete="email" />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -60,7 +60,7 @@ const Register = () => {
                     <CLabel htmlFor="password-input">Password</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="password" id="password-input" name="password-input" placeholder="Password" autoComplete="new-password" />
+                    <CInput type="password" placeholder="Masukkan Password..." autoComplete="new-password" />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -87,7 +87,7 @@ const Register = () => {
                     <CLabel htmlFor="textarea-input">Alamat</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CTextarea name="textarea-input" id="textarea-input" rows="9" placeholder="Alamat..." />
+                    <CTextarea rows="9" placeholder="Masukkan Alamat..." />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -95,7 +95,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Nama Bank</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="Text" />
+                    <CInput placeholder="Masukkan Nama Bank..." />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -103,7 +103,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No Rekening</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="Text" />
+                    <CInput placeholder="Masukkan No Rekening..." />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -111,7 +111,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No Telp</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="Text" />
+                    <CInput placeholder="Masukkan No Telp..." />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -127,7 +127,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No KTP</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput id="text-input" name="text-input" placeholder="Text" />
+                    <CInput placeholder="Masukkan No KTP.." />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -154,7 +154,7 @@ const Register = () => {
             </CCardBody>
             <CCardFooter>
               <CButton type="submit" size="sm" color="primary">
-                <CIcon name="cil-scrubber" /> Kirim
+                <CIcon name="cil-scrubber" /> Submit
               </CButton>
             </CCardFooter>
           </CCard>

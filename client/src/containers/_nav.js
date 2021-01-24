@@ -22,7 +22,7 @@ const _nav = [
     _tag: 'CSidebarNavItem',
     name: 'Progress',
     to: '/workorder/progress',
-    icon: 'cil-task',
+    icon: 'cil-circle',
   },
   {
     _tag: 'CSidebarNavItem',
