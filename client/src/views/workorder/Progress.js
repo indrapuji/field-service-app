@@ -19,7 +19,7 @@ const getBadge = (status) => {
   }
 };
 
-const Users = () => {
+const Progress = () => {
   const queryPage = useLocation().search.match(/page=([0-9]+)/, '');
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const [page, setPage] = useState(currentPage);
@@ -34,7 +34,7 @@ const Users = () => {
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>Users</CCardHeader>
+          <CCardHeader>Progress</CCardHeader>
           <CCardBody>
             <CDataTable
               items={usersData}
@@ -60,4 +60,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default Progress;
