@@ -1,2 +1,2 @@
-const url = "http://localhost:3000";
+const url = "https://dev.trendcom.xyz";
 export default url;
