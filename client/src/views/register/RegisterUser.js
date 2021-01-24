@@ -20,9 +20,26 @@ import {
 import CIcon from '@coreui/icons-react';
 import axios from "axios";
 import { HostUrl } from "../../reusable";
+import newAlert from "../../components/NewAlert";
 
 const Register = () => {
   const [vendorsList, setVendorsList] = useState(null);
+  const [formData, setFormData] = useState({
+    nama_lengkap: "",
+    email: "",
+    password: "",
+    gender: "",
+    alamat: "",
+    nama_bank: "",
+    no_rekening: "",
+    no_telp: "",
+    tgl_lahir: "",
+    no_ktp: "",
+    tipe: "",
+    vendor_id: "",
+    foto_profil: null
+  });
+
   useEffect(() => {
     getVendorsList();
   }, []);
@@ -38,6 +55,41 @@ const Register = () => {
       console.log(error);
     }
   }
+
+  const onFormChange = (event) => {
+    const { name, value, files } = event.target;
+    if (files) {
+      setFormData({
+        ...formData,
+        [name]: files[0]
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
+  }
+  console.log(formData)
+  const onFormSubmit = async () => {
+    try {
+      const newFormData = new FormData();
+      for (let key in formData) {
+        newFormData.append(key, formData[key]);
+      };
+      await axios({
+        method: "POST",
+        url: HostUrl + "/users/register",
+        data: newFormData
+      });
+      newAlert({ status: "success", message: "Berhasil" });
+    } catch (error) {
+      const { msg } = error.response.data;
+      newAlert({ status: "error", message: msg });
+      console.log(error.response.data);
+    }
+  }
+
   return (
     <CContainer>
       <CRow className="justify-content-center">
@@ -54,13 +106,13 @@ const Register = () => {
                     <CLabel htmlFor="select">Nama Vendor</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CSelect custom name="select" id="select">
+                    <CSelect id="select" name="vendor_id" onChange={ onFormChange }>
                       <option value="0">Please select</option>
                       {
                         vendorsList &&
                         vendorsList.data.map(data => {
                           return (
-                            <option value={data}>{data}</option>
+                            <option value={data.id}>{data.nama}</option>
                           )
                         })
                       }
@@ -72,7 +124,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Nama Lengkap</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput name="text-input" placeholder="Masukkan Nama Lengkap..." />
+                    <CInput placeholder="Masukkan Nama Lengkap..." name="nama_lengkap" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -80,7 +132,7 @@ const Register = () => {
                     <CLabel htmlFor="email-input">Email</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="email" placeholder="Masukkan Email..." autoComplete="email" />
+                    <CInput type="email" placeholder="Masukkan Email..." autoComplete="email" name="email" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -88,7 +140,7 @@ const Register = () => {
                     <CLabel htmlFor="password-input">Password</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="password" placeholder="Masukkan Password..." autoComplete="new-password" />
+                    <CInput type="password" placeholder="Masukkan Password..." autoComplete="new-password" name="password" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -97,13 +149,13 @@ const Register = () => {
                   </CCol>
                   <CCol md="9">
                     <CFormGroup variant="custom-radio" inline>
-                      <CInputRadio custom id="inline-radio1" name="inline-radios" value="option1" />
+                      <CInputRadio custom id="inline-radio1" name="gender" value="Male" onChange={ onFormChange } />
                       <CLabel variant="custom-checkbox" htmlFor="inline-radio1">
                         Laki - laki
                       </CLabel>
                     </CFormGroup>
                     <CFormGroup variant="custom-radio" inline>
-                      <CInputRadio custom id="inline-radio2" name="inline-radios" value="option2" />
+                      <CInputRadio custom id="inline-radio2" name="gender" value="Female" onChange={ onFormChange } />
                       <CLabel variant="custom-checkbox" htmlFor="inline-radio2">
                         Perempuan
                       </CLabel>
@@ -115,7 +167,7 @@ const Register = () => {
                     <CLabel htmlFor="textarea-input">Alamat</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CTextarea rows="9" placeholder="Masukkan Alamat..." />
+                    <CTextarea rows="9" placeholder="Masukkan Alamat..." name="alamat" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -123,7 +175,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Nama Bank</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Nama Bank..." />
+                    <CInput placeholder="Masukkan Nama Bank..." name="nama_bank" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -131,7 +183,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No Rekening</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan No Rekening..." />
+                    <CInput placeholder="Masukkan No Rekening..." name="no_rekening" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -139,7 +191,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No Telp</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan No Telp..." />
+                    <CInput placeholder="Masukkan No Telp..." name="no_telp" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -147,7 +199,7 @@ const Register = () => {
                     <CLabel htmlFor="date-input">Tanggal Lahir</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="date" id="date-input" name="date-input" placeholder="date" />
+                    <CInput type="date" id="date-input" placeholder="date" name="tgl_lahir" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -155,7 +207,7 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No KTP</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan No KTP.." />
+                    <CInput placeholder="Masukkan No KTP.." name="no_ktp" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -163,7 +215,7 @@ const Register = () => {
                     Foto
                   </CLabel>
                   <CCol xs="12" md="9">
-                    <CInputFile id="file-input" name="file-input" />
+                    <CInputFile id="file-input" name="foto_profil" onChange={ onFormChange } />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -171,17 +223,17 @@ const Register = () => {
                     <CLabel htmlFor="select">Tipe</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CSelect custom name="select" id="select">
+                    <CSelect custom id="select" name="tipe" onChange={ onFormChange }>
                       <option value="0">Please select</option>
-                      <option value="2">Client</option>
-                      <option value="3">Teknisi</option>
+                      <option value="Admin">Client</option>
+                      <option value="Teknisi">Teknisi</option>
                     </CSelect>
                   </CCol>
                 </CFormGroup>
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton type="submit" size="sm" color="primary">
+              <CButton type="submit" size="sm" color="primary" onClick={ onFormSubmit }>
                 <CIcon name="cil-scrubber" /> Submit
               </CButton>
             </CCardFooter>

@@ -1,7 +1,6 @@
 import Swal from 'sweetalert2';
 
-const NewAlert = (props) => {
-  const { status, message } = props;
+const NewAlert = ({ status, message }) => {
   return Swal.fire({
     icon: `${status}`,
     title: `${message}`,

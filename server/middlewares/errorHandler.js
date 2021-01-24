@@ -1,4 +1,5 @@
 module.exports = (err, req, res, next) => {
+  console.log(err.name);
   if (err.name === "SequelizeUniqueConstraintError") {
     res.status(400).json({
       status: 400,

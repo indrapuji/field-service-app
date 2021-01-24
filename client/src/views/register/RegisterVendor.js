@@ -17,6 +17,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import axios from "axios";
 import { HostUrl } from "../../reusable";
+import newAlert from "../../components/NewAlert";
 
 const RegisterVendor = () => {
   const [formData, setFormData] = useState({
@@ -33,15 +34,21 @@ const RegisterVendor = () => {
   const submitForm = async () => {
     try {
       const { nama, alamat } = formData;
-      if (nama === "" || alamat === "") return;
+      if (nama === "" || alamat === "") {
+        newAlert({ status: "error", message: "Isi Semua Form" });
+        return;
+      }
       await axios({
         method: "POST",
         url: HostUrl + "/vendors/create",
         data: formData
       });
+      newAlert({ status: "success", message: "Berhasil" });
       console.log("BERHASIL");
     } catch (error) {
-      console.log(error);
+      const { msg } = error.response.data;
+      newAlert({ status: "error", message: msg });
+      console.log(error.response.data);
     }
   }
   return (
@@ -74,8 +81,8 @@ const RegisterVendor = () => {
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton type="submit" size="sm" color="primary">
-                <CIcon name="cil-scrubber" onClick={ submitForm } /> Submit
+              <CButton type="submit" size="sm" color="primary" onClick={ submitForm }>
+                <CIcon name="cil-scrubber" /> Submit
               </CButton>
             </CCardFooter>
           </CCard>

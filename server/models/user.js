@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
           args: [
             ['Super Admin', 'Admin', 'Leader', 'Admin Bank', 'Teknisi']
           ],
-          msg: 'Invalid Gender'
+          msg: 'Invalid Tipe'
         }
       }
     },
