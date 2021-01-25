@@ -7,7 +7,7 @@ import { HostUrl } from '../reusable';
 import token from '../views/token';
 
 const ChartPie = () => {
-  const [countData, setCountData] = useState(null);
+  // const [countData, setCountData] = useState(null);
   const [dataSet, setDataSet] = useState({
     backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
     data: [0, 0],
