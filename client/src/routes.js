@@ -7,6 +7,7 @@ const Progress = React.lazy(() => import('./views/workorder/Progress'));
 const Done = React.lazy(() => import('./views/workorder/Done'));
 const RegisterUser = React.lazy(() => import('./views/register/RegisterUser'));
 const RegisterVendor = React.lazy(() => import('./views/register/RegisterVendor'));
+const RegisterMerchant = React.lazy(() => import('./views/register/RegisterMerchant'));
 const Vendors = React.lazy(() => import('./views/vendor/Vendors'));
 
 const routes = [
@@ -19,6 +20,7 @@ const routes = [
   { path: '/workorder/done', exact: true, name: 'Done Workorders', component: Done },
   { path: '/users/register', exact: true, name: 'Register User', component: RegisterUser },
   { path: '/register', exact: true, name: 'Register Vendor', component: RegisterVendor },
+  { path: '/merchant', exact: true, name: 'Register Merchant', component: RegisterMerchant },
 ];
 
 export default routes;

@@ -20,7 +20,7 @@ const TheHeaderDropdownNotif = () => {
           </CHeaderNavLink>
         </CDropdownItem>
         <CDropdownItem>
-          <CHeaderNavLink to="/users/register">
+          <CHeaderNavLink to="/merchant">
             <CIcon name="cil-user-follow" className="mr-2 text-success" /> Add New Job Order
           </CHeaderNavLink>
         </CDropdownItem>
