@@ -24,7 +24,7 @@ const ChartPie = () => {
           token,
         },
       });
-      setCountData(data.chartPie);
+      // setCountData(data.chartPie);
       setDataSet({
         ...dataSet,
         data: [data.chartPie.kunjungan_count, data.chartPie.pick_up_count],
