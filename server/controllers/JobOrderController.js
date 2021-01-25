@@ -159,6 +159,7 @@ class JobOrderController {
           },
         ],
       };
+      query.order = [['createdAt', 'DESC']];
       if (tipe) query.where.tipe = tipe;
       if (status) query.where.status = status;
       const numOfResult = await job_order.count(query);
