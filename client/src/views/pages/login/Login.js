@@ -13,8 +13,8 @@ import {
   CInputGroupPrepend,
   CInputGroupText,
   CRow,
-  CFormGroup,
-  CSelect,
+  // CFormGroup,
+  // CSelect,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
@@ -26,22 +26,12 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    tipe: '',
+    // tipe: '',
   });
 
   const onFormChange = (event) => {
-    const { name, value, files } = event.target;
-    if (files) {
-      setFormData({
-        ...formData,
-        [name]: files[0],
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
   const onFormSubmit = async () => {
     try {
@@ -50,10 +40,14 @@ const Login = () => {
         url: HostUrl + '/users/login',
         data: formData,
       });
-      console.log(data);
-      localStorage.setItem('token', data.access_token);
-      newAlert({ status: 'success', message: 'Berhasil' });
-      history.push('/');
+      if (data.tipe !== 'Teknisi') {
+        localStorage.setItem('token', data.access_token);
+        localStorage.setItem('tipe', data.tipe);
+        newAlert({ status: 'success', message: 'Berhasil' });
+        history.push('/');
+      } else {
+        newAlert({ status: 'error', message: 'Not Authorize' });
+      }
     } catch (error) {
       const { msg } = error.response.data;
       newAlert({ status: 'error', message: msg });
@@ -87,7 +81,7 @@ const Login = () => {
                       </CInputGroupPrepend>
                       <CInput type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={onFormChange} />
                     </CInputGroup>
-                    <CFormGroup className="mb-4">
+                    {/* <CFormGroup className="mb-4">
                       <CInputGroupPrepend>
                         <CInputGroupText>
                           <CIcon name="cil-graph" />
@@ -98,7 +92,7 @@ const Login = () => {
                           <option value="Admin">Client</option>
                         </CSelect>
                       </CInputGroupPrepend>
-                    </CFormGroup>
+                    </CFormGroup> */}
                     <CButton color="primary" size="lg" block onClick={onFormSubmit}>
                       Login
                     </CButton>

@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const { user, vendor, job_order } = require('../models');
+const { user, vendor, job_order, vendor_client } = require('../models');
 const { generateToken } = require('../helpers/jwt');
 const { comparePassword } = require('../helpers/bcrypt');
 const serverUrl = require('../helpers/serverUrl');
@@ -30,11 +30,15 @@ class UserController {
   };
   static register = async (req, res, next) => {
     try {
+      const { id } = req.UserData;
+      const userData = await user.findOne({ where: { id } });
+      if (userData.tipe !== 'Super Admin' || userData.tipe !== 'Admin') throw createError(401, 'Unauthorized');
       let { nama_lengkap, email, password, gender, alamat, nama_bank, no_rekening, no_telp, tgl_lahir, no_ktp, tipe, vendor_id } = req.body;
       if (!nama_lengkap || !email || !password || !tipe) throw createError(400, 'Input all required field');
+      if (tipe !== 'Teknisi' && userData.tipe === 'Admin') throw createError(401, 'Unauthorized');
       let foto_profil = null;
       if (req.file) foto_profil = serverUrl + req.file.path;
-      const result = await user.create({
+      let query = {
         nama_lengkap,
         email,
         password,
@@ -47,8 +51,22 @@ class UserController {
         no_ktp,
         foto_profil,
         tipe,
-        vendor_id,
-      });
+      };
+      if (userData.tipe === 'Admin') {
+        query.vendor_id = userData.vendor_id;
+      } else {
+        if (!vendor_id) throw createError(400, 'Need Vendor Id');
+        const vendorData = await vendor.findOne({ where: { id: vendor_id } });
+        if (!vendorData) throw createError(404, 'Vendor Not Found');
+        query.vendor_id = vendor_id;
+      }
+      const result = await user.create(query);
+      if (tipe === 'Client') {
+        await vendor_client.create({
+          client_id: result.id,
+          vendor_id,
+        });
+      }
       res.status(201).json(result);
     } catch (err) {
       next(err);

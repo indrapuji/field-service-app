@@ -7,7 +7,6 @@ import ChartTrafic from '../../components/ChartTraffic';
 const WidgetsDropdown = lazy(() => import('../../components/WidgetsDropdown.js'));
 
 const Dashboard = () => {
-  console.log(localStorage.getItem('token'));
   return (
     <>
       <WidgetsDropdown />

@@ -10,12 +10,12 @@ const TheHeaderDropdownNotif = () => {
       </CDropdownToggle>
       <CDropdownMenu placement="bottom-end" className="pt-0">
         <CDropdownItem>
-          <CHeaderNavLink to="/register">
+          <CHeaderNavLink to="/vendors/create">
             <CIcon name="cil-user-follow" className="mr-2 text-success" /> Register new Vendor
           </CHeaderNavLink>
         </CDropdownItem>
         <CDropdownItem>
-          <CHeaderNavLink to="/users/register">
+          <CHeaderNavLink to="/users/create">
             <CIcon name="cil-user-follow" className="mr-2 text-success" /> Register new user
           </CHeaderNavLink>
         </CDropdownItem>

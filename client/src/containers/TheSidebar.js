@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   CCreateElement,
@@ -10,30 +10,37 @@ import {
   CSidebarMinimizer,
   CSidebarNavDropdown,
   CSidebarNavItem,
+  CImg,
 } from '@coreui/react';
-
-// import CIcon from '@coreui/icons-react';
+import trendcom from '../assets/Images/trendcom-logo.png';
+import sygnet from '../assets/Images/logo.png';
 
 // sidebar nav config
-import navigation from './_nav';
+import { _Supernav, _Clientnav, _Adminnav } from './_nav';
 
 const TheSidebar = () => {
   const dispatch = useDispatch();
+  const [navigation, setNavigation] = useState(null);
   const show = useSelector((state) => state.sidebarShow);
+
+  useEffect(() => {
+    const tipe = localStorage.getItem('tipe');
+    if (tipe === 'Super Admin') {
+      setNavigation(_Supernav);
+    }
+    if (tipe === 'Client') {
+      setNavigation(_Clientnav);
+    }
+    if (tipe === 'Admin') {
+      setNavigation(_Adminnav);
+    }
+  }, []);
 
   return (
     <CSidebar show={show} onShowChange={(val) => dispatch({ type: 'set', sidebarShow: val })}>
       <CSidebarBrand className="d-md-down-none" to="/">
-        {/* <CIcon
-          className="c-sidebar-brand-full"
-          name="logo-negative"
-          height={35}
-        />
-        <CIcon
-          className="c-sidebar-brand-minimized"
-          name="sygnet"
-          height={35}
-        /> */}
+        <CImg src={trendcom} height={40} className="c-sidebar-brand-full" />
+        <CImg src={sygnet} height={35} className="c-sidebar-brand-minimized" />
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement
