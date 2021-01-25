@@ -20,5 +20,6 @@ router.put(
   upload.fields([{ name: 'foto_1' }, { name: 'foto_2' }, { name: 'foto_3' }, { name: 'foto_4' }, { name: 'foto_5' }]),
   JobOrderController.jobOrderDone
 );
+router.get('/dashboard', authentication, JobOrderController.dashboard);
 
 module.exports = router;

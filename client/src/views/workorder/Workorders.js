@@ -9,11 +9,11 @@ import { HostUrl } from '../../reusable';
 
 const getBadge = (status) => {
   switch (status) {
-    case 'Active':
+    case 'Done':
       return 'success';
     case 'Inactive':
       return 'secondary';
-    case 'Pending':
+    case 'Progres':
       return 'warning';
     case 'Banned':
       return 'danger';
@@ -40,20 +40,19 @@ const Workorders = () => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all',
+        url: HostUrl + '/job-orders/all-test',
         headers: {
           token,
         },
       });
       setJobOrderData(data);
-      setPage(data.page);
     } catch (err) {
       console.log('ERROR');
       console.log(err);
     }
   };
 
-  const fields = ['nama_merchant', 'alamat_merchant', 'nama_bank', 'tipe', 'serial_number', 'keterangan'];
+  const fields = ['nama_merchant', 'alamat_merchant', 'nama_bank', 'tipe', 'serial_number', 'status', 'keterangan'];
 
   return (
     <CRow>

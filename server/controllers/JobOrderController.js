@@ -325,6 +325,20 @@ class JobOrderController {
       next(err);
     }
   };
+  static dashboard = async (req, res, next) => {
+    try {
+      const kunjungan_count = await job_order.count({ where: { tipe: 'Kunjungan' } });
+      const pick_up_count = await job_order.count({ where: { tipe: 'Pickup' } });
+      res.status(200).json({
+        chartPie: {
+          kunjungan_count,
+          pick_up_count,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = JobOrderController;
