@@ -1,63 +1,52 @@
-const { job_order, job_order_kelengkapan, vendor, user, job_order_edc_bank } = require('../models');
+const { job_order, vendor, user } = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
+const setDate = require("../helpers/setDate");
 
 class JobOrderController {
   static createJobOrder = async (req, res, next) => {
+    const { id } = req.UserData;
     try {
       const {
-        nama_merchant,
-        alamat_merchant,
-        tipe_merchant,
-        kontak_person,
-        no_telp,
-        nama_bank,
-        tipe_terminal,
-        serial_number,
-        tipe,
-        status,
-        tanda_tangan,
-        tanggal_assign,
-        tanggal_selesai,
-        keterangan,
+        tanggal_impor,
+        merchant,
         mid,
+        tid,
+        alamat,
+        kota,
+        no_telp,
+        edc_connection,
+        sn_edc,
+        type_edc,
+        regional,
+        pic,
+        tipe,
+        aktifitas,
         vendor_id,
-        jenis_mesin_edc,
-        lokasi_mesin_edc,
-        posisi_mesin_edc,
-        keluhan,
-        status_edc,
-        kondisi_edc,
-        status_kunjungan,
-        kondisi_merchant,
+        status,
+        teknisi_id,
       } = req.body;
       const vendorData = await vendor.findOne({ where: { id: vendor_id } });
       if (!vendorData) throw createError(404, 'Vendor Not Found');
       const result = await job_order.create({
-        nama_merchant,
-        alamat_merchant,
-        tipe_merchant,
-        kontak_person,
-        no_telp,
-        nama_bank,
-        tipe_terminal,
-        serial_number,
-        tipe,
-        status,
-        tanda_tangan,
-        tanggal_assign,
-        tanggal_selesai,
-        keterangan,
+        tanggal_impor,
+        merchant,
         mid,
+        tid,
+        alamat,
+        kota,
+        no_telp,
+        edc_connection,
+        sn_edc,
+        type_edc,
+        regional,
+        pic,
+        tipe,
+        aktifitas,
         vendor_id,
-        jenis_mesin_edc,
-        lokasi_mesin_edc,
-        posisi_mesin_edc,
-        keluhan,
-        status_edc,
-        kondisi_edc,
-        status_kunjungan,
-        kondisi_merchant,
+        status,
+        admin_id: id,
+        teknisi_id,
       });
       res.status(201).json(result);
     } catch (err) {
@@ -106,62 +95,28 @@ class JobOrderController {
   };
   static getAllJobOrder = async (req, res, next) => {
     try {
-      let { tipe, page, status } = req.query;
+      let { tipe, page, status, by } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
       let query = {
         where: {},
-        include: [
-          {
-            model: job_order_kelengkapan,
-            required: false,
-          },
-          {
-            model: job_order_edc_bank,
-            required: false,
-          },
-        ],
       };
       query.order = [['createdAt', 'DESC']];
       if (tipe) query.where.tipe = tipe;
       if (status) query.where.status = status;
-      const numOfResult = await job_order.count(query);
-      query.limit = resPerPage;
-      query.offset = offset;
-      const jobOrderData = await job_order.findAll(query);
-      res.status(200).json({
-        data: jobOrderData,
-        pages: Math.ceil(numOfResult / resPerPage),
-        currentPage: Number(page),
-        numOfResult,
-      });
-    } catch (err) {
-      next(err);
-    }
-  };
-  static getAllJobOrderTest = async (req, res, next) => {
-    try {
-      let { tipe, page, status } = req.query;
-      if (!page || page < 1) page = 1;
-      const resPerPage = 200;
-      const offset = resPerPage * page - resPerPage;
-      let query = {
-        where: {},
-        include: [
-          {
-            model: job_order_kelengkapan,
-            required: false,
-          },
-          {
-            model: job_order_edc_bank,
-            required: false,
-          },
-        ],
+      if (by === 'today') query.where.updated_at = {
+        [Op.gte]: setDate(new Date(), 1)
       };
-      query.order = [['createdAt', 'DESC']];
-      if (tipe) query.where.tipe = tipe;
-      if (status) query.where.status = status;
+      else if (by === 'week') query.where.updated_at = {
+        [Op.gte]: setDate(new Date(), 7)
+      };
+      else if (by === 'month') query.where.updated_at = {
+        [Op.gte]: setDate(new Date(), 30)
+      };
+      else if (by === 'year') query.where.updated_at = {
+        [Op.gte]: setDate(new Date(), 365)
+      };
       const numOfResult = await job_order.count(query);
       query.limit = resPerPage;
       query.offset = offset;
@@ -184,16 +139,6 @@ class JobOrderController {
         where: {
           id,
         },
-        include: [
-          {
-            model: job_order_kelengkapan,
-            required: false,
-          },
-          {
-            model: job_order_edc_bank,
-            required: false,
-          },
-        ],
       });
       if (!result) throw createError(404, 'Data not found');
       res.status(200).json(result);
@@ -204,79 +149,133 @@ class JobOrderController {
   static jobOrderDone = async (req, res, next) => {
     try {
       const {
-        kontak_person,
+        job_order_id,
+        tanggal_impor,
+        tanggal_tugas,
+        merchant,
+        mid,
+        tid,
+        tid_2,
+        alamat,
+        kota,
         no_telp,
-        serial_number_2,
+        edc_connection,
+        sn_edc,
+        sn_edc_2,
+        type_edc,
+        regional,
+        pic,
+        nama_merchant,
+        alamat_merchant,
+        no_telp_merchant,
+        pic_merchant,
+        jam_mulai_kerja,
+        jam_selesai_kerja,
+        tipe,
+        aktifitas,
+        vendor_id,
+        status,
+        alasan_gagal,
+        problem_merchant,
+        lain_lain,
+        edc_kompetitor,
+        catatan,
+        // foto_toko_1,
+        // foto_toko_2,
+        // foto_edc_1,
+        // foto_edc_2,
+        admin_id,
+        teknisi_id,
+        tanda_tangan,
+        tanggal_close,
+        di_close_oleh,
+        adaptor,
+        dongle_prepaid,
+        kabel_telpon,
+        kabel_power,
         sim_card,
-        kondisi_merchant,
-        alamat_merchant_2,
+        sam_card,
+        kertas_termal,
+        materi_promosi,
+        status_kertas_termal,
         manual_book,
         sales_draft,
         sticker,
-        kertas_termal,
         edukasi_merchant,
-        adaptor,
-        dongle_prepaid,
-        kabel_power,
-        kabel_telpon,
-        materi_promosi,
-        keterangan,
-        job_order_id,
-        jenis_mesin_edc,
-        lokasi_mesin_edc,
-        posisi_mesin_edc,
-        keluhan,
-        status_kertas_termal,
-        edc_bank,
+        lokasi_edc,
+        posisi_edc,
         status_edc,
-        kondisi_edc,
-        status_kunjungan,
         latitude,
         longitude,
-        tanda_tangan,
+        keluhan,
       } = req.body;
       const { id } = req.UserData;
       if (!job_order_id) throw createError(400, 'Need Job Order Id');
       const jobOrderData = await job_order.findOne({
         where: { id: job_order_id },
-        include: [
-          {
-            model: job_order_kelengkapan,
-            required: false,
-          },
-        ],
       });
       if (!jobOrderData) throw createError(404, 'Job Order Not Found');
       if (jobOrderData.teknisi_id !== id) throw createError(401, 'You are not authorized');
       const jobOrderQuery = {
-        kontak_person,
+        tanggal_impor,
+        tanggal_tugas,
+        merchant,
+        mid,
+        tid,
+        tid_2,
+        alamat,
+        kota,
         no_telp,
-        serial_number_2,
-        alamat_merchant_2,
+        edc_connection,
+        sn_edc,
+        sn_edc_2,
+        type_edc,
+        regional,
+        pic,
+        nama_merchant,
+        alamat_merchant,
+        no_telp_merchant,
+        pic_merchant,
+        jam_mulai_kerja,
+        jam_selesai_kerja,
+        tipe,
+        aktifitas,
+        vendor_id,
+        status,
+        alasan_gagal,
+        problem_merchant,
+        lain_lain,
+        edc_kompetitor,
+        catatan,
+        admin_id,
+        teknisi_id,
+        tanggal_close,
+        di_close_oleh,
+        adaptor,
+        dongle_prepaid,
+        kabel_telpon,
+        kabel_power,
+        sim_card,
+        sam_card,
+        kertas_termal,
+        materi_promosi,
+        status_kertas_termal,
         manual_book,
         sales_draft,
         sticker,
         edukasi_merchant,
-        keterangan,
-        tanggal_selesai: new Date(),
-        status: 'Done',
-        jenis_mesin_edc,
-        lokasi_mesin_edc,
-        posisi_mesin_edc,
+        lokasi_edc,
+        posisi_edc,
         status_edc,
-        kondisi_edc,
-        keluhan,
-        status_kunjungan,
-        kondisi_merchant,
         latitude,
         longitude,
+        keluhan,
       };
       if (req.files) {
-        if (req.files.foto_1) jobOrderQuery.foto_1 = serverUrl + req.files.foto_1[0].path;
-        if (req.files.foto_2) jobOrderQuery.foto_2 = serverUrl + req.files.foto_2[0].path;
-        if (req.files.foto_3) jobOrderQuery.foto_3 = serverUrl + req.files.foto_3[0].path;
-        if (req.files.foto_4) jobOrderQuery.foto_4 = serverUrl + req.files.foto_4[0].path;
-        if (req.files.foto_5) jobOrderQuery.foto_5 = serverUrl + req.files.foto_5[0].path;
+        if (req.files.foto_1) jobOrderQuery.foto_toko_1 = serverUrl + req.files.foto_toko_1[0].path;
+        if (req.files.foto_2) jobOrderQuery.foto_toko_2 = serverUrl + req.files.foto_toko_2[0].path;
+        if (req.files.foto_3) jobOrderQuery.foto_edc_1 = serverUrl + req.files.foto_edc_1[0].path;
+        if (req.files.foto_4) jobOrderQuery.foto_edc_2 = serverUrl + req.files.foto_edc_2[0].path;
       }
       if (tanda_tangan) {
         var base64Data = tanda_tangan.replace(/^data:image\/png;base64,/, '');
@@ -284,44 +283,9 @@ class JobOrderController {
         require('fs').writeFileSync(path, base64Data, 'base64');
         jobOrderQuery.tanda_tangan = serverUrl + path;
       }
-      await job_order.update(jobOrderQuery, { where: { id: job_order_id } });
-      if (jobOrderData.job_order_kelengkapan) {
-        await job_order_kelengkapan.update(
-          {
-            adaptor,
-            dongle_prepaid,
-            kabel_power,
-            kabel_telpon,
-            materi_promosi,
-            kertas_termal,
-            sim_card,
-            status_kertas_termal,
-          },
-          { where: { job_order_id } }
-        );
-      } else {
-        await job_order_kelengkapan.create({
-          adaptor,
-          dongle_prepaid,
-          kabel_power,
-          kabel_telpon,
-          materi_promosi,
-          kertas_termal,
-          sim_card,
-          status_kertas_termal,
-          job_order_id,
-        });
-      }
-      if (edc_bank) {
-        const edcBankData = JSON.parse(edc_bank);
-        await Promise.all(
-          edcBankData.map(async (data) => {
-            const validation = await job_order_edc_bank.findOne({ where: { nama_bank: data } });
-            if (validation) return;
-            await job_order_edc_bank.create({ nama_bank: data, job_order_id });
-          })
-        );
-      }
+      await job_order.update(jobOrderQuery, {
+        where: { id: job_order_id }
+      });
       res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
