@@ -3,13 +3,12 @@ const { user, vendor, job_order } = require('../models');
 const { generateToken } = require('../helpers/jwt');
 const { comparePassword } = require('../helpers/bcrypt');
 const serverUrl = require('../helpers/serverUrl');
-const fs = require("fs");
+const fs = require('fs');
 
 class UserController {
   static login = async (req, res, next) => {
     try {
       const { email, password, tipe } = req.body;
-      // console.log(email, password, tipe);
       if (!email || !password || !tipe) throw createError(400, 'Wrong Username/Password');
       const userData = await user.findOne({
         where: {
@@ -24,6 +23,7 @@ class UserController {
       res.status(200).json({
         userData,
         access_token,
+        tipe: useData.tipe,
       });
     } catch (err) {
       next(err);
@@ -47,8 +47,7 @@ class UserController {
         alamat_vendor,
         vendor_id,
       } = req.body;
-      if (!nama_lengkap || !email || !password || !tipe)
-        throw createError(400, 'Input all required field');
+      if (!nama_lengkap || !email || !password || !tipe) throw createError(400, 'Input all required field');
       if (tipe === 'Admin Vendor' || tipe === 'Super Admin') {
         if (vendor_id) {
           const vendorData = await vendor.findOne({ where: { id: vendor_id } });
@@ -110,22 +109,22 @@ class UserController {
       let { page } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
-      const offset = (resPerPage * page) - resPerPage;
+      const offset = resPerPage * page - resPerPage;
       const result = await user.findAll({
         limit: resPerPage,
-        offset
+        offset,
       });
       const numOfResult = await user.count();
       res.status(200).json({
         data: result,
         pages: Math.ceil(numOfResult / resPerPage),
         currentPage: Number(page),
-        numOfResult
+        numOfResult,
       });
     } catch (err) {
       next(err);
     }
-  }
+  };
 }
 
 module.exports = UserController;

@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       nama: {
         type: Sequelize.STRING,
@@ -14,24 +14,27 @@ module.exports = {
         validate: {
           notEmpty: {
             args: true,
-            msg: 'Nama cannot be empty'
-          }
-        }
+            msg: 'Nama cannot be empty',
+          },
+        },
       },
       alamat: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+      },
+      client_id: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('vendors');
-  }
+  },
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow } from '@coreui/react';
+import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination } from '@coreui/react';
 
 // import usersData from './UsersData';
 import token from '../token';
@@ -33,14 +33,14 @@ const Workorders = () => {
   }, [currentPage, page]);
 
   useEffect(() => {
-    getWorkOrder();
+    getWorkOrder(1);
   }, []);
 
-  const getWorkOrder = async () => {
+  const getWorkOrder = async (page) => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all-test?status=Progres',
+        url: HostUrl + '/job-orders/all-test?status=Progres&page=' + page,
         headers: {
           token,
         },
@@ -50,6 +50,10 @@ const Workorders = () => {
       console.log('ERROR');
       console.log(err);
     }
+  };
+
+  const changePage = (page) => {
+    getWorkOrder(page);
   };
 
   const fields = ['nama_merchant', 'alamat_merchant', 'nama_bank', 'tipe', 'serial_number', 'keterangan'];
@@ -78,6 +82,7 @@ const Workorders = () => {
                   ),
                 }}
               />
+              <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
             </CCardBody>
           )}
         </CCard>

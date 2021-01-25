@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       nama_lengkap: {
         type: Sequelize.STRING,
@@ -14,9 +14,9 @@ module.exports = {
         validate: {
           notEmpty: {
             args: true,
-            msg: 'Nama Lengkap cannot be empty'
-          }
-        }
+            msg: 'Nama Lengkap cannot be empty',
+          },
+        },
       },
       email: {
         type: Sequelize.STRING,
@@ -25,13 +25,13 @@ module.exports = {
         validate: {
           notEmpty: {
             args: true,
-            msg: 'Email cannot be empty'
+            msg: 'Email cannot be empty',
           },
           isEmail: {
             args: true,
-            msg: 'Must enter a valid email'
-          }
-        }
+            msg: 'Must enter a valid email',
+          },
+        },
       },
       password: {
         type: Sequelize.STRING,
@@ -39,71 +39,61 @@ module.exports = {
         validate: {
           notEmpty: {
             args: true,
-            msg: 'Password cannot be empty'
+            msg: 'Password cannot be empty',
           },
           len: {
             args: [5, 20],
-            msg: 'Password need to be between 5 and 20 words'
-          }
-        }
+            msg: 'Password need to be between 5 and 20 words',
+          },
+        },
       },
       gender: {
         type: Sequelize.STRING,
         validate: {
           isIn: {
-            args: [
-              ['Male', 'Female', 'Others']
-            ],
-            msg: 'Invalid Gender'
-          }
-        }
+            args: [['Male', 'Female', 'Others']],
+            msg: 'Invalid Gender',
+          },
+        },
       },
       alamat: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       nama_bank: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       no_rekening: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       no_telp: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       tgl_lahir: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       no_ktp: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       foto_profil: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       tipe: {
         type: Sequelize.STRING,
-        validate: {
-          isIn: {
-            args: [
-              ['Super Admin', 'Admin', 'Leader', 'Admin Bank', 'Teknisi']
-            ],
-            msg: 'Invalid Tipe'
-          }
-        }
       },
       vendor_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('users');
-  }
+  },
 };
