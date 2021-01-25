@@ -83,6 +83,9 @@ const Register = () => {
         method: 'POST',
         url: HostUrl + '/users/register',
         data: newFormData,
+        headers: {
+          token: localStorage.getItem('token'),
+        },
       });
       newAlert({ status: 'success', message: 'Berhasil' });
       history.push('/users');
@@ -224,8 +227,8 @@ const Register = () => {
                   <CCol xs="12" md="9">
                     <CSelect custom id="select" name="tipe" onChange={onFormChange}>
                       <option value="0">Please select</option>
-                      <option value="Admin">Client</option>
-                      <option value="Teknisi">Teknisi</option>
+                      <option value="Client">Client</option>
+                      <option value="Admin">Admin</option>
                     </CSelect>
                   </CCol>
                 </CFormGroup>

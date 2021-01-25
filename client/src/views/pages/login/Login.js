@@ -33,8 +33,9 @@ const Login = () => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
-  const onFormSubmit = async () => {
+  const onFormSubmit = async (e) => {
     try {
+      e.preventDefault();
       const { data } = await axios({
         method: 'POST',
         url: HostUrl + '/users/login',
@@ -62,7 +63,7 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm action="" method="post">
+                  <CForm action="" method="post" onSubmit={onFormSubmit}>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
                     <CInputGroup className="mb-3">
@@ -93,7 +94,7 @@ const Login = () => {
                         </CSelect>
                       </CInputGroupPrepend>
                     </CFormGroup> */}
-                    <CButton color="primary" size="lg" block onClick={onFormSubmit}>
+                    <CButton color="primary" size="lg" block type="submit">
                       Login
                     </CButton>
                   </CForm>

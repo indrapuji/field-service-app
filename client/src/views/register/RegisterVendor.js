@@ -15,42 +15,47 @@ import {
   CCardHeader,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
-import axios from "axios";
-import { HostUrl } from "../../reusable";
-import newAlert from "../../components/NewAlert";
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { HostUrl } from '../../reusable';
+import newAlert from '../../components/NewAlert';
 
 const RegisterVendor = () => {
+  const history = useHistory();
   const [formData, setFormData] = useState({
-    nama: "",
-    alamat: ""
+    nama: '',
+    alamat: '',
   });
   const onFormChange = (event) => {
     const { value, name } = event.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
-  }
+  };
   const submitForm = async () => {
     try {
       const { nama, alamat } = formData;
-      if (nama === "" || alamat === "") {
-        newAlert({ status: "error", message: "Isi Semua Form" });
+      if (nama === '' || alamat === '') {
+        newAlert({ status: 'error', message: 'Isi Semua Form' });
         return;
       }
       await axios({
-        method: "POST",
-        url: HostUrl + "/vendors/create",
-        data: formData
+        method: 'POST',
+        url: HostUrl + '/vendors/create',
+        data: formData,
+        headers: {
+          token: localStorage.getItem('token'),
+        },
       });
-      newAlert({ status: "success", message: "Berhasil" });
-      console.log("BERHASIL");
+      newAlert({ status: 'success', message: 'Berhasil' });
+      history.push('/vendors');
     } catch (error) {
       const { msg } = error.response.data;
-      newAlert({ status: "error", message: msg });
+      newAlert({ status: 'error', message: msg });
       console.log(error.response.data);
     }
-  }
+  };
   return (
     <CContainer>
       <CRow className="justify-content-center">
@@ -67,7 +72,7 @@ const RegisterVendor = () => {
                     <CLabel htmlFor="text-input">Nama Vendor</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Nama Vendor" name="nama" onChange={ onFormChange } />
+                    <CInput placeholder="Nama Vendor" name="nama" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -75,13 +80,13 @@ const RegisterVendor = () => {
                     <CLabel htmlFor="textarea-input">Alamat</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CTextarea rows="9" placeholder="Alamat..." name="alamat" onChange={ onFormChange } />
+                    <CTextarea rows="9" placeholder="Alamat..." name="alamat" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton type="submit" size="sm" color="primary" onClick={ submitForm }>
+              <CButton type="submit" size="sm" color="primary" onClick={submitForm}>
                 <CIcon name="cil-scrubber" /> Submit
               </CButton>
             </CCardFooter>
