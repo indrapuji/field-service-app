@@ -31,33 +31,8 @@ class UserController {
   };
   static register = async (req, res, next) => {
     try {
-      let {
-        nama_lengkap,
-        email,
-        password,
-        gender,
-        alamat,
-        nama_bank,
-        no_rekening,
-        no_telp,
-        tgl_lahir,
-        no_ktp,
-        tipe,
-        nama_vendor,
-        alamat_vendor,
-        vendor_id,
-      } = req.body;
+      let { nama_lengkap, email, password, gender, alamat, nama_bank, no_rekening, no_telp, tgl_lahir, no_ktp, tipe, vendor_id } = req.body;
       if (!nama_lengkap || !email || !password || !tipe) throw createError(400, 'Input all required field');
-      if (tipe === 'Admin Vendor' || tipe === 'Super Admin') {
-        if (vendor_id) {
-          const vendorData = await vendor.findOne({ where: { id: vendor_id } });
-          if (!vendorData) throw createError(404, 'Vendor Not Found');
-        } else {
-          if (!nama_vendor || !alamat_vendor) throw createError(400, 'Input all required field');
-          const vendorData = await vendor.create({ nama: nama_vendor, alamat: alamat_vendor });
-          vendor_id = vendorData.id;
-        }
-      }
       let foto_profil = null;
       if (req.file) foto_profil = serverUrl + req.file.path;
       const result = await user.create({
