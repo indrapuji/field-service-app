@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       vendor.hasMany(models.user, { foreignKey: 'vendor_id' });
       vendor.hasMany(models.job_order, { foreignKey: 'vendor_id' });
-      vendor.belongsToMany(models.user, { through: 'vendor_client', foreignKey: 'vendor_id' });
+      // vendor.belongsToMany(models.user, { through: 'vendor_client', foreignKey: 'vendor_id' });
     }
   }
   vendor.init(

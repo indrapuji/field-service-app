@@ -42,6 +42,7 @@ const Users = () => {
         url: HostUrl + '/users/all-users',
       });
       setUsersList(data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }

@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      user.hasMany(models.job_order, { foreignKey: 'teknisi_id', as: "Teknisi" });
-      user.hasMany(models.job_order, { foreignKey: 'admin_id', as: "Admin" });
+      user.hasMany(models.job_order, { foreignKey: 'teknisi_id', as: 'Teknisi' });
+      user.hasMany(models.job_order, { foreignKey: 'admin_id', as: 'Admin' });
       user.belongsTo(models.vendor, { foreignKey: 'vendor_id' });
-      user.belongsToMany(models.vendor, { through: 'vendor_client', foreignKey: 'client_id' });
+      // user.belongsToMany(models.vendor, { through: 'vendor_client', foreignKey: 'client_id' });
     }
   }
   user.init(

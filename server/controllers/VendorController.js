@@ -1,17 +1,28 @@
-const { vendor } = require('../models');
+const { vendor, user } = require('../models');
 
 class VendorController {
   static getAll = async (req, res, next) => {
     try {
+      const { id } = req.UserData;
+      const userData = await user.findOne({ where: { id } });
       let { page } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
-      const result = await vendor.findAll({
-        limit: resPerPage,
-        offset,
-      });
-      const numOfResult = await vendor.count();
+      let query = {};
+      if (userData.tipe !== 'Super Admin') {
+        query.include = [
+          {
+            model: user,
+            required: true,
+            where: { id },
+          },
+        ];
+      }
+      const numOfResult = await vendor.count(query);
+      query.limit = resPerPage;
+      query.offset = offset;
+      const result = await vendor.findAll(query);
       res.status(200).json({
         data: result,
         pages: Math.ceil(numOfResult / resPerPage),
