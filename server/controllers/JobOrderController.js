@@ -108,6 +108,41 @@ class JobOrderController {
     try {
       let { tipe, page, status } = req.query;
       if (!page || page < 1) page = 1;
+      const resPerPage = 15;
+      const offset = resPerPage * page - resPerPage;
+      let query = {
+        where: {},
+        include: [
+          {
+            model: job_order_kelengkapan,
+            required: false,
+          },
+          {
+            model: job_order_edc_bank,
+            required: false,
+          },
+        ],
+      };
+      if (tipe) query.where.tipe = tipe;
+      if (status) query.where.status = status;
+      const numOfResult = await job_order.count(query);
+      query.limit = resPerPage;
+      query.offset = offset;
+      const jobOrderData = await job_order.findAll(query);
+      res.status(200).json({
+        data: jobOrderData,
+        pages: Math.ceil(numOfResult / resPerPage),
+        currentPage: Number(page),
+        numOfResult,
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+  static getAllJobOrderTest = async (req, res, next) => {
+    try {
+      let { tipe, page, status } = req.query;
+      if (!page || page < 1) page = 1;
       const resPerPage = 200;
       const offset = resPerPage * page - resPerPage;
       let query = {

@@ -11,18 +11,13 @@ router.post('/', JobOrderController.createJobOrder);
 router.put('/assign', authentication, adminVendorAuth, JobOrderController.assignJobOrder);
 router.put('/change-status/:id', authentication, teknisiAuth, JobOrderController.changeStatus);
 router.get('/all', authentication, teknisiAuth, JobOrderController.getAllJobOrder);
+router.get('/all-test', authentication, teknisiAuth, JobOrderController.getAllJobOrderTest);
 router.get('/single/:id', authentication, teknisiAuth, JobOrderController.getSingleOrder);
 router.put(
   '/done',
   authentication,
   teknisiAuth,
-  upload.fields([
-    { name: 'foto_1' },
-    { name: 'foto_2' },
-    { name: 'foto_3' },
-    { name: 'foto_4' },
-    { name: 'foto_5' },
-  ]),
+  upload.fields([{ name: 'foto_1' }, { name: 'foto_2' }, { name: 'foto_3' }, { name: 'foto_4' }, { name: 'foto_5' }]),
   JobOrderController.jobOrderDone
 );
 
