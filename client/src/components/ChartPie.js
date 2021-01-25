@@ -14,7 +14,7 @@ const ChartPie = () => {
   });
   useEffect(() => {
     getCountData();
-  }, [getCountData]);
+  });
   const getCountData = async () => {
     try {
       const { data } = await axios({
