@@ -22,6 +22,7 @@ import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import { HostUrl } from '../../reusable';
 import newAlert from '../../components/NewAlert';
+import token from '../token';
 
 const Register = () => {
   const history = useHistory();
@@ -66,10 +67,25 @@ const Register = () => {
 
   const onFormSubmit = async () => {
     try {
-      await axios({
+      const { data } = await axios({
         method: 'POST',
         url: HostUrl + '/job-orders',
         data: formData,
+      });
+      if (!data.id) {
+        newAlert({ status: 'error', message: 'Gagal' });
+        return;
+      }
+      await axios({
+        method: 'PUT',
+        url: HostUrl + '/job-orders/assign',
+        data: {
+          teknisi_id: formData.teknisi_id,
+          job_order_id: data.id,
+        },
+        headers: {
+          token,
+        },
       });
       newAlert({ status: 'success', message: 'Berhasil' });
       history.push('/all');
