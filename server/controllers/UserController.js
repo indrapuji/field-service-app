@@ -8,12 +8,11 @@ const fs = require('fs');
 class UserController {
   static login = async (req, res, next) => {
     try {
-      const { email, password, tipe } = req.body;
-      if (!email || !password || !tipe) throw createError(400, 'Wrong Username/Password');
+      const { email, password } = req.body;
+      if (!email || !password) throw createError(400, 'Wrong Username/Password');
       const userData = await user.findOne({
         where: {
           email,
-          tipe,
         },
       });
       if (!userData) throw createError(400, 'Wrong Username/Password');
