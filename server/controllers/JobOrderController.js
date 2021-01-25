@@ -1,7 +1,7 @@
 const { job_order, vendor, user } = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
-const setDate = require("../helpers/setDate");
+const setDate = require('../helpers/setDate');
 
 class JobOrderController {
   static createJobOrder = async (req, res, next) => {
@@ -95,28 +95,38 @@ class JobOrderController {
   };
   static getAllJobOrder = async (req, res, next) => {
     try {
-      let { tipe, page, status, by } = req.query;
+      const { id } = req.UserData;
+      let { tipe, page, status, by, vendor_id } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
       let query = {
         where: {},
       };
+      const userData = await user.findOne({ where: { id } });
+      if (userData.tipe !== 'Super Admin') {
+        query.where.vendor_id = userData.vendor_id;
+      }
       query.order = [['createdAt', 'DESC']];
+      if (vendor_id) query.where.vendor_id = vendor_id;
       if (tipe) query.where.tipe = tipe;
       if (status) query.where.status = status;
-      if (by === 'today') query.where.updated_at = {
-        [Op.gte]: setDate(new Date(), 1)
-      };
-      else if (by === 'week') query.where.updated_at = {
-        [Op.gte]: setDate(new Date(), 7)
-      };
-      else if (by === 'month') query.where.updated_at = {
-        [Op.gte]: setDate(new Date(), 30)
-      };
-      else if (by === 'year') query.where.updated_at = {
-        [Op.gte]: setDate(new Date(), 365)
-      };
+      if (by === 'today')
+        query.where.updated_at = {
+          [Op.gte]: setDate(new Date(), 1),
+        };
+      else if (by === 'week')
+        query.where.updated_at = {
+          [Op.gte]: setDate(new Date(), 7),
+        };
+      else if (by === 'month')
+        query.where.updated_at = {
+          [Op.gte]: setDate(new Date(), 30),
+        };
+      else if (by === 'year')
+        query.where.updated_at = {
+          [Op.gte]: setDate(new Date(), 365),
+        };
       const numOfResult = await job_order.count(query);
       query.limit = resPerPage;
       query.offset = offset;
@@ -284,7 +294,7 @@ class JobOrderController {
         jobOrderQuery.tanda_tangan = serverUrl + path;
       }
       await job_order.update(jobOrderQuery, {
-        where: { id: job_order_id }
+        where: { id: job_order_id },
       });
       res.status(200).json({ msg: 'Success' });
     } catch (err) {

@@ -46,7 +46,7 @@ const _Supernav = [
   },
 ];
 
-const _Clientnav = [
+const _Adminnav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Dashboard',
@@ -75,8 +75,27 @@ const _Clientnav = [
     to: '/workorder/done',
     icon: 'cil-check-circle',
   },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Users',
+    route: '/users',
+    icon: 'cil-star',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Users',
+        to: '/users',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Create New User',
+        to: '/users/create',
+      },
+    ],
+  },
 ];
-const _Adminnav = [
+
+const _Clientnav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'Dashboard',

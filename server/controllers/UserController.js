@@ -4,6 +4,7 @@ const { generateToken } = require('../helpers/jwt');
 const { comparePassword } = require('../helpers/bcrypt');
 const serverUrl = require('../helpers/serverUrl');
 const fs = require('fs');
+const { Op } = require('sequelize');
 
 class UserController {
   static login = async (req, res, next) => {
@@ -99,14 +100,25 @@ class UserController {
   };
   static getAllUser = async (req, res, next) => {
     try {
+      const { id } = req.UserData;
       let { page } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
-      const result = await user.findAll({
+      let query = {
         limit: resPerPage,
         offset,
-      });
+      };
+      const userData = await user.findOne({ where: { id } });
+      if (userData.tipe === 'Admin') {
+        query.where = {
+          vendor_id: userData.vendor_id,
+          tipe: {
+            [Op.ne]: 'Super Admin',
+          },
+        };
+      }
+      const result = await user.findAll(query);
       const numOfResult = await user.count();
       res.status(200).json({
         data: result,

@@ -10,7 +10,7 @@ const upload = multer({ storage });
 router.post('/', authentication, JobOrderController.createJobOrder);
 router.put('/assign', authentication, adminVendorAuth, JobOrderController.assignJobOrder);
 router.put('/change-status/:id', authentication, teknisiAuth, JobOrderController.changeStatus);
-router.get('/all', authentication, teknisiAuth, JobOrderController.getAllJobOrder);
+router.get('/all', authentication, JobOrderController.getAllJobOrder);
 router.get('/single/:id', authentication, teknisiAuth, JobOrderController.getSingleOrder);
 router.put(
   '/done',

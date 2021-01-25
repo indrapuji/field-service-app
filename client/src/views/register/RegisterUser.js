@@ -26,6 +26,7 @@ import newAlert from '../../components/NewAlert';
 const Register = () => {
   const history = useHistory();
   const [vendorsList, setVendorsList] = useState(null);
+  const [tipe, setTipe] = useState(null);
   const [formData, setFormData] = useState({
     nama_lengkap: '',
     email: '',
@@ -44,6 +45,7 @@ const Register = () => {
 
   useEffect(() => {
     getVendorsList();
+    setTipe(localStorage.getItem('tipe'));
   }, []);
 
   const getVendorsList = async () => {
@@ -90,9 +92,13 @@ const Register = () => {
       newAlert({ status: 'success', message: 'Berhasil' });
       history.push('/users');
     } catch (error) {
-      const { msg } = error.response.data;
-      newAlert({ status: 'error', message: msg });
-      console.log(error.response.data);
+      if (error.response.data) {
+        const { msg } = error.response.data;
+        newAlert({ status: 'error', message: msg });
+        console.log(error.response.data);
+      } else {
+        newAlert({ status: 'error', message: 'Internal Sever Error' });
+      }
     }
   };
 
@@ -220,18 +226,32 @@ const Register = () => {
                     <CInputFile id="file-input" name="foto_profil" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
-                <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="select">Tipe</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CSelect custom id="select" name="tipe" onChange={onFormChange}>
-                      <option value="0">Please select</option>
-                      <option value="Client">Client</option>
-                      <option value="Admin">Admin</option>
-                    </CSelect>
-                  </CCol>
-                </CFormGroup>
+                {tipe !== 'Admin' ? (
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="select">Tipe</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CSelect custom id="select" name="tipe" onChange={onFormChange}>
+                        <option value="0">Please select</option>
+                        <option value="Client">Client</option>
+                        <option value="Admin">Admin</option>
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
+                ) : (
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="select">Tipe</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CSelect custom id="select" name="tipe" onChange={onFormChange}>
+                        <option value="0">Please select</option>
+                        <option value="Teknisi">Teknisi</option>
+                      </CSelect>
+                    </CCol>
+                  </CFormGroup>
+                )}
               </CForm>
             </CCardBody>
             <CCardFooter>
