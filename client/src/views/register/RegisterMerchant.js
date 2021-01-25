@@ -37,7 +37,7 @@ const Register = () => {
     tanggal_assign: new Date(),
     mid: '',
     vendor_id: '',
-    teknisi_id: 1,
+    teknisi_id: 4,
   });
 
   useEffect(() => {
