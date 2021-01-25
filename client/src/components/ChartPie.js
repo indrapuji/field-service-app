@@ -14,6 +14,7 @@ const ChartPie = () => {
   });
   useEffect(() => {
     getCountData();
+    // eslint-disable-next-line
   }, []);
   const getCountData = async () => {
     try {
