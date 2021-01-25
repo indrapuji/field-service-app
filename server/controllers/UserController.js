@@ -23,7 +23,7 @@ class UserController {
       res.status(200).json({
         userData,
         access_token,
-        tipe: useData.tipe,
+        tipe: userData.tipe,
       });
     } catch (err) {
       next(err);
