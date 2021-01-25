@@ -19,7 +19,7 @@ const TheHeaderDropdownMssg = () => {
               </div>
             </div>
             <div>
-              <small className="text-muted">John Doe</small>
+              <small className="text-muted">message 1</small>
               <small className="text-muted float-right mt-1">Just now</small>
             </div>
             <div className="text-truncate font-weight-bold">
@@ -40,7 +40,7 @@ const TheHeaderDropdownMssg = () => {
               </div>
             </div>
             <div>
-              <small className="text-muted">Jane Dovve</small>
+              <small className="text-muted">message 2</small>
               <small className="text-muted float-right mt-1">5 minutes ago</small>
             </div>
             <div className="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>
@@ -59,7 +59,7 @@ const TheHeaderDropdownMssg = () => {
               </div>
             </div>
             <div>
-              <small className="text-muted">Janet Doe</small>
+              <small className="text-muted">message 3</small>
               <small className="text-muted float-right mt-1">1:52 PM</small>
             </div>
             <div className="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>
@@ -78,7 +78,7 @@ const TheHeaderDropdownMssg = () => {
               </div>
             </div>
             <div>
-              <small className="text-muted">Joe Doe</small>
+              <small className="text-muted">message 4</small>
               <small className="text-muted float-right mt-1">4:03 AM</small>
             </div>
             <div className="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>

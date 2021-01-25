@@ -74,8 +74,7 @@ class JobOrderController {
       if (!teknisiData) throw createError(404, 'User Not Found');
       const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
       if (!jobOrderData) throw createError(404, 'User Not Found');
-      if (jobOrderData.vendor_id !== userData.vendor_id)
-        throw createError(401, 'You are unauthorized');
+      if (jobOrderData.vendor_id !== userData.vendor_id) throw createError(401, 'You are unauthorized');
       await job_order.update({ teknisi_id }, { where: { id: job_order_id } });
       res.status(200).json({ msg: 'Success' });
     } catch (err) {
@@ -109,7 +108,7 @@ class JobOrderController {
     try {
       let { tipe, page, status } = req.query;
       if (!page || page < 1) page = 1;
-      const resPerPage = 15;
+      const resPerPage = 200;
       const offset = resPerPage * page - resPerPage;
       let query = {
         where: {},

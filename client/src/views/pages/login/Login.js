@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   CButton,
   CCard,
@@ -16,8 +17,49 @@ import {
   CSelect,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
+import axios from 'axios';
+import { HostUrl } from '../../../reusable';
+import newAlert from '../../../components/NewAlert';
 
 const Login = () => {
+  const history = useHistory();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    tipe: '',
+  });
+
+  const onFormChange = (event) => {
+    const { name, value, files } = event.target;
+    if (files) {
+      setFormData({
+        ...formData,
+        [name]: files[0],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+  const onFormSubmit = async () => {
+    try {
+      const { data } = await axios({
+        method: 'POST',
+        url: HostUrl + '/users/login',
+        data: formData,
+      });
+      console.log(data);
+      localStorage.setItem('token', data.access_token);
+      newAlert({ status: 'success', message: 'Berhasil' });
+      history.push('/');
+    } catch (error) {
+      const { msg } = error.response.data;
+      newAlert({ status: 'error', message: msg });
+      console.log(error.response.data);
+    }
+  };
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -26,7 +68,7 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm action="" method="post">
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
                     <CInputGroup className="mb-3">
@@ -35,7 +77,7 @@ const Login = () => {
                           <CIcon name="cil-user" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="text" placeholder="Username" autoComplete="username" />
+                      <CInput type="text" placeholder="Username" autoComplete="username" name="email" onChange={onFormChange} />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupPrepend>
@@ -43,21 +85,21 @@ const Login = () => {
                           <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="password" placeholder="Password" autoComplete="current-password" />
+                      <CInput type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={onFormChange} />
                     </CInputGroup>
                     <CFormGroup className="mb-4">
                       <CInputGroupPrepend>
                         <CInputGroupText>
                           <CIcon name="cil-graph" />
                         </CInputGroupText>
-                        <CSelect custom name="select" id="select">
+                        <CSelect id="select" name="tipe" onChange={onFormChange}>
                           <option value="0">Please select</option>
-                          <option value="1">Admin</option>
-                          <option value="2">Client</option>
+                          <option value="Super Admin">Admin</option>
+                          <option value="Admin">Client</option>
                         </CSelect>
                       </CInputGroupPrepend>
                     </CFormGroup>
-                    <CButton color="primary" size="lg" block>
+                    <CButton color="primary" size="lg" block onClick={onFormSubmit}>
                       Login
                     </CButton>
                   </CForm>

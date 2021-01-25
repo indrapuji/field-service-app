@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow } from '@coreui/react';
-import axios from "axios";
-import { HostUrl } from "../../reusable";
+import axios from 'axios';
+import { HostUrl } from '../../reusable';
 
 // import usersData from './UsersData';
 
@@ -38,24 +38,23 @@ const Users = () => {
   const getUsersList = async () => {
     try {
       const { data } = await axios({
-        method: "GET",
-        url: HostUrl + "/users/all-users",
+        method: 'GET',
+        url: HostUrl + '/users/all-users',
       });
       setUsersList(data);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  const fields = ['nama_lengkap', 'email', 'gender', 'tipe', 'no_telp', 'status'];
+  const fields = ['nama_lengkap', 'tipe', 'email', 'gender', 'no_telp', 'status'];
 
   return (
     <CRow>
       <CCol>
         <CCard>
           <CCardHeader>Users</CCardHeader>
-          {
-            usersList &&
+          {usersList && (
             <CCardBody>
               <CDataTable
                 items={usersList.data}
@@ -75,7 +74,7 @@ const Users = () => {
                 }}
               />
             </CCardBody>
-          }
+          )}
         </CCard>
       </CCol>
     </CRow>

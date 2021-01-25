@@ -11,7 +11,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-primary"
           header="9.823"
-          text="Members online"
+          text="Merchant Buka"
           footerSlot={
             <ChartLineSimple
               pointed
@@ -30,7 +30,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-info"
           header="9.823"
-          text="Members online"
+          text="Merchant Tutup"
           footerSlot={
             <ChartLineSimple
               pointed
@@ -50,7 +50,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-warning"
           header="9.823"
-          text="Members online"
+          text="Merchant tetap"
           footerSlot={
             <ChartLineSimple
               className="mt-3"
@@ -70,7 +70,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-danger"
           header="9.823"
-          text="Members online"
+          text="Merchant Pindah"
           footerSlot={
             <ChartBarSimple className="mt-3 mx-3" style={{ height: '70px' }} backgroundColor="rgb(250, 152, 152)" label="Members" labels="months" />
           }
