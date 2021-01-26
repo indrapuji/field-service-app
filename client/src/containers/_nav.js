@@ -60,20 +60,26 @@ const _Adminnav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'All',
-    to: '/workorder/all',
+    to: '/workorders/all',
     icon: 'cil-star',
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Progress',
-    to: '/workorder/progress',
+    to: '/workorders/progress',
     icon: 'cil-circle',
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Done',
-    to: '/workorder/done',
+    to: '/workorders/done',
     icon: 'cil-check-circle',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Create',
+    to: '/workorders/create',
+    icon: 'cid-folder-special',
   },
   {
     _tag: 'CSidebarNavDropdown',
@@ -109,19 +115,19 @@ const _Clientnav = [
   {
     _tag: 'CSidebarNavItem',
     name: 'All',
-    to: '/workorder/all',
+    to: '/workorders/all',
     icon: 'cil-star',
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Progress',
-    to: '/workorder/progress',
+    to: '/workorders/progress',
     icon: 'cil-circle',
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Done',
-    to: '/workorder/done',
+    to: '/workorders/done',
     icon: 'cil-check-circle',
   },
 ];

@@ -9,11 +9,11 @@ import { HostUrl } from '../../reusable';
 
 const getBadge = (status) => {
   switch (status) {
-    case 'Active':
+    case 'Done':
       return 'success';
     case 'Inactive':
       return 'secondary';
-    case 'Pending':
+    case 'Progres':
       return 'warning';
     case 'Banned':
       return 'danger';
@@ -40,12 +40,13 @@ const Workorders = () => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all-test?status=Progres&page=' + page,
+        url: HostUrl + '/job-orders/all?status=Progres&page=' + page,
         headers: {
           token,
         },
       });
       setJobOrderData(data);
+      console.log(data);
     } catch (err) {
       console.log('ERROR');
       console.log(err);
@@ -56,34 +57,34 @@ const Workorders = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['nama_merchant', 'alamat_merchant', 'nama_bank', 'tipe', 'serial_number', 'keterangan'];
+  const fields = ['merchant', 'alamat', 'no_telp', 'regional', 'mid', 'tid', 'status'];
 
   return (
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>Progress</CCardHeader>
+          <CCardHeader>All</CCardHeader>
           {jobOrderData && (
-            <CCardBody>
-              <CDataTable
-                items={jobOrderData.data}
-                fields={fields}
-                hover
-                striped
-                bordered
-                size="sm"
-                itemsPerPage={15}
-                pagination
-                scopedSlots={{
-                  status: (item) => (
-                    <td>
-                      <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
-                    </td>
-                  ),
-                }}
-              />
-              <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
-            </CCardBody>
+            <>
+              <CCardBody>
+                <CDataTable
+                  items={jobOrderData.data}
+                  fields={fields}
+                  hover
+                  striped
+                  bordered
+                  size="sm"
+                  scopedSlots={{
+                    status: (item) => (
+                      <td>
+                        <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
+                      </td>
+                    ),
+                  }}
+                />
+                <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
+              </CCardBody>
+            </>
           )}
         </CCard>
       </CCol>

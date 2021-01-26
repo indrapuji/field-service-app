@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  // useEffect
+} from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   CContainer,
@@ -22,40 +25,39 @@ import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import { HostUrl } from '../../reusable';
 import newAlert from '../../components/NewAlert';
-import token from '../token';
 
 const Register = () => {
   const history = useHistory();
-  const [vendorsList, setVendorsList] = useState(null);
+  // const [vendorsList, setVendorsList] = useState(null);
   const [formData, setFormData] = useState({
-    nama_merchant: '',
-    alamat_merchant: '',
-    nama_bank: '',
-    tipe_terminal: '',
-    serial_number: '',
-    tipe: '',
-    status: 'Assign',
-    tanggal_assign: new Date(),
+    merchant: '',
+    alamat: '',
+    no_telp: '',
+    kota: '',
     mid: '',
-    vendor_id: '',
-    teknisi_id: 4,
+    tid: '',
+    edc_connection: '',
+    type_edc: '',
+    regional: '',
+    tipe: '',
+    tanggal_impor: new Date(),
   });
 
-  useEffect(() => {
-    getVendorsList();
-  }, []);
+  // useEffect(() => {
+  //   getVendorsList();
+  // }, []);
 
-  const getVendorsList = async () => {
-    try {
-      const { data } = await axios({
-        method: 'GET',
-        url: HostUrl + '/vendors',
-      });
-      setVendorsList(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getVendorsList = async () => {
+  //   try {
+  //     const { data } = await axios({
+  //       method: 'GET',
+  //       url: HostUrl + '/vendors',
+  //     });
+  //     setVendorsList(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const onFormChange = (event) => {
     const { name, value } = event.target;
@@ -84,7 +86,7 @@ const Register = () => {
           job_order_id: data.id,
         },
         headers: {
-          token,
+          token: localStorage.getItem('token'),
         },
       });
       newAlert({ status: 'success', message: 'Berhasil' });
@@ -107,7 +109,7 @@ const Register = () => {
             </CCardHeader>
             <CCardBody>
               <CForm action="" method="post">
-                <CFormGroup row>
+                {/* <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="select">Nama Vendor</CLabel>
                   </CCol>
@@ -120,13 +122,13 @@ const Register = () => {
                         })}
                     </CSelect>
                   </CCol>
-                </CFormGroup>
+                </CFormGroup> */}
                 <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="text-input">Nama Merchant</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Nama Merchant..." name="nama_merchant" onChange={onFormChange} />
+                    <CInput placeholder="Masukkan Nama Merchant..." name="merchant" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -134,37 +136,63 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Alamat Merchant</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Alamat Merchant..." name="alamat_merchant" onChange={onFormChange} />
+                    <CInput placeholder="Masukkan Alamat Merchant..." name="alamat" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="select">Nama Bank</CLabel>
+                    <CLabel htmlFor="text-input">No Telp</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CSelect custom id="select" name="nama_bank" onChange={onFormChange}>
-                      <option value="0">Please select</option>
-                      <option value="Bukopin">Bukopin</option>
-                    </CSelect>
+                    <CInput placeholder="Masukkan Telepon Merchant..." name="no_telp" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="select">Tipe Terminal</CLabel>
+                    <CLabel htmlFor="text-input">Kota</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CSelect custom id="select" name="tipe_terminal" onChange={onFormChange}>
-                      <option value="0">Please select</option>
-                      <option value="ict">ICT</option>
-                    </CSelect>
+                    <CInput placeholder="Masukkan Kota..." name="kota" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="text-input">Serial Number</CLabel>
+                    <CLabel htmlFor="text-input">MID</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Serial Number..." name="serial_number" onChange={onFormChange} />
+                    <CInput placeholder="Masukkan Serial Number..." name="mid" onChange={onFormChange} />
+                  </CCol>
+                </CFormGroup>
+                <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel htmlFor="text-input">TID</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    <CInput placeholder="Masukkan Serial Number..." name="tid" onChange={onFormChange} />
+                  </CCol>
+                </CFormGroup>
+                <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel htmlFor="text-input">EDC Connection</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    <CInput placeholder="Masukkan EDC Connection..." name="edc_connection" onChange={onFormChange} />
+                  </CCol>
+                </CFormGroup>
+                <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel htmlFor="text-input">Tipe EDC</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    <CInput placeholder="Masukkan EDC Connection..." name="type_edc" onChange={onFormChange} />
+                  </CCol>
+                </CFormGroup>
+                <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel htmlFor="text-input">Reegional</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    <CInput placeholder="Masukkan EDC Connection..." name="regional" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -177,14 +205,6 @@ const Register = () => {
                       <option value="Kunjungan">Kunjungan</option>
                       <option value="Pickup">Pickup Sales Draft</option>
                     </CSelect>
-                  </CCol>
-                </CFormGroup>
-                <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="text-input">MID</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan MID..." name="mid" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
               </CForm>

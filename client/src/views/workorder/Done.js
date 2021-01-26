@@ -56,7 +56,7 @@ const Workorders = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['nama_merchant', 'alamat_merchant', 'nama_bank', 'tipe', 'serial_number', 'keterangan'];
+  const fields = ['merchant', 'alamat', 'no_telp', 'regional', 'mid', 'tid', 'status'];
 
   return (
     <CRow>

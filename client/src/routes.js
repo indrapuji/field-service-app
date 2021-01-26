@@ -17,10 +17,10 @@ const routes = [
   { path: '/users/create', exact: true, name: 'Register User', component: RegisterUser },
   { path: '/vendors', exact: true, name: 'Vendors', component: Vendors },
   { path: '/vendors/create', exact: true, name: 'Register Vendor', component: RegisterVendor },
-  { path: '/workorder/all', exact: true, name: 'All Workorders', component: Workorders },
-  { path: '/workorder/progress', exact: true, name: 'Progress Workorders', component: Progress },
-  { path: '/workorder/done', exact: true, name: 'Done Workorders', component: Done },
-  { path: '/merchant', exact: true, name: 'Register Merchant', component: RegisterMerchant },
+  { path: '/workorders/all', exact: true, name: 'All Workorders', component: Workorders },
+  { path: '/workorders/progress', exact: true, name: 'Progress Workorders', component: Progress },
+  { path: '/workorders/done', exact: true, name: 'Done Workorders', component: Done },
+  { path: '/workorders/create', exact: true, name: 'Register Merchant', component: RegisterMerchant },
 ];
 
 export default routes;

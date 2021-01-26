@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { CHeader, CToggler, CHeaderBrand, CHeaderNav, CHeaderNavItem, CHeaderNavLink, CSubheader, CBreadcrumbRouter } from '@coreui/react';
+import {
+  CHeader,
+  CToggler,
+  CHeaderBrand,
+  CHeaderNav,
+  // CHeaderNavItem, CHeaderNavLink,
+  CSubheader,
+  CBreadcrumbRouter,
+} from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 
 // routes config
@@ -11,6 +19,12 @@ import { TheHeaderDropdown, TheHeaderDropdownMssg, TheHeaderDropdownNotif } from
 const TheHeader = () => {
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
+  const [tipe, setTipe] = useState(null);
+
+  useEffect(() => {
+    const tipe = localStorage.getItem('tipe');
+    setTipe(tipe);
+  }, []);
 
   const toggleSidebar = () => {
     const val = [true, 'responsive'].includes(sidebarShow) ? false : 'responsive';
@@ -30,7 +44,7 @@ const TheHeader = () => {
         <CIcon name="logo" height="48" alt="Logo" />
       </CHeaderBrand>
       <CHeaderNav className="d-md-down-none mr-auto">
-        <CHeaderNavItem className="px-3">
+        {/* <CHeaderNavItem className="px-3">
           <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
         </CHeaderNavItem>
         <CHeaderNavItem className="px-3">
@@ -38,10 +52,10 @@ const TheHeader = () => {
         </CHeaderNavItem>
         <CHeaderNavItem className="px-3">
           <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem>
+        </CHeaderNavItem> */}
       </CHeaderNav>
       <CHeaderNav className="px-3">
-        <TheHeaderDropdownNotif />
+        {tipe === 'Super Admin' && <TheHeaderDropdownNotif />}
         <TheHeaderDropdownMssg />
         <TheHeaderDropdown />
       </CHeaderNav>

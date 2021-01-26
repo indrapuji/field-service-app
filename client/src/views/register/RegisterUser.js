@@ -53,6 +53,9 @@ const Register = () => {
       const { data } = await axios({
         method: 'GET',
         url: HostUrl + '/vendors',
+        headers: {
+          token: localStorage.getItem('token'),
+        },
       });
       setVendorsList(data);
     } catch (error) {
@@ -92,7 +95,7 @@ const Register = () => {
       newAlert({ status: 'success', message: 'Berhasil' });
       history.push('/users');
     } catch (error) {
-      if (error.response.data) {
+      if (error.response) {
         const { msg } = error.response.data;
         newAlert({ status: 'error', message: msg });
         console.log(error.response.data);

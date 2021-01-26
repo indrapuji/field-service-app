@@ -40,9 +40,11 @@ const Users = () => {
       const { data } = await axios({
         method: 'GET',
         url: HostUrl + '/users/all-users',
+        headers: {
+          token: localStorage.getItem('token'),
+        },
       });
       setUsersList(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
