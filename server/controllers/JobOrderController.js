@@ -24,10 +24,9 @@ class JobOrderController {
         aktifitas,
         vendor_id,
         status,
-        teknisi_id,
       } = req.body;
-      const vendorData = await vendor.findOne({ where: { id: vendor_id } });
-      if (!vendorData) throw createError(404, 'Vendor Not Found');
+      const { id } = req.UserData;
+      const userData = await user.findOne({ where: { id } });
       const result = await job_order.create({
         tanggal_impor,
         merchant,
@@ -46,7 +45,7 @@ class JobOrderController {
         vendor_id,
         status,
         admin_id: id,
-        teknisi_id,
+        teknisi_id: userData.vendor_id,
       });
       res.status(201).json(result);
     } catch (err) {

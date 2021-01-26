@@ -1,7 +1,4 @@
-import React, {
-  useState,
-  // useEffect
-} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   CContainer,
@@ -28,7 +25,7 @@ import newAlert from '../../components/NewAlert';
 
 const Register = () => {
   const history = useHistory();
-  // const [vendorsList, setVendorsList] = useState(null);
+  const [vendorsList, setVendorsList] = useState(null);
   const [formData, setFormData] = useState({
     merchant: '',
     alamat: '',
@@ -43,21 +40,26 @@ const Register = () => {
     tanggal_impor: new Date(),
   });
 
-  // useEffect(() => {
-  //   getVendorsList();
-  // }, []);
+  useEffect(() => {
+    getVendorsList();
+  }, []);
 
-  // const getVendorsList = async () => {
-  //   try {
-  //     const { data } = await axios({
-  //       method: 'GET',
-  //       url: HostUrl + '/vendors',
-  //     });
-  //     setVendorsList(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const getVendorsList = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const { data } = await axios({
+        method: 'GET',
+        url: HostUrl + '/vendors?pagination=false',
+        headers: {
+          token,
+        },
+      });
+      setVendorsList(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onFormChange = (event) => {
     const { name, value } = event.target;
@@ -109,7 +111,7 @@ const Register = () => {
             </CCardHeader>
             <CCardBody>
               <CForm action="" method="post">
-                {/* <CFormGroup row>
+                <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="select">Nama Vendor</CLabel>
                   </CCol>
@@ -122,7 +124,7 @@ const Register = () => {
                         })}
                     </CSelect>
                   </CCol>
-                </CFormGroup> */}
+                </CFormGroup>
                 <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="text-input">Nama Merchant</CLabel>
