@@ -67,6 +67,7 @@ const Register = () => {
       [name]: value,
     });
   };
+  console.log(formData);
 
   const onFormSubmit = async () => {
     try {
@@ -105,7 +106,7 @@ const Register = () => {
                     <CLabel htmlFor="select">Nama Teknisi</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CSelect id="select" name="vendor_id" onChange={onFormChange}>
+                    <CSelect id="select" name="teknisi_id" onChange={onFormChange}>
                       <option value="0">Please select</option>
                       {teknisiList &&
                         teknisiList.data.map((data) => {
