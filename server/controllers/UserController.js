@@ -101,25 +101,33 @@ class UserController {
   static getAllUser = async (req, res, next) => {
     try {
       const { id } = req.UserData;
-      let { page } = req.query;
+      let { page, tipe, pagination } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
       let query = {
-        limit: resPerPage,
-        offset,
+        where: {},
       };
+      const numOfResult = await user.count(query);
+      if (!pagination) {
+        query.limit = resPerPage;
+      } else {
+        query.limit = numOfResult;
+      }
+      query.offset = offset;
       const userData = await user.findOne({ where: { id } });
       if (userData.tipe === 'Admin') {
-        query.where = {
-          vendor_id: userData.vendor_id,
-          tipe: {
+        if (tipe === 'Super Admin') throw createError(401, 'Not Authorized');
+        query.where.vendor_id = userData.vendor_id;
+        if (tipe) {
+          query.where.tipe = tipe;
+        } else {
+          query.where.tipe = {
             [Op.ne]: 'Super Admin',
-          },
-        };
+          };
+        }
       }
       const result = await user.findAll(query);
-      const numOfResult = await user.count();
       res.status(200).json({
         data: result,
         pages: Math.ceil(numOfResult / resPerPage),

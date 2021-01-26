@@ -5,7 +5,7 @@ class VendorController {
     try {
       const { id } = req.UserData;
       const userData = await user.findOne({ where: { id } });
-      let { page } = req.query;
+      let { page, pagination } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
@@ -20,7 +20,11 @@ class VendorController {
         ];
       }
       const numOfResult = await vendor.count(query);
-      query.limit = resPerPage;
+      if (!pagination) {
+        query.limit = resPerPage;
+      } else {
+        query.limit = numOfResult;
+      }
       query.offset = offset;
       const result = await vendor.findAll(query);
       res.status(200).json({
