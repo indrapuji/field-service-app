@@ -25,7 +25,7 @@ import newAlert from '../../components/NewAlert';
 
 const Register = () => {
   const history = useHistory();
-  const [vendorsList, setVendorsList] = useState(null);
+  const [teknisiList, setTeknisiList] = useState(null);
   const [formData, setFormData] = useState({
     merchant: '',
     alamat: '',
@@ -41,21 +41,20 @@ const Register = () => {
   });
 
   useEffect(() => {
-    getVendorsList();
+    getTeknisiList();
   }, []);
 
-  const getVendorsList = async () => {
+  const getTeknisiList = async () => {
     try {
       const token = localStorage.getItem('token');
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/vendors?pagination=false',
+        url: HostUrl + '/users/all-users?pagination=false&tipe=Teknisi',
         headers: {
           token,
         },
       });
-      setVendorsList(data);
-      console.log(data);
+      setTeknisiList(data);
     } catch (error) {
       console.log(error);
     }
@@ -71,26 +70,16 @@ const Register = () => {
 
   const onFormSubmit = async () => {
     try {
+      const token = localStorage.getItem('token');
       const { data } = await axios({
         method: 'POST',
         url: HostUrl + '/job-orders',
         data: formData,
-      });
-      if (!data.id) {
-        newAlert({ status: 'error', message: 'Gagal' });
-        return;
-      }
-      await axios({
-        method: 'PUT',
-        url: HostUrl + '/job-orders/assign',
-        data: {
-          teknisi_id: formData.teknisi_id,
-          job_order_id: data.id,
-        },
         headers: {
-          token: localStorage.getItem('token'),
+          token,
         },
       });
+      console.log(data);
       newAlert({ status: 'success', message: 'Berhasil' });
       history.push('/all');
     } catch (error) {
@@ -113,14 +102,14 @@ const Register = () => {
               <CForm action="" method="post">
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="select">Nama Vendor</CLabel>
+                    <CLabel htmlFor="select">Nama Teknisi</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
                     <CSelect id="select" name="vendor_id" onChange={onFormChange}>
                       <option value="0">Please select</option>
-                      {vendorsList &&
-                        vendorsList.data.map((data) => {
-                          return <option value={data.id}>{data.nama}</option>;
+                      {teknisiList &&
+                        teknisiList.data.map((data) => {
+                          return <option value={data.id}>{data.nama_lengkap}</option>;
                         })}
                     </CSelect>
                   </CCol>
