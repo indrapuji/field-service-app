@@ -5,7 +5,6 @@ const setDate = require('../helpers/setDate');
 
 class JobOrderController {
   static createJobOrder = async (req, res, next) => {
-    const { id } = req.UserData;
     try {
       const {
         tanggal_impor,
@@ -22,8 +21,8 @@ class JobOrderController {
         pic,
         tipe,
         aktifitas,
-        vendor_id,
         status,
+        teknisi_id,
       } = req.body;
       const { id } = req.UserData;
       const userData = await user.findOne({ where: { id } });
@@ -42,10 +41,10 @@ class JobOrderController {
         pic,
         tipe,
         aktifitas,
-        vendor_id,
+        vendor_id: userData.vendor_id,
         status,
         admin_id: id,
-        teknisi_id: userData.vendor_id,
+        teknisi_id,
       });
       res.status(201).json(result);
     } catch (err) {
