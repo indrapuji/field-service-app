@@ -1,15 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-  View,
-  Text,
-  StatusBar,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  ImageBackground,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { View, Text, StatusBar, Image, TextInput, TouchableOpacity, ActivityIndicator, ImageBackground, KeyboardAvoidingView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../assets/styles';
 import axios from 'axios';
@@ -49,7 +39,6 @@ const AuthScreen = () => {
       data: {
         email: username,
         password: password,
-        tipe: 'Teknisi',
       },
     })
       .then(({ data }) => {
@@ -106,9 +95,7 @@ const AuthScreen = () => {
                 </View>
               </View>
               <View style={{ marginLeft: 10, marginBottom: 10 }}>
-                {failed && (
-                  <Text style={{ color: 'red', fontSize: 15 }}>Username atau Password Salah</Text>
-                )}
+                {failed && <Text style={{ color: 'red', fontSize: 15 }}>Username atau Password Salah</Text>}
               </View>
               <View>
                 {loading ? (
@@ -116,10 +103,7 @@ const AuthScreen = () => {
                     <ActivityIndicator size="small" color="white" />
                   </View>
                 ) : (
-                  <TouchableOpacity
-                    style={styles.buttonSize}
-                    onPress={() => loginHanddle(value.username, value.password)}
-                  >
+                  <TouchableOpacity style={styles.buttonSize} onPress={() => loginHanddle(value.username, value.password)}>
                     <Text style={styles.buttonText}>Get Access</Text>
                   </TouchableOpacity>
                 )}

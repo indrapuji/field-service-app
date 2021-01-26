@@ -280,6 +280,7 @@ class JobOrderController {
         latitude,
         longitude,
         keluhan,
+        status: 'Done',
       };
       if (req.files) {
         if (req.files.foto_1) jobOrderQuery.foto_toko_1 = serverUrl + req.files.foto_toko_1[0].path;

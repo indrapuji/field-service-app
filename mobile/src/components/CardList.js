@@ -47,9 +47,7 @@ const CardList = (props) => {
             <TouchableOpacity
               key={idx}
               onPress={() => (source !== 'done' ? handdleDetail(item) : null)}
-              onLongPress={() =>
-                source === 'home' ? openModal(item.id, item.nama_merchant) : null
-              }
+              onLongPress={() => (source === 'home' ? openModal(item.id, item.nama_merchant) : null)}
             >
               <View
                 style={{
@@ -79,18 +77,20 @@ const CardList = (props) => {
                   </View>
                   <View style={styles.centerJustify}>
                     <View style={styles.flexRow}>
-                      <Text style={styles.boldText}>{item.nama_merchant}</Text>
+                      <Text style={styles.boldText}>{item.merchant}</Text>
                     </View>
-                    <Text>{item.alamat_merchant}</Text>
-                    <Text>{item.nama_bank}</Text>
+                    <Text>{item.alamat}</Text>
+                    <View style={{ marginVertical: 5 }}>
+                      <Text style={styles.boldText}>{item.regional}</Text>
+                    </View>
                     <View style={styles.flexRow}>
-                      <Text>TID: {item.serial_number}</Text>
+                      <Text>TID: {item.tid}</Text>
                       <View style={styles.dotted}>
                         <Icon name="circle" size={8} />
                       </View>
                       <Text>MID: {item.mid}</Text>
                     </View>
-                    <Text>Keterangan: {item.keterangan}</Text>
+                    {/* <Text>Keterangan: {item.keterangan}</Text> */}
                   </View>
                 </View>
               </View>

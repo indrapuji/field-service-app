@@ -1,15 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  StatusBar,
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import { StatusBar, View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import CardList from '../../../components/CardList';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
@@ -41,7 +31,7 @@ const CreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Assign&tipe=Pickup`,
+        url: `${host}/job-orders/all?tipe=Pickup`,
         headers: { token },
       });
       setList(data.data);
@@ -58,7 +48,7 @@ const CreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Assign&tipe=Pickup&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?tipe=Pickup&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
@@ -84,9 +74,7 @@ const CreScreen = () => {
   useEffect(() => {
     if (list !== null && list !== undefined) {
       if (searchQuery !== null) {
-        const newList = list.filter(
-          (x) => x.nama_merchant.toLowerCase().search(searchQuery) !== -1
-        );
+        const newList = list.filter((x) => x.nama_merchant.toLowerCase().search(searchQuery) !== -1);
         setFiltered(newList);
       } else {
         setFiltered(list);
@@ -102,12 +90,7 @@ const CreScreen = () => {
 
   return (
     <>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        hidden={false}
-        backgroundColor="white"
-      />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
@@ -163,11 +146,7 @@ const CreScreen = () => {
                       }}
                       onPress={() => addMore()}
                     >
-                      {loading ? (
-                        <ActivityIndicator size="small" color="black" />
-                      ) : (
-                        <Text>More</Text>
-                      )}
+                      {loading ? <ActivityIndicator size="small" color="black" /> : <Text>More</Text>}
                     </TouchableOpacity>
                   </View>
                 )}

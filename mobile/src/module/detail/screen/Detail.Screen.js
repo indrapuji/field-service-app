@@ -1,15 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {
-  StatusBar,
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  TextInput,
-  Dimensions,
-  ScrollView,
-  Image,
-} from 'react-native';
+import { StatusBar, View, Text, SafeAreaView, TouchableOpacity, TextInput, Dimensions, ScrollView, Image } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {
   jenisedc,
@@ -87,6 +77,7 @@ const DetailScreen = ({ route, navigation }) => {
     edc_bank: [],
     latitude: '',
     longitude: '',
+    status: 'Done',
   });
   const [kelengkapan, setKelengkapan] = useState({
     adaptor: false,
@@ -305,32 +296,32 @@ const DetailScreen = ({ route, navigation }) => {
     if (value.keterangan !== '') {
       setLoading(true);
       try {
-        const foto_1 = {
-          uri: bagianDepan,
-          type: 'image/jpeg',
-          name: 'foto_1.jpg',
-        };
-        const foto_2 = {
-          uri: SNMesin,
-          type: 'image/jpeg',
-          name: 'foto_1.jpg',
-        };
-        const foto_3 = {
-          uri: depanMesin,
-          type: 'image/jpeg',
-          name: 'foto_1.jpg',
-        };
-        const foto_4 = {
-          uri: transaksi,
-          type: 'image/jpeg',
-          name: 'foto_1.jpg',
-        };
+        // const foto_1 = {
+        //   uri: bagianDepan,
+        //   type: 'image/jpeg',
+        //   name: 'foto_1.jpg',
+        // };
+        // const foto_2 = {
+        //   uri: SNMesin,
+        //   type: 'image/jpeg',
+        //   name: 'foto_1.jpg',
+        // };
+        // const foto_3 = {
+        //   uri: depanMesin,
+        //   type: 'image/jpeg',
+        //   name: 'foto_1.jpg',
+        // };
+        // const foto_4 = {
+        //   uri: transaksi,
+        //   type: 'image/jpeg',
+        //   name: 'foto_1.jpg',
+        // };
         var formData = new FormData();
-        if (bagianDepan) formData.append('foto_1', foto_1);
-        if (SNMesin) formData.append('foto_2', foto_2);
-        if (depanMesin) formData.append('foto_3', foto_3);
-        if (transaksi) formData.append('foto_4', foto_4);
-        if (signature) formData.append('tanda_tangan', signature);
+        // if (bagianDepan) formData.append('foto_1', foto_1);
+        // if (SNMesin) formData.append('foto_2', foto_2);
+        // if (depanMesin) formData.append('foto_3', foto_3);
+        // if (transaksi) formData.append('foto_4', foto_4);
+        // if (signature) formData.append('tanda_tangan', signature);
         for (let key in value) {
           if (key === 'edc_bank') formData.append(`${key}`, JSON.stringify(value[key]));
           else formData.append(`${key}`, value[key]);
@@ -500,12 +491,7 @@ const DetailScreen = ({ route, navigation }) => {
 
   return (
     <>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        hidden={false}
-        backgroundColor="white"
-      />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
       <SafeAreaView style={{ flex: 1, backgroundColor: '#84ccf7' }}>
         <View style={{ flex: 1 }}>
           {loading && <ModalLoad title={'sending data'} progres={true} />}
@@ -516,7 +502,7 @@ const DetailScreen = ({ route, navigation }) => {
               <View
                 style={{
                   width: width,
-                  height: 50,
+                  height: 80,
                   backgroundColor: '#64dfdf',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -526,15 +512,15 @@ const DetailScreen = ({ route, navigation }) => {
                 <TouchableOpacity
                   style={{
                     position: 'absolute',
-                    top: 15,
+                    top: 30,
                     left: 20,
                   }}
                   onPress={() => navigation.goBack()}
                 >
                   <Icon name="arrow-left" size={20} color="black" />
                 </TouchableOpacity>
-                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{itemData.nama_merchant}</Text>
-                <Text>{itemData.alamat_merchant}</Text>
+                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>{itemData.merchant}</Text>
+                <Text style={{ marginHorizontal: 20, textAlign: 'center' }}>{itemData.alamat}</Text>
               </View>
               <ScrollView scrollEnabled={scrollEnabled}>
                 <View style={{ marginVertical: 20, marginHorizontal: 20 }}>
@@ -568,19 +554,11 @@ const DetailScreen = ({ route, navigation }) => {
                     </View>
                     <View style={{ marginTop: 20 }}>
                       <Text>TID</Text>
-                      <TextInput
-                        style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                        value={itemData.serial_number}
-                        editable={false}
-                      />
+                      <TextInput style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }} value={itemData.tid} editable={false} />
                     </View>
                     <View style={{ marginTop: 20 }}>
                       <Text>MID</Text>
-                      <TextInput
-                        style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                        value={itemData.mid}
-                        editable={false}
-                      />
+                      <TextInput style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }} value={itemData.mid} editable={false} />
                     </View>
                     <View style={{ marginTop: 20 }}>
                       <Text>Serial Number</Text>
@@ -722,12 +700,7 @@ const DetailScreen = ({ route, navigation }) => {
                     )}
                     <View style={{ marginTop: 20 }}>
                       <Text>Alamat Merchant</Text>
-                      <TextInput
-                        style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }}
-                        value={itemData.alamat_merchant}
-                        editable={false}
-                      />
-
+                      <TextInput style={{ height: 40, borderColor: 'gray', borderBottomWidth: 1 }} value={itemData.alamat} editable={false} />
                       {value.latitude !== '' && (
                         <View
                           style={{
@@ -737,17 +710,13 @@ const DetailScreen = ({ route, navigation }) => {
                         >
                           <View style={{ marginRight: 40 }}>
                             <Text>latitude</Text>
-                            <View
-                              style={{ marginTop: 10, padding: 10, backgroundColor: '#F8F8F8' }}
-                            >
+                            <View style={{ marginTop: 10, padding: 10, backgroundColor: '#F8F8F8' }}>
                               <Text>{value.latitude}</Text>
                             </View>
                           </View>
                           <View>
                             <Text>longitude</Text>
-                            <View
-                              style={{ marginTop: 10, padding: 10, backgroundColor: '#F8F8F8' }}
-                            >
+                            <View style={{ marginTop: 10, padding: 10, backgroundColor: '#F8F8F8' }}>
                               <Text>{value.longitude}</Text>
                             </View>
                           </View>
@@ -1139,9 +1108,7 @@ const DetailScreen = ({ route, navigation }) => {
                                     <CheckBox
                                       disabled={false}
                                       value={edukasiMerchant.gpn}
-                                      onValueChange={(newValue) =>
-                                        setEdukasiMerchant({ ...edukasiMerchant, gpn: newValue })
-                                      }
+                                      onValueChange={(newValue) => setEdukasiMerchant({ ...edukasiMerchant, gpn: newValue })}
                                     />
                                   </View>
                                   <Text>GPN</Text>
@@ -1157,9 +1124,7 @@ const DetailScreen = ({ route, navigation }) => {
                                     <CheckBox
                                       disabled={false}
                                       value={edukasiMerchant.gestun}
-                                      onValueChange={(newValue) =>
-                                        setEdukasiMerchant({ ...edukasiMerchant, gestun: newValue })
-                                      }
+                                      onValueChange={(newValue) => setEdukasiMerchant({ ...edukasiMerchant, gestun: newValue })}
                                     />
                                   </View>
                                   <Text>Larangan Gestun</Text>
@@ -1198,9 +1163,7 @@ const DetailScreen = ({ route, navigation }) => {
                                     <CheckBox
                                       disabled={false}
                                       value={edukasiMerchant.split}
-                                      onValueChange={(newValue) =>
-                                        setEdukasiMerchant({ ...edukasiMerchant, split: newValue })
-                                      }
+                                      onValueChange={(newValue) => setEdukasiMerchant({ ...edukasiMerchant, split: newValue })}
                                     />
                                   </View>
                                   <Text>Larangan Split Transaksi</Text>
@@ -1245,9 +1208,7 @@ const DetailScreen = ({ route, navigation }) => {
                                   <CheckBox
                                     disabled={false}
                                     value={kelengkapan.adaptor}
-                                    onValueChange={(newValue) =>
-                                      handdleKelengkapan('adaptor', newValue)
-                                    }
+                                    onValueChange={(newValue) => handdleKelengkapan('adaptor', newValue)}
                                   />
                                 </View>
                                 <Text>Adaptor</Text>
@@ -1263,9 +1224,7 @@ const DetailScreen = ({ route, navigation }) => {
                                   <CheckBox
                                     disabled={false}
                                     value={kelengkapan.dongle_prepaid}
-                                    onValueChange={(newValue) =>
-                                      handdleKelengkapan('dongle_prepaid', newValue)
-                                    }
+                                    onValueChange={(newValue) => handdleKelengkapan('dongle_prepaid', newValue)}
                                   />
                                 </View>
                                 <Text>Dongle Prepaid</Text>
@@ -1281,9 +1240,7 @@ const DetailScreen = ({ route, navigation }) => {
                                   <CheckBox
                                     disabled={false}
                                     value={kelengkapan.kabel_power}
-                                    onValueChange={(newValue) =>
-                                      handdleKelengkapan('kabel_power', newValue)
-                                    }
+                                    onValueChange={(newValue) => handdleKelengkapan('kabel_power', newValue)}
                                   />
                                 </View>
                                 <Text>Kabel Power</Text>
@@ -1301,9 +1258,7 @@ const DetailScreen = ({ route, navigation }) => {
                                   <CheckBox
                                     disabled={false}
                                     value={kelengkapan.kabel_telpon}
-                                    onValueChange={(newValue) =>
-                                      handdleKelengkapan('kabel_telpon', newValue)
-                                    }
+                                    onValueChange={(newValue) => handdleKelengkapan('kabel_telpon', newValue)}
                                   />
                                 </View>
                                 <Text>Kabel Telepon</Text>
@@ -1319,9 +1274,7 @@ const DetailScreen = ({ route, navigation }) => {
                                   <CheckBox
                                     disabled={false}
                                     value={kelengkapan.materi_promosi}
-                                    onValueChange={(newValue) =>
-                                      handdleKelengkapan('materi_promosi', newValue)
-                                    }
+                                    onValueChange={(newValue) => handdleKelengkapan('materi_promosi', newValue)}
                                   />
                                 </View>
                                 <Text>Materi Promosi</Text>
@@ -1341,11 +1294,7 @@ const DetailScreen = ({ route, navigation }) => {
                                 }}
                               >
                                 <View style={{ marginRight: 5 }}>
-                                  <CheckBox
-                                    disabled={false}
-                                    value={edcBanklain.bca}
-                                    onValueChange={(newValue) => handdleBankLain('bca', newValue)}
-                                  />
+                                  <CheckBox disabled={false} value={edcBanklain.bca} onValueChange={(newValue) => handdleBankLain('bca', newValue)} />
                                 </View>
                                 <Text>BCA</Text>
                               </View>
@@ -1360,9 +1309,7 @@ const DetailScreen = ({ route, navigation }) => {
                                   <CheckBox
                                     disabled={false}
                                     value={edcBanklain.mandiri}
-                                    onValueChange={(newValue) =>
-                                      handdleBankLain('mandiri', newValue)
-                                    }
+                                    onValueChange={(newValue) => handdleBankLain('mandiri', newValue)}
                                   />
                                 </View>
                                 <Text>Mandiri</Text>
@@ -1375,11 +1322,7 @@ const DetailScreen = ({ route, navigation }) => {
                                 }}
                               >
                                 <View style={{ marginRight: 5 }}>
-                                  <CheckBox
-                                    disabled={false}
-                                    value={edcBanklain.bri}
-                                    onValueChange={(newValue) => handdleBankLain('bri', newValue)}
-                                  />
+                                  <CheckBox disabled={false} value={edcBanklain.bri} onValueChange={(newValue) => handdleBankLain('bri', newValue)} />
                                 </View>
                                 <Text>BRI</Text>
                               </View>
@@ -1393,11 +1336,7 @@ const DetailScreen = ({ route, navigation }) => {
                                 }}
                               >
                                 <View style={{ marginRight: 5 }}>
-                                  <CheckBox
-                                    disabled={false}
-                                    value={edcBanklain.bni}
-                                    onValueChange={(newValue) => handdleBankLain('bni', newValue)}
-                                  />
+                                  <CheckBox disabled={false} value={edcBanklain.bni} onValueChange={(newValue) => handdleBankLain('bni', newValue)} />
                                 </View>
                                 <Text>BNI</Text>
                               </View>
@@ -1428,9 +1367,7 @@ const DetailScreen = ({ route, navigation }) => {
                                   <CheckBox
                                     disabled={false}
                                     value={edcBanklain.lainnya}
-                                    onValueChange={(newValue) =>
-                                      handdleBankLain('lainnya', newValue)
-                                    }
+                                    onValueChange={(newValue) => handdleBankLain('lainnya', newValue)}
                                   />
                                 </View>
                                 <Text>Lainnya</Text>
@@ -1474,10 +1411,7 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Foto Bagian Depan Merchant</Text>
                       <TouchableOpacity onPress={() => handdleImage('bagianDepan')}>
                         {bagianDepan ? (
-                          <Image
-                            source={{ uri: bagianDepan }}
-                            style={{ width: width - 40, height: ((width - 40) / 4) * 3 }}
-                          />
+                          <Image source={{ uri: bagianDepan }} style={{ width: width - 40, height: ((width - 40) / 4) * 3 }} />
                         ) : (
                           <View
                             style={{
@@ -1494,10 +1428,7 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Foto SN Mesin EDC</Text>
                       <TouchableOpacity onPress={() => handdleImage('SNMesin')}>
                         {SNMesin ? (
-                          <Image
-                            source={{ uri: SNMesin }}
-                            style={{ width: width - 40, height: ((width - 40) / 4) * 3 }}
-                          />
+                          <Image source={{ uri: SNMesin }} style={{ width: width - 40, height: ((width - 40) / 4) * 3 }} />
                         ) : (
                           <View
                             style={{
@@ -1514,10 +1445,7 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Foto Bagian Depan Mesin EDC</Text>
                       <TouchableOpacity onPress={() => handdleImage('depanMesin')}>
                         {depanMesin ? (
-                          <Image
-                            source={{ uri: depanMesin }}
-                            style={{ width: width - 40, height: ((width - 40) / 4) * 3 }}
-                          />
+                          <Image source={{ uri: depanMesin }} style={{ width: width - 40, height: ((width - 40) / 4) * 3 }} />
                         ) : (
                           <View
                             style={{
@@ -1534,10 +1462,7 @@ const DetailScreen = ({ route, navigation }) => {
                       <Text>Foto Transaksi</Text>
                       <TouchableOpacity onPress={() => handdleImage('transaksi')}>
                         {transaksi ? (
-                          <Image
-                            source={{ uri: transaksi }}
-                            style={{ width: width - 40, height: ((width - 40) / 4) * 3 }}
-                          />
+                          <Image source={{ uri: transaksi }} style={{ width: width - 40, height: ((width - 40) / 4) * 3 }} />
                         ) : (
                           <View
                             style={{
@@ -1594,12 +1519,7 @@ const DetailScreen = ({ route, navigation }) => {
           </View>
         </View>
       </SafeAreaView>
-      <BottomSheet
-        ref={sheetRef}
-        snapPoints={[0, 200]}
-        borderRadius={10}
-        renderContent={renderContent}
-      />
+      <BottomSheet ref={sheetRef} snapPoints={[0, 200]} borderRadius={10} renderContent={renderContent} />
     </>
   );
 };
