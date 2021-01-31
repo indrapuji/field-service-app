@@ -17,6 +17,7 @@ async function seed() {
       tipe,
       vendor_id: 1,
       teknisi_id: 4,
+      status: "Assign"
     };
   });
   await job_order.bulkCreate(query);
