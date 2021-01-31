@@ -20,8 +20,8 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
-import { HostUrl } from '../../reusable';
-import newAlert from '../../components/NewAlert';
+import { HostUrl } from '../../../reusable';
+import newAlert from '../../../components/NewAlert';
 
 const Register = () => {
   const history = useHistory();
@@ -135,7 +135,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Nama Lengkap</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Nama Lengkap..." name="nama_lengkap" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan Nama Lengkap..."
+                      name="nama_lengkap"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -143,7 +147,13 @@ const Register = () => {
                     <CLabel htmlFor="email-input">Email</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="email" placeholder="Masukkan Email..." autoComplete="email" name="email" onChange={onFormChange} />
+                    <CInput
+                      type="email"
+                      placeholder="Masukkan Email..."
+                      autoComplete="email"
+                      name="email"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -151,7 +161,13 @@ const Register = () => {
                     <CLabel htmlFor="password-input">Password</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="password" placeholder="Masukkan Password..." autoComplete="new-password" name="password" onChange={onFormChange} />
+                    <CInput
+                      type="password"
+                      placeholder="Masukkan Password..."
+                      autoComplete="new-password"
+                      name="password"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -160,13 +176,25 @@ const Register = () => {
                   </CCol>
                   <CCol md="9">
                     <CFormGroup variant="custom-radio" inline>
-                      <CInputRadio custom id="inline-radio1" name="gender" value="Male" onChange={onFormChange} />
+                      <CInputRadio
+                        custom
+                        id="inline-radio1"
+                        name="gender"
+                        value="Male"
+                        onChange={onFormChange}
+                      />
                       <CLabel variant="custom-checkbox" htmlFor="inline-radio1">
                         Laki - laki
                       </CLabel>
                     </CFormGroup>
                     <CFormGroup variant="custom-radio" inline>
-                      <CInputRadio custom id="inline-radio2" name="gender" value="Female" onChange={onFormChange} />
+                      <CInputRadio
+                        custom
+                        id="inline-radio2"
+                        name="gender"
+                        value="Female"
+                        onChange={onFormChange}
+                      />
                       <CLabel variant="custom-checkbox" htmlFor="inline-radio2">
                         Perempuan
                       </CLabel>
@@ -178,7 +206,12 @@ const Register = () => {
                     <CLabel htmlFor="textarea-input">Alamat</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CTextarea rows="9" placeholder="Masukkan Alamat..." name="alamat" onChange={onFormChange} />
+                    <CTextarea
+                      rows="9"
+                      placeholder="Masukkan Alamat..."
+                      name="alamat"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -186,7 +219,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Nama Bank</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Nama Bank..." name="nama_bank" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan Nama Bank..."
+                      name="nama_bank"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -194,7 +231,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No Rekening</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan No Rekening..." name="no_rekening" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan No Rekening..."
+                      name="no_rekening"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -202,7 +243,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No Telp</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan No Telp..." name="no_telp" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan No Telp..."
+                      name="no_telp"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -210,7 +255,13 @@ const Register = () => {
                     <CLabel htmlFor="date-input">Tanggal Lahir</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="date" id="date-input" placeholder="date" name="tgl_lahir" onChange={onFormChange} />
+                    <CInput
+                      type="date"
+                      id="date-input"
+                      placeholder="date"
+                      name="tgl_lahir"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>

@@ -17,8 +17,8 @@ import {
 import CIcon from '@coreui/icons-react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { HostUrl } from '../../reusable';
-import newAlert from '../../components/NewAlert';
+import { HostUrl } from '../../../reusable';
+import newAlert from '../../../components/NewAlert';
 
 const RegisterVendor = () => {
   const history = useHistory();
@@ -80,7 +80,12 @@ const RegisterVendor = () => {
                     <CLabel htmlFor="textarea-input">Alamat</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CTextarea rows="9" placeholder="Alamat..." name="alamat" onChange={onFormChange} />
+                    <CTextarea
+                      rows="9"
+                      placeholder="Alamat..."
+                      name="alamat"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
               </CForm>

@@ -5,7 +5,8 @@ import {
   CToggler,
   CHeaderBrand,
   CHeaderNav,
-  // CHeaderNavItem, CHeaderNavLink,
+  // CHeaderNavItem,
+  // CHeaderNavLink,
   CSubheader,
   CBreadcrumbRouter,
 } from '@coreui/react';
@@ -56,6 +57,7 @@ const TheHeader = () => {
       </CHeaderNav>
       <CHeaderNav className="px-3">
         {tipe === 'Super Admin' && <TheHeaderDropdownNotif />}
+        {tipe}
         <TheHeaderDropdownMssg />
         <TheHeaderDropdown />
       </CHeaderNav>

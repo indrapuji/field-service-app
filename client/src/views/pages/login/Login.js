@@ -42,8 +42,10 @@ const Login = () => {
         data: formData,
       });
       if (data.tipe !== 'Teknisi') {
+        console.log(data);
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('tipe', data.tipe);
+        localStorage.setItem('image', data.userData.foto_profil);
         newAlert({ status: 'success', message: 'Berhasil' });
         history.push('/');
       } else {
@@ -72,7 +74,13 @@ const Login = () => {
                           <CIcon name="cil-user" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="text" placeholder="Username" autoComplete="username" name="email" onChange={onFormChange} />
+                      <CInput
+                        type="text"
+                        placeholder="Username"
+                        autoComplete="username"
+                        name="email"
+                        onChange={onFormChange}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupPrepend>
@@ -80,7 +88,13 @@ const Login = () => {
                           <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={onFormChange} />
+                      <CInput
+                        type="password"
+                        placeholder="Password"
+                        autoComplete="current-password"
+                        name="password"
+                        onChange={onFormChange}
+                      />
                     </CInputGroup>
                     {/* <CFormGroup className="mb-4">
                       <CInputGroupPrepend>

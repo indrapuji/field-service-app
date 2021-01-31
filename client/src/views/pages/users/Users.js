@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow } from '@coreui/react';
 import axios from 'axios';
-import { HostUrl } from '../../reusable';
+import { HostUrl } from '../../../reusable';
 
 // import usersData from './UsersData';
 

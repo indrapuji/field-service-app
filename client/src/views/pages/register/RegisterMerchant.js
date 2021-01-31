@@ -20,8 +20,8 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
-import { HostUrl } from '../../reusable';
-import newAlert from '../../components/NewAlert';
+import { HostUrl } from '../../../reusable';
+import newAlert from '../../../components/NewAlert';
 
 const Register = () => {
   const history = useHistory();

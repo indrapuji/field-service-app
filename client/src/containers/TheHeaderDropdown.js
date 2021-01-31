@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { CDropdown, CDropdownItem, CDropdownMenu, CDropdownToggle, CImg } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { useHistory } from 'react-router-dom';
 
 const TheHeaderDropdown = () => {
+  const [avatar, setAvatar] = useState(null);
+  useEffect(() => {
+    const image = localStorage.getItem('image');
+    setAvatar(image);
+  }, []);
   const history = useHistory();
   const logoutUser = () => {
     localStorage.clear();
@@ -13,7 +18,7 @@ const TheHeaderDropdown = () => {
     <CDropdown inNav className="c-header-nav-items mx-2" direction="down">
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
-          <CImg src={'avatars/6.jpg'} className="c-avatar-img" alt="admin@bootstrapmaster.com" />
+          <CImg src={avatar} className="c-avatar-img" />
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">

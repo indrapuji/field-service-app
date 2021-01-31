@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination } from '@coreui/react';
+import {
+  CBadge,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CDataTable,
+  CRow,
+  CPagination,
+} from '@coreui/react';
 
 // import usersData from './UsersData';
-import token from '../token';
+import token from '../../token';
 import axios from 'axios';
-import { HostUrl } from '../../reusable';
+import { HostUrl } from '../../../reusable';
 
 const getBadge = (status) => {
   switch (status) {
-    case 'Active':
+    case 'Done':
       return 'success';
     case 'Inactive':
       return 'secondary';
-    case 'Pending':
+    case 'Progres':
       return 'warning';
     case 'Banned':
       return 'danger';
@@ -40,12 +49,13 @@ const Workorders = () => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?status=Done&page=' + page,
+        url: HostUrl + '/job-orders/all?page=' + page,
         headers: {
           token,
         },
       });
       setJobOrderData(data);
+      console.log(data);
     } catch (err) {
       console.log('ERROR');
       console.log(err);
@@ -56,13 +66,13 @@ const Workorders = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['merchant', 'alamat', 'no_telp', 'regional', 'mid', 'tid', 'status'];
+  const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status'];
 
   return (
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>Done</CCardHeader>
+          <CCardHeader>All</CCardHeader>
           {jobOrderData && (
             <>
               <CCardBody>
@@ -81,7 +91,11 @@ const Workorders = () => {
                     ),
                   }}
                 />
-                <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
+                <CPagination
+                  activePage={jobOrderData.currentPage}
+                  pages={jobOrderData.pages}
+                  onActivePageChange={changePage}
+                />
               </CCardBody>
             </>
           )}
