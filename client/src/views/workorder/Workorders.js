@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination } from '@coreui/react';
+import {
+  CBadge,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CDataTable,
+  CRow,
+  CPagination,
+} from '@coreui/react';
 
 // import usersData from './UsersData';
 import token from '../token';
@@ -57,7 +66,7 @@ const Workorders = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['merchant', 'alamat', 'no_telp', 'regional', 'mid', 'tid', 'status'];
+  const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status'];
 
   return (
     <CRow>
@@ -82,7 +91,11 @@ const Workorders = () => {
                     ),
                   }}
                 />
-                <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
+                <CPagination
+                  activePage={jobOrderData.currentPage}
+                  pages={jobOrderData.pages}
+                  onActivePageChange={changePage}
+                />
               </CCardBody>
             </>
           )}

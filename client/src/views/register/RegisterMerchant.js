@@ -120,7 +120,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Nama Merchant</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Nama Merchant..." name="merchant" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan Nama Merchant..."
+                      name="merchant"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -128,7 +132,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Alamat Merchant</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Alamat Merchant..." name="alamat" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan Alamat Merchant..."
+                      name="alamat"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -136,7 +144,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">No Telp</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Telepon Merchant..." name="no_telp" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan Telepon Merchant..."
+                      name="no_telp"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -152,7 +164,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">MID</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Serial Number..." name="mid" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan Serial Number..."
+                      name="mid"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -160,7 +176,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">TID</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Serial Number..." name="tid" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan Serial Number..."
+                      name="tid"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -168,7 +188,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">EDC Connection</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan EDC Connection..." name="edc_connection" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan EDC Connection..."
+                      name="edc_connection"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -176,7 +200,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Tipe EDC</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan EDC Connection..." name="type_edc" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan EDC Connection..."
+                      name="type_edc"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -184,7 +212,11 @@ const Register = () => {
                     <CLabel htmlFor="text-input">Reegional</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan EDC Connection..." name="regional" onChange={onFormChange} />
+                    <CInput
+                      placeholder="Masukkan EDC Connection..."
+                      name="regional"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
@@ -196,6 +228,8 @@ const Register = () => {
                       <option value="0">Please select</option>
                       <option value="Kunjungan">Kunjungan</option>
                       <option value="Pickup">Pickup Sales Draft</option>
+                      <option value="Survey">OTS Survey</option>
+                      <option value="Risk">Risk Unit</option>
                     </CSelect>
                   </CCol>
                 </CFormGroup>
