@@ -12,6 +12,7 @@ const CardList = (props) => {
   const [merchantName, setMerchantName] = useState('');
   const [newDataID, setNewDataID] = useState('');
   const navigation = useNavigation();
+  console.log(list);
 
   const openModal = (dataID, dataName) => {
     setMerchantName(dataName);

@@ -31,7 +31,7 @@ const SurveyScreen = ({ navigation }) => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?tipe=Survey&status=Assign`,
+        url: `${host}/job-orders/all?tipe=Survey`,
         headers: { token },
       });
       setList(data.data);
@@ -48,7 +48,7 @@ const SurveyScreen = ({ navigation }) => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?tipe=Survey&status=Assign&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?tipe=Survey&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
@@ -137,7 +137,28 @@ const SurveyScreen = ({ navigation }) => {
               </View>
             </View>
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
-              <ScrollView showsVerticalScrollIndicator={false}></ScrollView>
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{ flex: 1 }}>
+                  <CardList list={filtered} source={'done'} />
+                </View>
+                {page > currentPage && (
+                  <View style={{ alignItems: 'center', marginVertical: 5 }}>
+                    <TouchableOpacity
+                      style={{
+                        width: 100,
+                        height: 40,
+                        borderWidth: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 20,
+                      }}
+                      onPress={() => addMore()}
+                    >
+                      {loading ? <ActivityIndicator size="small" color="black" /> : <Text>More</Text>}
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </ScrollView>
               <View style={{ position: 'absolute', right: 30, bottom: 20 }}>
                 <TouchableOpacity onPress={() => navigation.navigate('Create')}>
                   <View

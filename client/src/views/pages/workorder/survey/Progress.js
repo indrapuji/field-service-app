@@ -57,7 +57,7 @@ const Workorders = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['merchant', 'alamat', 'no_telp', 'regional', 'mid', 'tid', 'status'];
+  const fields = ['merchant', 'alamat', 'pic', 'no_telp', 'kota', 'regional', 'id', 'status'];
 
   return (
     <CRow>

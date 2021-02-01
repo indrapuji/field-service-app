@@ -21,7 +21,6 @@ const CreateScreen = ({ navigation }) => {
     pic: '',
     no_telp: '',
     tanggal_impor: new Date(),
-    teknisi_id: '',
     latitude: '',
     longitude: '',
     tipe: 'Survey',
@@ -30,6 +29,7 @@ const CreateScreen = ({ navigation }) => {
   const [bagianDalam, setBagianDalam] = useState(null);
   const [signature, setSignature] = useState(null);
   const [mSuccess, setMSuccess] = useState(false);
+  const [mError, setMError] = useState(false);
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const [imageStatus, setImageStatus] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -160,28 +160,59 @@ const CreateScreen = ({ navigation }) => {
     </View>
   );
 
-  const sendData = () => {
+  const sendData = async () => {
     setLoading(true);
-    const foto_toko_1 = {
-      uri: bagianDepan,
-      type: 'image/jpeg',
-      name: 'foto_toko_1.jpg',
-    };
-    const foto_toko_2 = {
-      uri: bagianDalam,
-      type: 'image/jpeg',
-      name: 'foto_toko_2.jpg',
-    };
-    var formData = new FormData();
-    if (bagianDepan) formData.append('foto_toko_1', foto_toko_1);
-    if (bagianDalam) formData.append('foto_toko_2', foto_toko_2);
-    if (signature) formData.append('tanda_tangan', signature);
-    for (let key in value) {
-      formData.append(`${key}`, value[key]);
+    try {
+      const foto_toko_1 = {
+        uri: bagianDepan,
+        type: 'image/jpeg',
+        name: 'foto_toko_1.jpg',
+      };
+      const foto_toko_2 = {
+        uri: bagianDalam,
+        type: 'image/jpeg',
+        name: 'foto_toko_2.jpg',
+      };
+      var formData = new FormData();
+      if (bagianDepan) formData.append('foto_toko_1', foto_toko_1);
+      if (bagianDalam) formData.append('foto_toko_2', foto_toko_2);
+      if (signature) formData.append('tanda_tangan', signature);
+      for (let key in value) {
+        formData.append(`${key}`, value[key]);
+      }
+      const token = await AsyncStorage.getItem('userToken');
+      const { data } = await axios({
+        method: 'POST',
+        url: `${host}/job-orders`,
+        data: formData,
+        headers: { token },
+      });
+      setLoading(false);
+      console.log('berhasil');
+      navigation.navigate('Survey');
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(JSON.stringify(error.response.data));
+        console.log(JSON.stringify(error.response.status));
+        console.log(JSON.stringify(error.response.headers));
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(JSON.stringify(error.request));
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(JSON.stringify(error.config));
+      setLoading(false);
+      setMError(true);
+      setTimeout(() => {
+        setMError(false);
+      }, 2000);
     }
-    setLoading(false);
-    console.log(formData);
-    navigation.navigate('Survey');
   };
 
   return (
@@ -191,6 +222,7 @@ const CreateScreen = ({ navigation }) => {
         <View style={{ flex: 1 }}>
           {loading && <ModalLoad title={'sending data'} progres={true} />}
           {mSuccess && <ModalLoad title={'Signature Save'} progres={false} />}
+          {mError && <ModalLoad title={'Failed sending'} progres={false} />}
           <View
             style={{
               width: width,
