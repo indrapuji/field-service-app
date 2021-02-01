@@ -1,13 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-  StatusBar,
-  View,
-  Text,
-  SafeAreaView,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import { StatusBar, View, Text, SafeAreaView, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
 import host from '@utilities/host';
@@ -73,13 +65,8 @@ const ProfileScreen = ({ navigation }) => {
   }, [isFocused]);
   return (
     <>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        hidden={false}
-        backgroundColor="white"
-      />
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#84ccf7' }}>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
         <View style={{ flex: 1 }}>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View
@@ -97,15 +84,10 @@ const ProfileScreen = ({ navigation }) => {
                 }}
               >
                 <View style={{ alignItems: 'center' }}>
-                  <Image
-                    source={{ uri: dataProfile.foto_profil }}
-                    style={{ width: 200, height: 200, borderRadius: 100 }}
-                  />
+                  <Image source={{ uri: dataProfile.foto_profil }} style={{ width: 200, height: 200, borderRadius: 100 }} />
                 </View>
                 <View style={{ marginTop: 20, alignItems: 'center' }}>
-                  <Text style={{ fontSize: 25, fontWeight: 'bold' }}>
-                    {dataProfile.nama_lengkap}
-                  </Text>
+                  <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{dataProfile.nama_lengkap}</Text>
                   <Text style={{ fontSize: 20, fontStyle: 'italic' }}>{dataProfile.tipe}</Text>
                 </View>
 
@@ -129,9 +111,7 @@ const ProfileScreen = ({ navigation }) => {
                         borderRadius: 20,
                       }}
                     >
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                        {dataProfile.jobOrderCount}
-                      </Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderCount}</Text>
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Job Order</Text>
                     </View>
                   </TouchableOpacity>
@@ -147,9 +127,7 @@ const ProfileScreen = ({ navigation }) => {
                         borderRadius: 20,
                       }}
                     >
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                        {dataProfile.jobOrderProgres}
-                      </Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderProgres}</Text>
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Progress</Text>
                     </View>
                   </TouchableOpacity>
@@ -165,9 +143,7 @@ const ProfileScreen = ({ navigation }) => {
                         borderRadius: 20,
                       }}
                     >
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>
-                        {dataProfile.jobOrderDone}
-                      </Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderDone}</Text>
                       <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Done</Text>
                     </View>
                   </TouchableOpacity>
@@ -227,9 +203,7 @@ const ProfileScreen = ({ navigation }) => {
                     <Text style={{ fontWeight: 'bold' }}>No Rekening</Text>
                     <View style={{ flexDirection: 'row' }}>
                       <Text style={{ marginTop: 10 }}>{dataProfile.nama_bank}</Text>
-                      <Text style={{ marginTop: 10, marginLeft: 20 }}>
-                        {dataProfile.no_rekening}
-                      </Text>
+                      <Text style={{ marginTop: 10, marginLeft: 20 }}>{dataProfile.no_rekening}</Text>
                     </View>
                   </View>
                 </View>
