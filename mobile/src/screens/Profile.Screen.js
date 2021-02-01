@@ -65,7 +65,7 @@ const ProfileScreen = ({ navigation }) => {
   }, [isFocused]);
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <SafeAreaView style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
         <View style={{ flex: 1 }}>
           <ScrollView showsVerticalScrollIndicator={false}>

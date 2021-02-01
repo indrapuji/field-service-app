@@ -86,7 +86,7 @@ const ProgressScreen = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <ScrollView
         contentContainerStyle={{
           flex: 1,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, TouchableHighlight, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -10,7 +10,7 @@ const NavSection = (props) => {
   const navigation = useNavigation();
   const { title, color, iconName, navto } = props;
   return (
-    <TouchableOpacity onPress={() => navigation.navigate(navto)}>
+    <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => navigation.navigate(navto)}>
       <View
         style={{
           backgroundColor: color,
@@ -44,7 +44,7 @@ const NavSection = (props) => {
           {title}
         </Text>
       </View>
-    </TouchableOpacity>
+    </TouchableHighlight>
   );
 };
 

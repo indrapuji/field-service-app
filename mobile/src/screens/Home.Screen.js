@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
   }, []);
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <SafeAreaView style={styles.bodyContainer}>
         <View style={styles.container}>
           <View style={styles.headersContainer}>
@@ -132,7 +132,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sectionPosition: {
-    marginTop: 20,
     marginLeft: 10,
   },
   sectionTitle: {

@@ -100,12 +100,12 @@ const PreScreen = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
         }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={'#e3fdfd'} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <SafeAreaView style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
           <View style={{ flex: 1 }}>
