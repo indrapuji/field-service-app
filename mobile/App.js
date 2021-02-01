@@ -9,7 +9,7 @@ import AuthScreen from '@screens/Auth.Screen';
 import HomeScreen from '@screens/Home.Screen';
 import KunjunganTab from '@navigations/KunjunganTab';
 import PickupTab from '@navigations/PickupTab';
-import SurveyTab from '@navigations/SurveyTab';
+import SurveyScreen from '@screens/Survey.Screen';
 import RiskTab from '@navigations/RiskTab';
 import DetailScreen from '@screens/detail/Detail.Screen';
 import ProfileScreen from '@screens/Profile.Screen';
@@ -19,6 +19,8 @@ const App = () => {
   const initialLoginState = {
     isLoading: true,
     userToken: null,
+    userName: null,
+    userAvatar: null,
   };
 
   const loginReducer = (prevState, action) => {
@@ -28,6 +30,7 @@ const App = () => {
           ...prevState,
           userName: action.name,
           userToken: action.token,
+          userAvatar: action.avatar,
           isLoading: false,
         };
       case 'LOGIN':
@@ -35,6 +38,7 @@ const App = () => {
           ...prevState,
           userName: action.name,
           userToken: action.token,
+          userAvatar: action.avatar,
           isLoading: false,
         };
       case 'LOGOUT':
@@ -42,6 +46,7 @@ const App = () => {
           ...prevState,
           userName: null,
           userToken: null,
+          userAvatar: null,
           isLoading: false,
         };
     }
@@ -51,14 +56,15 @@ const App = () => {
 
   const authContext = useMemo(
     () => ({
-      signIn: async (userToken, userName) => {
+      signIn: async (userToken, userName, userAvatar) => {
         try {
           await AsyncStorage.setItem('userToken', userToken);
           await AsyncStorage.setItem('userName', userName);
+          await AsyncStorage.setItem('userAvatar', userAvatar);
         } catch (e) {
           console.log(e);
         }
-        dispatch({ type: 'LOGIN', token: userToken, name: userName });
+        dispatch({ type: 'LOGIN', token: userToken, name: userName, avatar: userAvatar });
       },
       signOut: async () => {
         try {
@@ -79,10 +85,11 @@ const App = () => {
       try {
         userToken = await AsyncStorage.getItem('userToken');
         userName = await AsyncStorage.getItem('userName');
+        userAvatar = await AsyncStorage.getItem('userAvatar');
       } catch (e) {
         console.log(e);
       }
-      dispatch({ type: 'RETRIVE_TOKEN', token: userToken, name: userName });
+      dispatch({ type: 'RETRIVE_TOKEN', token: userToken, name: userName, avatar: userAvatar });
     }, 1000);
   }, []);
 
@@ -99,48 +106,16 @@ const App = () => {
         <Stack.Navigator initialRouteName="Auth" headerMode="screen">
           {loginState.userToken !== null ? (
             <>
-              <Stack.Screen
-                name="Home"
-                component={HomeScreen}
-                options={{ title: null, headerShown: false }}
-              />
-              <Stack.Screen
-                name="Kunjungan"
-                component={KunjunganTab}
-                options={{ title: null, headerShown: false }}
-              />
-              <Stack.Screen
-                name="Pickup"
-                component={PickupTab}
-                options={{ title: null, headerShown: false }}
-              />
-              <Stack.Screen
-                name="Survey"
-                component={SurveyTab}
-                options={{ title: null, headerShown: false }}
-              />
-              <Stack.Screen
-                name="Risk"
-                component={RiskTab}
-                options={{ title: null, headerShown: false }}
-              />
-              <Stack.Screen
-                name="Detail"
-                component={DetailScreen}
-                options={{ title: null, headerShown: false }}
-              />
-              <Stack.Screen
-                name="Profile"
-                component={ProfileScreen}
-                options={{ title: null, headerShown: false }}
-              />
+              <Stack.Screen name="Home" component={HomeScreen} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Kunjungan" component={KunjunganTab} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Pickup" component={PickupTab} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Survey" component={SurveyScreen} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Risk" component={RiskTab} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Detail" component={DetailScreen} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: null, headerShown: false }} />
             </>
           ) : (
-            <Stack.Screen
-              name="Auth"
-              component={AuthScreen}
-              options={{ title: null, headerShown: false }}
-            />
+            <Stack.Screen name="Auth" component={AuthScreen} options={{ title: null, headerShown: false }} />
           )}
         </Stack.Navigator>
       </NavigationContainer>

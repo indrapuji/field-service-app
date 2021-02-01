@@ -55,7 +55,7 @@ const AuthScreen = () => {
       .then(({ data }) => {
         setLoading(false);
         if (data.userData.tipe === 'Teknisi') {
-          signIn(data.access_token, data.userData.nama_lengkap);
+          signIn(data.access_token, data.userData.nama_lengkap, data.userData.foto_profil);
         } else {
           setFailText('Not Authorize');
           failLogin();

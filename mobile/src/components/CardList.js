@@ -53,34 +53,10 @@ const CardList = (props) => {
                 style={{
                   ...styles.cardContainer,
                   borderColor:
-                    item.tipe === 'Kunjungan'
-                      ? '#80ffdb'
-                      : item.tipe === 'Pickup'
-                      ? '#e9b0df'
-                      : item.tipe === 'Risk'
-                      ? '#6930c3'
-                      : '#ff577f',
+                    item.tipe === 'Kunjungan' ? '#80ffdb' : item.tipe === 'Pickup' ? '#e9b0df' : item.tipe === 'Risk' ? '#6930c3' : '#ff577f',
                 }}
               >
                 <View style={styles.contentPosition}>
-                  <View style={styles.centerJustify}>
-                    {/* <View
-                      style={{
-                        ...styles.borderStatus,
-                        borderColor: item.tipe === 'Kunjungan' ? 'green' : 'orange',
-                        backgroundColor: item.tipe === 'Pickup' ? 'orange' : 'white',
-                      }}
-                    >
-                      <Text
-                        style={{
-                          ...styles.boldText,
-                          color: item.tipe === 'Pickup' ? 'white' : 'black',
-                        }}
-                      >
-                        {item.tipe === 'Kunjungan' ? 'K' : 'P'}
-                      </Text>
-                    </View> */}
-                  </View>
                   <View style={styles.centerJustify}>
                     <View style={styles.flexRow}>
                       <Text style={styles.boldText}>{item.merchant}</Text>

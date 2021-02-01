@@ -1,15 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import {
-  StatusBar,
-  View,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import { StatusBar, View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
 import CardList from '@components/CardList';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
@@ -100,12 +90,7 @@ const CreScreen = () => {
 
   return (
     <>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        hidden={false}
-        backgroundColor="white"
-      />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
@@ -113,7 +98,7 @@ const CreScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, position: 'relative' }}>
             <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
               <View style={{ position: 'relative' }}>
                 <TextInput
@@ -144,32 +129,31 @@ const CreScreen = () => {
               </View>
             </View>
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={{ flex: 1 }}>
-                  <CardList list={filtered} source={'home'} update={update} />
-                </View>
-                {page > currentPage && (
-                  <View style={{ alignItems: 'center', marginVertical: 5 }}>
-                    <TouchableOpacity
-                      style={{
-                        width: 100,
-                        height: 40,
-                        borderWidth: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 20,
-                      }}
-                      onPress={() => addMore()}
-                    >
-                      {loading ? (
-                        <ActivityIndicator size="small" color="black" />
-                      ) : (
-                        <Text>More</Text>
-                      )}
-                    </TouchableOpacity>
+              <ScrollView showsVerticalScrollIndicator={false}></ScrollView>
+              <View style={{ position: 'absolute', right: 30, bottom: 20 }}>
+                <TouchableOpacity onPress={() => console.log('test')}>
+                  <View
+                    style={{
+                      width: 70,
+                      height: 70,
+                      backgroundColor: '#ff577f',
+                      borderRadius: 40,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      shadowColor: '#000',
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.84,
+                      elevation: 5,
+                    }}
+                  >
+                    <Icon name="create" color="black" size={35} />
                   </View>
-                )}
-              </ScrollView>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </SafeAreaView>
