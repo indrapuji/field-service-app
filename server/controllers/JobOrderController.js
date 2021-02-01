@@ -51,8 +51,8 @@ class JobOrderController {
         type
       }
       if (req.files) {
-        if (req.files.foto_1) query.foto_toko_1 = serverUrl + req.files.foto_toko_1[0].path;
-        if (req.files.foto_2) query.foto_toko_2 = serverUrl + req.files.foto_toko_2[0].path;
+        if (req.files.foto_toko_1) query.foto_toko_1 = serverUrl + req.files.foto_toko_1[0].path;
+        if (req.files.foto_toko_2) query.foto_toko_2 = serverUrl + req.files.foto_toko_2[0].path;
       }
       if (tanda_tangan) {
         var base64Data = tanda_tangan.replace(/^data:image\/png;base64,/, '');
