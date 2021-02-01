@@ -46,7 +46,7 @@ class JobOrderController {
         aktifitas,
         vendor_id: userData.vendor_id,
         status,
-        admin_id: id,
+        admin_id: teknisi_id === id ? null : id,
         teknisi_id,
         type
       }
