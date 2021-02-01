@@ -3,17 +3,17 @@ import { useLocation } from 'react-router-dom';
 import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination } from '@coreui/react';
 
 // import usersData from './UsersData';
-// import token from '../../token';
+// import token from '../../../token';
 import axios from 'axios';
-import { HostUrl } from '../../../reusable';
+import { HostUrl } from '../../../../reusable';
 
 const getBadge = (status) => {
   switch (status) {
-    case 'Done':
+    case 'Active':
       return 'success';
     case 'Inactive':
       return 'secondary';
-    case 'Progres':
+    case 'Pending':
       return 'warning';
     case 'Banned':
       return 'danger';
@@ -40,13 +40,12 @@ const Workorders = () => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?status=Progres&page=' + page,
+        url: HostUrl + '/job-orders/all?status=Done&tipe=Pickup&page=' + page,
         headers: {
           token: localStorage.getItem('token'),
         },
       });
       setJobOrderData(data);
-      console.log(data);
     } catch (err) {
       console.log('ERROR');
       console.log(err);
@@ -57,13 +56,13 @@ const Workorders = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status'];
+  const fields = ['merchant', 'alamat', 'no_telp', 'regional', 'mid', 'tid', 'status'];
 
   return (
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>All</CCardHeader>
+          <CCardHeader>Done</CCardHeader>
           {jobOrderData && (
             <>
               <CCardBody>

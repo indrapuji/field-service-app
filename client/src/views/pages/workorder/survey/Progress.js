@@ -5,7 +5,7 @@ import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPaginat
 // import usersData from './UsersData';
 // import token from '../../token';
 import axios from 'axios';
-import { HostUrl } from '../../../reusable';
+import { HostUrl } from '../../../../reusable';
 
 const getBadge = (status) => {
   switch (status) {
@@ -40,7 +40,7 @@ const Workorders = () => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?status=Progres&page=' + page,
+        url: HostUrl + '/job-orders/all?status=Progres&tipe=Survey&page=' + page,
         headers: {
           token: localStorage.getItem('token'),
         },
@@ -57,13 +57,13 @@ const Workorders = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status'];
+  const fields = ['merchant', 'alamat', 'no_telp', 'regional', 'mid', 'tid', 'status'];
 
   return (
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>All</CCardHeader>
+          <CCardHeader>Progress</CCardHeader>
           {jobOrderData && (
             <>
               <CCardBody>

@@ -3,7 +3,7 @@ import { CWidgetDropdown, CRow, CCol } from '@coreui/react';
 import ChartLineSimple from './ChartLineSimple';
 import ChartBarSimple from './ChartBarSimple';
 
-const WidgetsDropdown = () => {
+const WidgetsDropdown = (props) => {
   // render
   return (
     <CRow>
@@ -11,7 +11,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-primary"
           header="9.823"
-          text="Merchant Buka"
+          text="Kunjungan"
           footerSlot={
             <ChartLineSimple
               pointed
@@ -30,7 +30,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-info"
           header="9.823"
-          text="Merchant Tutup"
+          text="Pickup Sales Draft"
           footerSlot={
             <ChartLineSimple
               pointed
@@ -50,7 +50,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-warning"
           header="9.823"
-          text="Merchant tetap"
+          text="OTS Survey"
           footerSlot={
             <ChartLineSimple
               className="mt-3"
@@ -70,7 +70,7 @@ const WidgetsDropdown = () => {
         <CWidgetDropdown
           color="gradient-danger"
           header="9.823"
-          text="Merchant Pindah"
+          text="Risk Unit"
           footerSlot={
             <ChartBarSimple className="mt-3 mx-3" style={{ height: '70px' }} backgroundColor="rgb(250, 152, 152)" label="Members" labels="months" />
           }
