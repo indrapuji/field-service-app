@@ -130,6 +130,98 @@ const _Clientnav = [
     to: '/workorders/done',
     icon: 'cil-check-circle',
   },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Kunjungan Merchants',
+    route: '/users',
+    icon: 'cil-star',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'All',
+        to: '',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Progress',
+        to: '',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Done',
+        to: '',
+      },
+    ],
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Pickup Sales Draft',
+    route: '/users',
+    icon: 'cil-star',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'All',
+        to: '',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Progress',
+        to: '',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Done',
+        to: '',
+      },
+    ],
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'OTS Survey',
+    route: '/users',
+    icon: 'cil-star',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'All',
+        to: '',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Progress',
+        to: '',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Done',
+        to: '',
+      },
+    ],
+  },
+  {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Risk Unit',
+    route: '/users',
+    icon: 'cil-star',
+    _children: [
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'All',
+        to: '',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Progress',
+        to: '',
+      },
+      {
+        _tag: 'CSidebarNavItem',
+        name: 'Done',
+        to: '',
+      },
+    ],
+  },
 ];
 
 export { _Supernav, _Clientnav, _Adminnav };
