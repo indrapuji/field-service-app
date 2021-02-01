@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useReducer } from 'react';
 import { View, ActivityIndicator } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '@components/Context';
@@ -14,8 +14,105 @@ import RiskTab from '@navigations/RiskTab';
 import DetailScreen from '@screens/detail/Detail.Screen';
 import ProfileScreen from '@screens/Profile.Screen';
 
+import messaging from '@react-native-firebase/messaging';
+import host from "./src/utilities/host";
+import axios from "axios";
+
 const Stack = createStackNavigator();
 const App = () => {
+  // const navigation = useNavigation();
+
+  const onNotificationOpenedApp = () => {
+    // If the push notification received when the app is minimize
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage.notification,
+      );
+      // navigation.push(
+      //   remoteMessage.data.screen,
+      //   JSON.parse(remoteMessage.data.payload),
+      // );
+    });
+  };
+
+  const getInitialNotification = () => {
+    // If the push notification received when the app is close
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          console.log(
+            'Notification caused app to open from quit state:',
+            remoteMessage.notification,
+          );
+          // navigation.push(
+          //   remoteMessage.data.screen,
+          //   JSON.parse(remoteMessage.data.payload),
+          // );
+        }
+      });
+  };
+
+  const saveTokenToDatabase = async (fcmToken) => {
+    try {
+      let access_token = await AsyncStorage.getItem('userToken');
+      const {data} = await axios({
+        method: 'POST',
+        url: host + '/users/add-firebase-token',
+        data: {
+          token: fcmToken,
+        },
+        headers: {
+          token: access_token,
+        },
+      });
+      await AsyncStorage.setItem('fcmToken', fcmToken);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getDeviceToken = () => {
+    // Get the device token
+    messaging()
+      .getToken()
+      .then((token) => {
+        console.log(token);
+        return saveTokenToDatabase(token);
+      });
+    // Listen to whether the token changes
+    return messaging().onTokenRefresh((token) => {
+      console.log(token);
+      saveTokenToDatabase(token);
+    });
+  };
+
+  useEffect(() => {
+    // If the push notification received when the app is open
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+    return unsubscribe;
+  }, []);
+
+
+  const checkToken = async () => {
+    let getToken = await AsyncStorage.getItem('userToken');
+    if (getToken) {
+      onNotificationOpenedApp();
+      getInitialNotification();
+      getDeviceToken();
+    }
+  };
+
+  const isLogin = AsyncStorage.getItem("userToken")
+
+  useEffect(() => {
+    checkToken();
+  }, [isLogin]);
+
   const initialLoginState = {
     isLoading: true,
     userToken: null,

@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       user.hasMany(models.job_order, { foreignKey: 'admin_id', as: 'Admin' });
       user.belongsTo(models.vendor, { foreignKey: 'vendor_id' });
       // user.belongsToMany(models.vendor, { through: 'vendor_client', foreignKey: 'client_id' });
+      user.hasOne(models.user_fcm_token, { foreignKey: "user_id" });
     }
   }
   user.init(

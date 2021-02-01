@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const { user, vendor, job_order, vendor_client } = require('../models');
+const { user, vendor, job_order, vendor_client, user_fcm_token } = require('../models');
 const { generateToken } = require('../helpers/jwt');
 const { comparePassword } = require('../helpers/bcrypt');
 const serverUrl = require('../helpers/serverUrl');
@@ -138,6 +138,20 @@ class UserController {
       next(err);
     }
   };
+  static addFirebaseToken = async (req, res, next) => {
+    try {
+      const { token } = req.body;
+      const { id } = req.UserData;
+      await user_fcm_token.destroy({ where: { user_id: id } });
+      const result = await user_fcm_token.create({
+        token,
+        user_id: id
+      });
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = UserController;
