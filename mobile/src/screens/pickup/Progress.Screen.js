@@ -1,10 +1,20 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { StatusBar, View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
-import CardList from '../../../components/CardList';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  StatusBar,
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  TextInput,
+} from 'react-native';
+import CardList from '@components/CardList';
 import axios from 'axios';
-import host from '../../../utilities/host';
+import host from '@utilities/host';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -12,7 +22,8 @@ const wait = (timeout) => {
   });
 };
 
-const PreScreen = () => {
+const ProgressScreen = () => {
+  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,7 +42,7 @@ const PreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?tipe=Kunjungan`,
+        url: `${host}/job-orders/all?status=Progres&tipe=Pickup`,
         headers: { token },
       });
       setList(data.data);
@@ -48,7 +59,7 @@ const PreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?tipe=Kunjungan&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?tipe=Pickup&status=Progres&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
@@ -60,10 +71,11 @@ const PreScreen = () => {
       console.log(err);
     }
   };
+
   useEffect(() => {
     // getData();
     getJobOrder();
-  }, [refreshing]);
+  }, [isFocused, refreshing]);
 
   const addMore = () => {
     setLoading(true);
@@ -73,7 +85,7 @@ const PreScreen = () => {
   useEffect(() => {
     if (list !== null && list !== undefined) {
       if (searchQuery !== null) {
-        const newList = list.filter((x) => x.nama_merchant.toLowerCase().search(searchQuery) !== -1);
+        const newList = list.filter((x) => x.merchant.toLowerCase().search(searchQuery) !== -1);
         setFiltered(newList);
       } else {
         setFiltered(list);
@@ -81,15 +93,14 @@ const PreScreen = () => {
     }
   }, [searchQuery]);
 
-  const update = (id) => {
-    const newFilter = filtered.filter((x) => x.id !== id);
-    setFiltered(newFilter);
-    setList(newFilter);
-  };
-
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        hidden={false}
+        backgroundColor="white"
+      />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
@@ -98,7 +109,7 @@ const PreScreen = () => {
       >
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
           <View style={{ flex: 1 }}>
-            <View style={{ paddingVertical: 10, marginHorizontal: 10 }}>
+            <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
               <View style={{ position: 'relative' }}>
                 <TextInput
                   placeholder="Cari Nama Merchants"
@@ -130,7 +141,7 @@ const PreScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1 }}>
-                  <CardList list={filtered} source={'home'} update={update} />
+                  <CardList list={filtered} source={'progres'} />
                 </View>
                 {page > currentPage && (
                   <View style={{ alignItems: 'center', marginVertical: 5 }}>
@@ -145,7 +156,11 @@ const PreScreen = () => {
                       }}
                       onPress={() => addMore()}
                     >
-                      {loading ? <ActivityIndicator size="small" color="black" /> : <Text>More</Text>}
+                      {loading ? (
+                        <ActivityIndicator size="small" color="black" />
+                      ) : (
+                        <Text>More</Text>
+                      )}
                     </TouchableOpacity>
                   </View>
                 )}
@@ -158,4 +173,4 @@ const PreScreen = () => {
   );
 };
 
-export default PreScreen;
+export default ProgressScreen;

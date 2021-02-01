@@ -1,10 +1,21 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { StatusBar, View, Text, SafeAreaView, ScrollView, TextInput, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
-import CardList from '../../../components/CardList';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  StatusBar,
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
+import CardList from '@components/CardList';
 import axios from 'axios';
-import host from '../../../utilities/host';
+import host from '@utilities/host';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -12,11 +23,12 @@ const wait = (timeout) => {
   });
 };
 
-const CreScreen = () => {
+const DoneScreen = () => {
+  const isFocused = useIsFocused();
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [list, setList] = useState(null);
   const [page, setPage] = useState(null);
   const [currentPage, setCurrentPage] = useState(null);
@@ -31,7 +43,7 @@ const CreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?tipe=Pickup`,
+        url: `${host}/job-orders/all?tipe=Pickup&status=Done`,
         headers: { token },
       });
       setList(data.data);
@@ -48,7 +60,7 @@ const CreScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?tipe=Pickup&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?tipe=Pickup&status=Done&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
@@ -62,9 +74,8 @@ const CreScreen = () => {
   };
 
   useEffect(() => {
-    // getData();
     getJobOrder();
-  }, [refreshing]);
+  }, [isFocused, refreshing]);
 
   const addMore = () => {
     setLoading(true);
@@ -74,7 +85,7 @@ const CreScreen = () => {
   useEffect(() => {
     if (list !== null && list !== undefined) {
       if (searchQuery !== null) {
-        const newList = list.filter((x) => x.nama_merchant.toLowerCase().search(searchQuery) !== -1);
+        const newList = list.filter((x) => x.merchant.toLowerCase().search(searchQuery) !== -1);
         setFiltered(newList);
       } else {
         setFiltered(list);
@@ -82,15 +93,14 @@ const CreScreen = () => {
     }
   }, [searchQuery]);
 
-  const update = (id) => {
-    const newFilter = filtered.filter((x) => x.id !== id);
-    setFiltered(newFilter);
-    setList(newFilter);
-  };
-
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="transparent"
+        hidden={false}
+        backgroundColor="white"
+      />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
@@ -131,7 +141,7 @@ const CreScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1 }}>
-                  <CardList list={filtered} source={'home'} update={update} />
+                  <CardList list={filtered} source={'done'} />
                 </View>
                 {page > currentPage && (
                   <View style={{ alignItems: 'center', marginVertical: 5 }}>
@@ -146,7 +156,11 @@ const CreScreen = () => {
                       }}
                       onPress={() => addMore()}
                     >
-                      {loading ? <ActivityIndicator size="small" color="black" /> : <Text>More</Text>}
+                      {loading ? (
+                        <ActivityIndicator size="small" color="black" />
+                      ) : (
+                        <Text>More</Text>
+                      )}
                     </TouchableOpacity>
                   </View>
                 )}
@@ -159,4 +173,4 @@ const CreScreen = () => {
   );
 };
 
-export default CreScreen;
+export default DoneScreen;

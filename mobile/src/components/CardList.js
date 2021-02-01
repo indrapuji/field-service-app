@@ -3,11 +3,11 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal, Dimensions } from 'rea
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
-import host from '../utilities/host';
+import host from '@utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const CardList = (props) => {
-  const { list, source, done } = props;
+  const { list, source } = props;
   const [showModal, setShowModal] = useState(false);
   const [merchantName, setMerchantName] = useState('');
   const [newDataID, setNewDataID] = useState('');
@@ -47,18 +47,24 @@ const CardList = (props) => {
             <TouchableOpacity
               key={idx}
               onPress={() => (source !== 'done' ? handdleDetail(item) : null)}
-              onLongPress={() => (source === 'home' ? openModal(item.id, item.nama_merchant) : null)}
+              onLongPress={() => (source === 'home' ? openModal(item.id, item.merchant) : null)}
             >
               <View
                 style={{
                   ...styles.cardContainer,
-                  borderColor: item.tipe === 'Kunjungan' ? 'green' : 'orange',
-                  borderTopWidth: idx === 0 ? 1 : 0,
+                  borderColor:
+                    item.tipe === 'Kunjungan'
+                      ? '#80ffdb'
+                      : item.tipe === 'Pickup'
+                      ? '#e9b0df'
+                      : item.tipe === 'Risk'
+                      ? '#6930c3'
+                      : '#ff577f',
                 }}
               >
                 <View style={styles.contentPosition}>
                   <View style={styles.centerJustify}>
-                    <View
+                    {/* <View
                       style={{
                         ...styles.borderStatus,
                         borderColor: item.tipe === 'Kunjungan' ? 'green' : 'orange',
@@ -73,13 +79,15 @@ const CardList = (props) => {
                       >
                         {item.tipe === 'Kunjungan' ? 'K' : 'P'}
                       </Text>
-                    </View>
+                    </View> */}
                   </View>
                   <View style={styles.centerJustify}>
                     <View style={styles.flexRow}>
                       <Text style={styles.boldText}>{item.merchant}</Text>
                     </View>
-                    <Text>{item.alamat}</Text>
+                    <Text style={styles.alamatText} numberOfLines={3}>
+                      {item.alamat}
+                    </Text>
                     <View style={{ marginVertical: 5 }}>
                       <Text style={styles.boldText}>{item.regional}</Text>
                     </View>
@@ -143,13 +151,22 @@ const { width } = Dimensions.get('screen');
 const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: 'white',
-    borderBottomWidth: 1,
     borderLeftWidth: 10,
-    borderTopLeftRadius: 20,
-    borderBottomLeftRadius: 20,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginVertical: 3,
+    height: 130,
+    width: width - 25,
   },
   contentPosition: {
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     flexDirection: 'row',
     marginVertical: 10,
   },
@@ -161,6 +178,9 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: 'bold',
+  },
+  alamatText: {
+    marginRight: 50,
   },
   dotted: {
     justifyContent: 'center',

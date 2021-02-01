@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   StatusBar,
   View,
   Text,
   SafeAreaView,
-  TouchableOpacity,
   ScrollView,
-  RefreshControl,
   TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
-import CardList from '../../../components/CardList';
-import axios from 'axios';
-import host from '../../../utilities/host';
+import CardList from '@components/CardList';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
+import host from '@utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -22,8 +22,7 @@ const wait = (timeout) => {
   });
 };
 
-const ProgressScreen = () => {
-  const isFocused = useIsFocused();
+const CreScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -42,7 +41,7 @@ const ProgressScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Progres`,
+        url: `${host}/job-orders/all?tipe=Survey&status=Assign`,
         headers: { token },
       });
       setList(data.data);
@@ -59,7 +58,7 @@ const ProgressScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Progres&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?tipe=Survey&status=Assign&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
@@ -75,7 +74,7 @@ const ProgressScreen = () => {
   useEffect(() => {
     // getData();
     getJobOrder();
-  }, [isFocused, refreshing]);
+  }, [refreshing]);
 
   const addMore = () => {
     setLoading(true);
@@ -85,15 +84,19 @@ const ProgressScreen = () => {
   useEffect(() => {
     if (list !== null && list !== undefined) {
       if (searchQuery !== null) {
-        const newList = list.filter(
-          (x) => x.nama_merchant.toLowerCase().search(searchQuery) !== -1
-        );
+        const newList = list.filter((x) => x.merchant.toLowerCase().search(searchQuery) !== -1);
         setFiltered(newList);
       } else {
         setFiltered(list);
       }
     }
   }, [searchQuery]);
+
+  const update = (id) => {
+    const newFilter = filtered.filter((x) => x.id !== id);
+    setFiltered(newFilter);
+    setList(newFilter);
+  };
 
   return (
     <>
@@ -143,7 +146,7 @@ const ProgressScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1 }}>
-                  <CardList list={filtered} source={'progres'} />
+                  <CardList list={filtered} source={'home'} update={update} />
                 </View>
                 {page > currentPage && (
                   <View style={{ alignItems: 'center', marginVertical: 5 }}>
@@ -175,4 +178,4 @@ const ProgressScreen = () => {
   );
 };
 
-export default ProgressScreen;
+export default CreScreen;

@@ -1,21 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   StatusBar,
   View,
   Text,
   SafeAreaView,
-  TouchableOpacity,
   ScrollView,
-  RefreshControl,
   TextInput,
+  TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
-import CardList from '../../../components/CardList';
-import axios from 'axios';
-import host from '../../../utilities/host';
+import CardList from '@components/CardList';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
+import host from '@utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useIsFocused } from '@react-navigation/native';
 
 const wait = (timeout) => {
   return new Promise((resolve) => {
@@ -23,12 +22,11 @@ const wait = (timeout) => {
   });
 };
 
-const DoneScreen = () => {
-  const isFocused = useIsFocused();
+const CreScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
   const [list, setList] = useState(null);
   const [page, setPage] = useState(null);
   const [currentPage, setCurrentPage] = useState(null);
@@ -43,7 +41,7 @@ const DoneScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Done`,
+        url: `${host}/job-orders/all?tipe=Pickup&status=Assign`,
         headers: { token },
       });
       setList(data.data);
@@ -60,7 +58,7 @@ const DoneScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?status=Done&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?tipe=Pickup&status=Assign&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
@@ -74,8 +72,9 @@ const DoneScreen = () => {
   };
 
   useEffect(() => {
+    // getData();
     getJobOrder();
-  }, [isFocused, refreshing]);
+  }, [refreshing]);
 
   const addMore = () => {
     setLoading(true);
@@ -85,15 +84,19 @@ const DoneScreen = () => {
   useEffect(() => {
     if (list !== null && list !== undefined) {
       if (searchQuery !== null) {
-        const newList = list.filter(
-          (x) => x.nama_merchant.toLowerCase().search(searchQuery) !== -1
-        );
+        const newList = list.filter((x) => x.merchant.toLowerCase().search(searchQuery) !== -1);
         setFiltered(newList);
       } else {
         setFiltered(list);
       }
     }
   }, [searchQuery]);
+
+  const update = (id) => {
+    const newFilter = filtered.filter((x) => x.id !== id);
+    setFiltered(newFilter);
+    setList(newFilter);
+  };
 
   return (
     <>
@@ -143,7 +146,7 @@ const DoneScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ flex: 1 }}>
-                  <CardList list={filtered} source={'done'} />
+                  <CardList list={filtered} source={'home'} update={update} />
                 </View>
                 {page > currentPage && (
                   <View style={{ alignItems: 'center', marginVertical: 5 }}>
@@ -175,4 +178,4 @@ const DoneScreen = () => {
   );
 };
 
-export default DoneScreen;
+export default CreScreen;

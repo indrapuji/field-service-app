@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import axios from 'axios';
-import host from '../../../utilities/host';
+import host from '@utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 
-import { AuthContext } from '../../../components/Context';
+import { AuthContext } from '@components/Context';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -27,7 +27,7 @@ const ProfileScreen = ({ navigation }) => {
     jobOrderProgres: 0,
     alamat: '',
     email: '',
-    foto_profil: '',
+    foto_profil: null,
     id: '',
     nama_bank: '',
     nama_lengkap: '',
@@ -98,7 +98,7 @@ const ProfileScreen = ({ navigation }) => {
               >
                 <View style={{ alignItems: 'center' }}>
                   <Image
-                    source={require('../../../assets/images/default-image.png')}
+                    source={{ uri: dataProfile.foto_profil }}
                     style={{ width: 200, height: 200, borderRadius: 100 }}
                   />
                 </View>

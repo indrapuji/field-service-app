@@ -1,11 +1,23 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StatusBar, Image, TextInput, TouchableOpacity, ActivityIndicator, ImageBackground, KeyboardAvoidingView } from 'react-native';
+import {
+  View,
+  Text,
+  StatusBar,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  ImageBackground,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Dimensions,
+  Alert,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from '../assets/styles';
 import axios from 'axios';
-import host from '../../../utilities/host';
+import host from '@utilities/host';
 
-import { AuthContext } from '../../../components/Context';
+import { AuthContext } from '@components/Context';
 
 const AuthScreen = () => {
   const [value, setValue] = useState({
@@ -15,6 +27,7 @@ const AuthScreen = () => {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [failText, setFailText] = useState('');
 
   const { signIn } = useContext(AuthContext);
 
@@ -30,9 +43,7 @@ const AuthScreen = () => {
   };
 
   const loginHanddle = (username, password) => {
-    // signIn(username, password);
     setLoading(true);
-    // console.log('Sebelum login');
     axios({
       method: 'post',
       url: `${host}/users/login`,
@@ -42,13 +53,17 @@ const AuthScreen = () => {
       },
     })
       .then(({ data }) => {
-        // console.log('Setelah Login then');
         setLoading(false);
-        signIn(data.access_token);
+        if (data.userData.tipe === 'Teknisi') {
+          signIn(data.access_token, data.userData.nama_lengkap);
+        } else {
+          setFailText('Not Authorize');
+          failLogin();
+        }
       })
       .catch((err) => {
-        // console.log('Setelah Login catch');
         setLoading(false);
+        setFailText('Username atau Password Salah');
         failLogin();
         console.log(err);
       })
@@ -70,6 +85,7 @@ const AuthScreen = () => {
         <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled={true}>
           <View style={styles.contentPosition}>
             <View style={styles.inputPosition}>
+              <View style={{ marginLeft: 10, marginBottom: 10 }}>{failed && <Text style={{ color: 'red', fontSize: 15 }}>{failText}</Text>}</View>
               <View>
                 <TextInput
                   placeholder="Enter Username"
@@ -94,9 +110,7 @@ const AuthScreen = () => {
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={{ marginLeft: 10, marginBottom: 10 }}>
-                {failed && <Text style={{ color: 'red', fontSize: 15 }}>Username atau Password Salah</Text>}
-              </View>
+
               <View>
                 {loading ? (
                   <View style={styles.buttonSize}>
@@ -115,5 +129,69 @@ const AuthScreen = () => {
     </>
   );
 };
+
+const { height, width } = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+  background: {
+    width: width,
+    height: height,
+  },
+  loginLogo: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  logoSize: {
+    width: 250,
+  },
+  contentPosition: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginBottom: 10,
+  },
+  textMargin: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  textTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  textVersi: {
+    fontSize: 13,
+    color: 'red',
+  },
+  inputSize: {
+    width: width / 1.12,
+    height: 50,
+    borderRadius: 10,
+    marginBottom: 10,
+    backgroundColor: 'white',
+    paddingHorizontal: 20,
+  },
+  inputPosition: {
+    alignItems: 'center',
+  },
+  eyeIcon: {
+    position: 'absolute',
+    top: 13,
+    right: 20,
+  },
+  buttonSize: {
+    width: width / 1.12,
+    height: 50,
+    backgroundColor: '#3528e9',
+    borderRadius: 10,
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  buttonText: {
+    textAlign: 'center',
+    fontSize: 17,
+    color: 'white',
+    justifyContent: 'center',
+  },
+});
 
 export default AuthScreen;

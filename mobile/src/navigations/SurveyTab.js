@@ -1,14 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import HomeScreen from '../module/home/screen/Home.Screen';
-import ProgressScreen from '../module/progress/screen/Progress.Screen';
-import DoneScreen from '../module/done/screen/Done.Screen';
-import ProfileScreen from '../module/profile/screen/Profile.Screen';
+import HomeScreen from '@screens/survey/Home.Screen';
+import ProgressScreen from '@screens/survey/Progress.Screen';
+import DoneScreen from '@screens/survey/Done.Screen';
 
 const Tab = createBottomTabNavigator();
 
-const MainScreen = () => {
+const KunjunganTab = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -21,9 +20,6 @@ const MainScreen = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          // tabBarLabel: () => {
-          //   return null;
-          // },
           tabBarIcon: ({ focused, color, size }) => (
             <Icon name="home" color={focused ? 'black' : 'white'} size={25} />
           ),
@@ -33,9 +29,6 @@ const MainScreen = () => {
         name="Progres"
         component={ProgressScreen}
         options={{
-          // tabBarLabel: () => {
-          //   return null;
-          // },
           tabBarIcon: ({ focused, color, size }) => (
             <Icon name="refresh" color={focused ? 'black' : 'white'} size={25} />
           ),
@@ -45,23 +38,8 @@ const MainScreen = () => {
         name="Done"
         component={DoneScreen}
         options={{
-          // tabBarLabel: () => {
-          //   return null;
-          // },
           tabBarIcon: ({ focused, color, size }) => (
             <Icon name="check" color={focused ? 'black' : 'white'} size={25} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          // tabBarLabel: () => {
-          //   return null;
-          // },
-          tabBarIcon: ({ focused, color, size }) => (
-            <Icon name="user-o" color={focused ? 'black' : 'white'} size={25} />
           ),
         }}
       />
@@ -69,4 +47,4 @@ const MainScreen = () => {
   );
 };
 
-export default MainScreen;
+export default KunjunganTab;
