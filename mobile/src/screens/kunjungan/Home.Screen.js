@@ -100,19 +100,14 @@ const PreScreen = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        hidden={false}
-        backgroundColor="white"
-      />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
         }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
           <View style={{ flex: 1 }}>
             <View style={{ paddingVertical: 10, marginLeft: 10, marginRight: 15 }}>
               <View style={{ position: 'relative' }}>
@@ -128,7 +123,7 @@ const PreScreen = ({ navigation }) => {
                     paddingRight: 100,
                     backgroundColor: 'white',
                     borderWidth: 1,
-                    borderColor: '#f8f1f1',
+                    borderColor: '#e3fdfd',
                     shadowColor: '#000',
                     shadowOffset: {
                       width: 0,
@@ -169,11 +164,7 @@ const PreScreen = ({ navigation }) => {
                       }}
                       onPress={() => addMore()}
                     >
-                      {loading ? (
-                        <ActivityIndicator size="small" color="black" />
-                      ) : (
-                        <Text>More</Text>
-                      )}
+                      {loading ? <ActivityIndicator size="small" color="black" /> : <Text>More</Text>}
                     </TouchableOpacity>
                   </View>
                 )}

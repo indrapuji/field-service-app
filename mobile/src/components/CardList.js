@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal, Dimensions } from 'react-native';
+import { View, Text, TouchableHighlight, StyleSheet, Modal, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
@@ -35,7 +35,8 @@ const CardList = (props) => {
     }
   };
 
-  const handdleDetail = (itemData) => {
+  const handdleDetail = (allData) => {
+    const itemData = { id: allData.id, tipe: allData.tipe, merchant: allData.merchant, alamat: allData.alamat, tid: allData.tid, mid: allData.mid };
     navigation.navigate('Detail', { itemData });
   };
 
@@ -44,7 +45,9 @@ const CardList = (props) => {
       {list && list.length > 0 ? (
         list.map((item, idx) => {
           return (
-            <TouchableOpacity
+            <TouchableHighlight
+              activeOpacity={0.6}
+              underlayColor="#e3fdfd"
               key={idx}
               onPress={() => (source !== 'done' ? handdleDetail(item) : null)}
               onLongPress={() => (source === 'home' ? openModal(item.id, item.merchant) : null)}
@@ -78,7 +81,7 @@ const CardList = (props) => {
                   </View>
                 </View>
               </View>
-            </TouchableOpacity>
+            </TouchableHighlight>
           );
         })
       ) : (
@@ -92,7 +95,7 @@ const CardList = (props) => {
               <Text>Change Status to Progress</Text>
             </View>
             <View style={styles.buttonPosition}>
-              <TouchableOpacity onPress={() => changeStatus()}>
+              <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => changeStatus()}>
                 <View
                   style={{
                     ...styles.modalButton,
@@ -101,8 +104,8 @@ const CardList = (props) => {
                 >
                   <Text>Ya</Text>
                 </View>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setShowModal(false)}>
+              </TouchableHighlight>
+              <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => setShowModal(false)}>
                 <View
                   style={{
                     ...styles.modalButton,
@@ -111,7 +114,7 @@ const CardList = (props) => {
                 >
                   <Text>Tidak</Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableHighlight>
             </View>
           </View>
         </View>

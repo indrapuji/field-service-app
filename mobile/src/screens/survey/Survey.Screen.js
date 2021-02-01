@@ -12,7 +12,7 @@ const wait = (timeout) => {
   });
 };
 
-const CreScreen = () => {
+const SurveyScreen = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -90,14 +90,14 @@ const CreScreen = () => {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} backgroundColor="white" />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
         }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
           <View style={{ flex: 1, position: 'relative' }}>
             <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
               <View style={{ position: 'relative' }}>
@@ -113,7 +113,15 @@ const CreScreen = () => {
                     paddingRight: 100,
                     backgroundColor: 'white',
                     borderWidth: 1,
-                    borderColor: '#f8f1f1',
+                    borderColor: '#e3fdfd',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
                   }}
                 />
                 <Icon
@@ -131,11 +139,11 @@ const CreScreen = () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
               <ScrollView showsVerticalScrollIndicator={false}></ScrollView>
               <View style={{ position: 'absolute', right: 30, bottom: 20 }}>
-                <TouchableOpacity onPress={() => console.log('test')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Create')}>
                   <View
                     style={{
-                      width: 70,
-                      height: 70,
+                      width: 50,
+                      height: 50,
                       backgroundColor: '#ff577f',
                       borderRadius: 40,
                       justifyContent: 'center',
@@ -150,7 +158,7 @@ const CreScreen = () => {
                       elevation: 5,
                     }}
                   >
-                    <Icon name="create" color="black" size={35} />
+                    <Icon name="create" color="black" size={30} />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -162,4 +170,4 @@ const CreScreen = () => {
   );
 };
 
-export default CreScreen;
+export default SurveyScreen;

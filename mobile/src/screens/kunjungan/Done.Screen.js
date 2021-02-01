@@ -1,15 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  StatusBar,
-  View,
-  Text,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-  RefreshControl,
-  TextInput,
-  ActivityIndicator,
-} from 'react-native';
+import { StatusBar, View, Text, SafeAreaView, TouchableOpacity, ScrollView, RefreshControl, TextInput, ActivityIndicator } from 'react-native';
 import CardList from '@components/CardList';
 import axios from 'axios';
 import host from '@utilities/host';
@@ -95,19 +85,14 @@ const DoneScreen = () => {
 
   return (
     <>
-      <StatusBar
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        hidden={false}
-        backgroundColor="white"
-      />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
         }}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
           <View style={{ flex: 1 }}>
             <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
               <View style={{ position: 'relative' }}>
@@ -123,7 +108,15 @@ const DoneScreen = () => {
                     paddingRight: 100,
                     backgroundColor: 'white',
                     borderWidth: 1,
-                    borderColor: '#f8f1f1',
+                    borderColor: '#e3fdfd',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                      width: 0,
+                      height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    elevation: 5,
                   }}
                 />
                 <Icon
@@ -156,11 +149,7 @@ const DoneScreen = () => {
                       }}
                       onPress={() => addMore()}
                     >
-                      {loading ? (
-                        <ActivityIndicator size="small" color="black" />
-                      ) : (
-                        <Text>More</Text>
-                      )}
+                      {loading ? <ActivityIndicator size="small" color="black" /> : <Text>More</Text>}
                     </TouchableOpacity>
                   </View>
                 )}

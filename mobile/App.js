@@ -5,18 +5,22 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '@components/Context';
 
-import AuthScreen from '@screens/Auth.Screen';
-import HomeScreen from '@screens/Home.Screen';
 import KunjunganTab from '@navigations/KunjunganTab';
 import PickupTab from '@navigations/PickupTab';
-import SurveyScreen from '@screens/Survey.Screen';
 import RiskTab from '@navigations/RiskTab';
-import DetailScreen from '@screens/detail/Detail.Screen';
+
+import AuthScreen from '@screens/Auth.Screen';
+import HomeScreen from '@screens/Home.Screen';
 import ProfileScreen from '@screens/Profile.Screen';
 
+import DetailScreen from '@screens/detail/Detail.Screen';
+
+import SurveyScreen from '@screens/survey/Survey.Screen';
+import CreateScreen from '@screens/survey/Create.Screen';
+
 import messaging from '@react-native-firebase/messaging';
-import host from "./src/utilities/host";
-import axios from "axios";
+import host from '@utilities/host';
+import axios from 'axios';
 
 const Stack = createStackNavigator();
 const App = () => {
@@ -25,10 +29,7 @@ const App = () => {
   const onNotificationOpenedApp = () => {
     // If the push notification received when the app is minimize
     messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification,
-      );
+      console.log('Notification caused app to open from background state:', remoteMessage.notification);
       // navigation.push(
       //   remoteMessage.data.screen,
       //   JSON.parse(remoteMessage.data.payload),
@@ -42,10 +43,7 @@ const App = () => {
       .getInitialNotification()
       .then((remoteMessage) => {
         if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification,
-          );
+          console.log('Notification caused app to open from quit state:', remoteMessage.notification);
           // navigation.push(
           //   remoteMessage.data.screen,
           //   JSON.parse(remoteMessage.data.payload),
@@ -57,7 +55,7 @@ const App = () => {
   const saveTokenToDatabase = async (fcmToken) => {
     try {
       let access_token = await AsyncStorage.getItem('userToken');
-      const {data} = await axios({
+      const { data } = await axios({
         method: 'POST',
         url: host + '/users/add-firebase-token',
         data: {
@@ -91,12 +89,11 @@ const App = () => {
 
   useEffect(() => {
     // If the push notification received when the app is open
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
       // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
     });
     return unsubscribe;
   }, []);
-
 
   const checkToken = async () => {
     let getToken = await AsyncStorage.getItem('userToken');
@@ -107,7 +104,7 @@ const App = () => {
     }
   };
 
-  const isLogin = AsyncStorage.getItem("userToken")
+  const isLogin = AsyncStorage.getItem('userToken');
 
   useEffect(() => {
     checkToken();
@@ -200,14 +197,22 @@ const App = () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Auth" headerMode="screen">
+        <Stack.Navigator
+          initialRouteName="Auth"
+          headerMode="screen"
+          screenOptions={{
+            headerTintColor: 'black',
+            headerStyle: { backgroundColor: '#e3fdfd' },
+          }}
+        >
           {loginState.userToken !== null ? (
             <>
               <Stack.Screen name="Home" component={HomeScreen} options={{ title: null, headerShown: false }} />
-              <Stack.Screen name="Kunjungan" component={KunjunganTab} options={{ title: null, headerShown: false }} />
-              <Stack.Screen name="Pickup" component={PickupTab} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Kunjungan" component={KunjunganTab} options={{ title: 'Home', headerShown: true }} />
+              <Stack.Screen name="Pickup" component={PickupTab} options={{ title: 'Home', headerShown: true }} />
               <Stack.Screen name="Survey" component={SurveyScreen} options={{ title: null, headerShown: false }} />
-              <Stack.Screen name="Risk" component={RiskTab} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Create" component={CreateScreen} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Risk" component={RiskTab} options={{ title: 'Home', headerShown: true }} />
               <Stack.Screen name="Detail" component={DetailScreen} options={{ title: null, headerShown: false }} />
               <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: null, headerShown: false }} />
             </>

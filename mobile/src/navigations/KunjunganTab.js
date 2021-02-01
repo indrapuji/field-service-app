@@ -20,27 +20,21 @@ const KunjunganTab = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <Icon name="home" color={focused ? 'black' : 'white'} size={25} />
-          ),
+          tabBarIcon: ({ focused, color, size }) => <Icon name="home" color={focused ? 'black' : 'white'} size={25} />,
         }}
       />
       <Tab.Screen
         name="Progres"
         component={ProgressScreen}
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <Icon name="refresh" color={focused ? 'black' : 'white'} size={25} />
-          ),
+          tabBarIcon: ({ focused, color, size }) => <Icon name="refresh" color={focused ? 'black' : 'white'} size={25} />,
         }}
       />
       <Tab.Screen
         name="Done"
         component={DoneScreen}
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <Icon name="check" color={focused ? 'black' : 'white'} size={25} />
-          ),
+          tabBarIcon: ({ focused, color, size }) => <Icon name="check" color={focused ? 'black' : 'white'} size={25} />,
         }}
       />
     </Tab.Navigator>

@@ -52,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
   }, []);
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor="transparent" hidden={false} />
+      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <SafeAreaView style={styles.bodyContainer}>
         <View style={styles.container}>
           <View style={styles.headersContainer}>
@@ -67,7 +67,7 @@ const HomeScreen = ({ navigation }) => {
           <ScrollView>
             <View style={styles.sectionContainer}>
               <View style={styles.sectionPosition}>
-                <Text style={styles.sectionTitle}>Section</Text>
+                <Text style={styles.sectionTitle}>Services</Text>
               </View>
               <View style={styles.navContainer}>
                 <NavSection title={'Kunjungan Merchants'} iconName={'repeat'} color={'#80ffdb'} navto={'Kunjungan'} />
@@ -100,12 +100,12 @@ const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   bodyContainer: {
     flex: 1,
-    backgroundColor: '#84ccf7',
+    backgroundColor: '#e3fdfd',
   },
   container: {
     flex: 1,
     position: 'relative',
-    backgroundColor: '#84ccf7',
+    backgroundColor: '#e3fdfd',
   },
   headersContainer: {
     marginTop: 20,
@@ -132,7 +132,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sectionPosition: {
-    marginTop: 20,
     marginLeft: 10,
   },
   sectionTitle: {
