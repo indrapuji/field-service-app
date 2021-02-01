@@ -6,7 +6,7 @@ const setDate = require('../helpers/setDate');
 class JobOrderController {
   static createJobOrder = async (req, res, next) => {
     try {
-      const {
+      let {
         tanggal_impor,
         merchant,
         mid,
@@ -23,10 +23,13 @@ class JobOrderController {
         aktifitas,
         status,
         teknisi_id,
+        tanda_tangan,
+        type,
       } = req.body;
       const { id } = req.UserData;
+      if (!teknisi_id) teknisi_id = id;
       const userData = await user.findOne({ where: { id } });
-      const result = await job_order.create({
+      let query = {
         tanggal_impor,
         merchant,
         mid,
@@ -45,7 +48,19 @@ class JobOrderController {
         status,
         admin_id: id,
         teknisi_id,
-      });
+        type
+      }
+      if (req.files) {
+        if (req.files.foto_1) query.foto_toko_1 = serverUrl + req.files.foto_toko_1[0].path;
+        if (req.files.foto_2) query.foto_toko_2 = serverUrl + req.files.foto_toko_2[0].path;
+      }
+      if (tanda_tangan) {
+        var base64Data = tanda_tangan.replace(/^data:image\/png;base64,/, '');
+        const path = `uploads/${Date.now()}.jpg`;
+        require('fs').writeFileSync(path, base64Data, 'base64');
+        query.tanda_tangan = serverUrl + path;
+      }
+      const result = await job_order.create(query);
       res.status(201).json(result);
     } catch (err) {
       next(err);

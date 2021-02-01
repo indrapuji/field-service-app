@@ -7,7 +7,10 @@ const multer = require('multer');
 
 const upload = multer({ storage });
 
-router.post('/', authentication, JobOrderController.createJobOrder);
+router.post('/',
+  authentication,
+  upload.fields([{ name: 'foto_toko_1' }, { name: 'foto_toko_2' }]),
+  JobOrderController.createJobOrder);
 router.put('/assign', authentication, adminVendorAuth, JobOrderController.assignJobOrder);
 router.put('/change-status/:id', authentication, teknisiAuth, JobOrderController.changeStatus);
 router.get('/all', authentication, JobOrderController.getAllJobOrder);
