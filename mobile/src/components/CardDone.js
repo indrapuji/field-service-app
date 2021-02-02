@@ -6,35 +6,15 @@ import axios from 'axios';
 import host from '@utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GetLocation from 'react-native-get-location';
+import { formatFullDate } from 'node-format-date';
 
 const CardList = (props) => {
   const { item, source, location } = props;
+  console.log(item);
   const [showModal, setShowModal] = useState(false);
   const [merchantName, setMerchantName] = useState('');
   const [newDataID, setNewDataID] = useState('');
   const navigation = useNavigation();
-
-  const openModal = (dataID, dataName) => {
-    setMerchantName(dataName);
-    setNewDataID(dataID);
-    setShowModal(true);
-  };
-
-  const changeStatus = async () => {
-    try {
-      const token = await AsyncStorage.getItem('userToken');
-      const { data } = await axios({
-        method: 'put',
-        url: `${host}/job-orders/change-status/${newDataID}`,
-        data: { status: 'Progres' },
-        headers: { token },
-      });
-      setShowModal(false);
-      props.update(newDataID);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const handdleDetail = (allData) => {
     const itemData = { id: allData.id, tipe: allData.tipe, merchant: allData.merchant, alamat: allData.alamat, tid: allData.tid, mid: allData.mid };
@@ -43,12 +23,7 @@ const CardList = (props) => {
 
   return (
     <View>
-      <TouchableHighlight
-        activeOpacity={0.6}
-        underlayColor="#e3fdfd"
-        onPress={() => (source !== 'done' ? handdleDetail(item) : null)}
-        onLongPress={() => (source === 'home' ? openModal(item.id, item.merchant) : null)}
-      >
+      <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => null}>
         <View
           style={{
             ...styles.cardContainer,
@@ -63,53 +38,15 @@ const CardList = (props) => {
               <Text style={styles.alamatText} numberOfLines={3}>
                 {item.alamat}
               </Text>
-              <View style={{ marginVertical: 5 }}>
+              <View>
                 <Text style={styles.boldText}>{item.regional}</Text>
               </View>
-              <View style={styles.flexRow}>
-                <Text>TID: {item.tid}</Text>
-                <View style={styles.dotted}>
-                  <Icon name="circle" size={8} />
-                </View>
-                <Text>MID: {item.mid}</Text>
-              </View>
-              {/* <Text>Keterangan: {item.keterangan}</Text> */}
+              <Text>{item.no_telp}</Text>
+              <Text>{formatFullDate(item.createdAt)}</Text>
             </View>
           </View>
         </View>
       </TouchableHighlight>
-      <Modal animationType="slide" transparent={true} visible={showModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={{ alignItems: 'center' }}>
-              <Text style={styles.merchantTitle}>{merchantName}</Text>
-              <Text>Change Status to Progress</Text>
-            </View>
-            <View style={styles.buttonPosition}>
-              <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => changeStatus()}>
-                <View
-                  style={{
-                    ...styles.modalButton,
-                    backgroundColor: '#80ffdb',
-                  }}
-                >
-                  <Text>Ya</Text>
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => setShowModal(false)}>
-                <View
-                  style={{
-                    ...styles.modalButton,
-                    backgroundColor: '#64dfdf',
-                  }}
-                >
-                  <Text>Tidak</Text>
-                </View>
-              </TouchableHighlight>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };

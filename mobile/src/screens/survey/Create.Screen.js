@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StatusBar, SafeAreaView, View, Text, Dimensions, TouchableOpacity, ScrollView, TextInput, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ModalLoad from '@components/ModalLoad';
@@ -16,7 +16,7 @@ const CreateScreen = ({ navigation, route }) => {
     regional: '',
     pic: '',
     no_telp: '',
-    latitude: location.latitude,
+    latitude: '',
     longitude: location.longitude,
     tipe: 'Survey',
   });
@@ -28,6 +28,10 @@ const CreateScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(false);
 
   const sheetRef = useRef(null);
+
+  useEffect(() => {
+    setValue({ ...value, latitude: location.latitude, longitude: location.longitude });
+  }, []);
 
   const handdleImage = (imagePos) => {
     sheetRef.current.snapTo(1);

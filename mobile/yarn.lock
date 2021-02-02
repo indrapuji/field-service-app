@@ -5296,6 +5296,11 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
+node-format-date@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/node-format-date/-/node-format-date-1.0.4.tgz#b746c2da99d550c113001b97c37f0b326ae1c889"
+  integrity sha512-iZo8xmF9Dvoe+Hb3Ij36xmEDd82F1sxoeM1J68OmjvIOIMMCzXgro2/6v58Qeyy7G9OpEAm6XUDeX+mludsThA==
+
 node-int64@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/node-int64/-/node-int64-0.4.0.tgz#87a9065cdb355d3182d8f94ce11188b825c68a3b"
