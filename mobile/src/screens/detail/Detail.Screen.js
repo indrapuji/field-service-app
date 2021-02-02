@@ -65,10 +65,10 @@ const DetailScreen = ({ route, navigation }) => {
     materi_promosi: '',
     catatan: '',
     keluhan: '',
-    job_order_id: itemData.id,
+    job_order_id: '',
     edc_kompetitor: [],
-    latitude: location.latitude,
-    longitude: location.longitude,
+    latitude: '',
+    longitude: '',
     status: 'Done',
     jam_selesai_kerja: new Date(),
     aktifitas: '',
@@ -97,10 +97,9 @@ const DetailScreen = ({ route, navigation }) => {
     lainnya: false,
   });
 
-  console.log(itemData.id);
-
   useEffect(() => {
     setTipe(itemData.tipe);
+    setValue({ ...value, job_order_id: itemData.id, latitude: location.latitude, longitude: location.longitude });
   }, []);
 
   const handdleJenisEDC = (JenisEDC) => {

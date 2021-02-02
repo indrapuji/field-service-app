@@ -1,6 +1,6 @@
 import React from 'react';
-import { LineChart, BarChart, PieChart, ProgressChart, ContributionGraph, StackedBarChart } from 'react-native-chart-kit';
-import { View, Text, Dimensions } from 'react-native';
+import { PieChart } from 'react-native-chart-kit';
+import { View, Dimensions } from 'react-native';
 
 const ChartPie = (props) => {
   const { title, data } = props;

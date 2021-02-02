@@ -1,5 +1,5 @@
 import React from 'react';
-import { LineChart, BarChart, PieChart, ProgressChart, ContributionGraph, StackedBarChart } from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import { View, Text, Dimensions } from 'react-native';
 
 const ChartBeziere = (props) => {

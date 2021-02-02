@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableHighlight, StyleSheet, Modal, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import host from '@utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import GetLocation from 'react-native-get-location';
 
 const CardList = (props) => {
   const { item, source, location } = props;
@@ -63,7 +62,7 @@ const CardList = (props) => {
               <Text style={styles.alamatText} numberOfLines={3}>
                 {item.alamat}
               </Text>
-              <View style={{ marginVertical: 5 }}>
+              <View>
                 <Text style={styles.boldText}>{item.regional}</Text>
               </View>
               <View style={styles.flexRow}>
@@ -73,7 +72,7 @@ const CardList = (props) => {
                 </View>
                 <Text>MID: {item.mid}</Text>
               </View>
-              {/* <Text>Keterangan: {item.keterangan}</Text> */}
+              <Text>Keterangan: {item.keterangan}</Text>
             </View>
           </View>
         </View>

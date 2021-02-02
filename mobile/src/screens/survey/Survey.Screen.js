@@ -154,7 +154,7 @@ const SurveyScreen = ({ navigation, route }) => {
           <View style={{ flex: 1, paddingHorizontal: 10 }}>
             <FlatList
               data={filtered}
-              renderItem={({ item, index }) => <CardDone source={'done'} item={item} />}
+              renderItem={({ item, index }) => <CardDone item={item} />}
               keyExtractor={(key, index) => index.toString()}
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}

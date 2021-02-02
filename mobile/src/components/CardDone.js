@@ -1,52 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableHighlight, StyleSheet, Modal, Dimensions } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableHighlight, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import axios from 'axios';
-import host from '@utilities/host';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import GetLocation from 'react-native-get-location';
 import { formatFullDate } from 'node-format-date';
 
 const CardList = (props) => {
-  const { item, source, location } = props;
+  const { item } = props;
   console.log(item);
-  const [showModal, setShowModal] = useState(false);
-  const [merchantName, setMerchantName] = useState('');
-  const [newDataID, setNewDataID] = useState('');
   const navigation = useNavigation();
-
-  const handdleDetail = (allData) => {
-    const itemData = { id: allData.id, tipe: allData.tipe, merchant: allData.merchant, alamat: allData.alamat, tid: allData.tid, mid: allData.mid };
-    navigation.navigate('Detail', { itemData, location });
-  };
 
   return (
     <View>
-      <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => null}>
-        <View
-          style={{
-            ...styles.cardContainer,
-            borderColor: item.tipe === 'Kunjungan' ? '#80ffdb' : item.tipe === 'Pickup' ? '#e9b0df' : item.tipe === 'Risk' ? '#6930c3' : '#ff577f',
-          }}
-        >
-          <View style={styles.contentPosition}>
-            <View style={styles.centerJustify}>
-              <View style={styles.flexRow}>
-                <Text style={styles.boldText}>{item.merchant}</Text>
-              </View>
-              <Text style={styles.alamatText} numberOfLines={3}>
-                {item.alamat}
-              </Text>
-              <View>
-                <Text style={styles.boldText}>{item.regional}</Text>
-              </View>
-              <Text>{item.no_telp}</Text>
-              <Text>{formatFullDate(item.createdAt)}</Text>
+      {/* <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => null}> */}
+      <View
+        style={{
+          ...styles.cardContainer,
+          borderColor: '#ff577f',
+        }}
+      >
+        <View style={styles.contentPosition}>
+          <View style={styles.centerJustify}>
+            <View style={styles.flexRow}>
+              <Text style={styles.boldText}>{item.merchant}</Text>
             </View>
+            <Text style={styles.alamatText} numberOfLines={3}>
+              {item.alamat}
+            </Text>
+            <View>
+              <Text style={styles.boldText}>{item.regional}</Text>
+            </View>
+            <Text>{item.no_telp}</Text>
+            <Text>{formatFullDate(item.createdAt)}</Text>
           </View>
         </View>
-      </TouchableHighlight>
+      </View>
+      {/* </TouchableHighlight> */}
     </View>
   );
 };

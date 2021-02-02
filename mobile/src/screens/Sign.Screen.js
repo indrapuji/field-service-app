@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Signature from 'react-native-signature-canvas';
 import ModalLoad from '@components/ModalLoad';
 import axios from 'axios';
