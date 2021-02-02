@@ -53,7 +53,7 @@ const SignScreen = ({ navigation, route }) => {
       setMSuccess(true);
       setTimeout(() => {
         setMSuccess(false);
-        navigation.navigate('Survey');
+        navigation.navigate(value.tipe);
       }, 2000);
     } catch (error) {
       if (error.response) {
@@ -104,6 +104,7 @@ const SignScreen = ({ navigation, route }) => {
         name: 'foto_edc_2.jpg',
       };
       var formData = new FormData();
+      formData.append('jam_selesai_kerja', `${new Date()}`);
       if (bagianDepan) formData.append('foto_toko_1', foto_toko_1);
       if (bagianDalam) formData.append('foto_toko_2', foto_toko_2);
       if (depanMesin) formData.append('foto_edc_1', foto_edc_1);
@@ -114,7 +115,6 @@ const SignScreen = ({ navigation, route }) => {
         else formData.append(`${key}`, value[key]);
       }
       const token = await AsyncStorage.getItem('userToken');
-      console.log('AXIOS');
       const { data } = await axios({
         method: 'put',
         url: `${host}/job-orders/done`,
@@ -126,7 +126,7 @@ const SignScreen = ({ navigation, route }) => {
       setMSuccess(true);
       setTimeout(() => {
         setMSuccess(false);
-        navigation.navigate('Home');
+        navigation.navigate(value.tipe);
       }, 2000);
     } catch (error) {
       if (error.response) {

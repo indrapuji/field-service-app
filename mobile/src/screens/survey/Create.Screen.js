@@ -18,7 +18,7 @@ const CreateScreen = ({ navigation, route }) => {
     no_telp: '',
     latitude: '',
     longitude: location.longitude,
-    tipe: 'Survey',
+    tipe: '',
   });
   const [bagianDepan, setBagianDepan] = useState(null);
   const [bagianDalam, setBagianDalam] = useState(null);
@@ -30,7 +30,7 @@ const CreateScreen = ({ navigation, route }) => {
   const sheetRef = useRef(null);
 
   useEffect(() => {
-    setValue({ ...value, latitude: location.latitude, longitude: location.longitude });
+    setValue({ ...value, latitude: location.latitude, longitude: location.longitude, tipe: 'Survey' });
   }, []);
 
   const handdleImage = (imagePos) => {

@@ -38,7 +38,6 @@ const ProfileScreen = ({ navigation }) => {
         url: `${host}/users/profile`,
         headers: { token },
       });
-      // console.log(data);
       setDataProfile({
         jobOrderCount: data.jobOrderCount,
         jobOrderDone: data.jobOrderDone,
@@ -74,25 +73,38 @@ const ProfileScreen = ({ navigation }) => {
                 flex: 1,
               }}
             >
+              <View style={{ height: height / 2.5, backgroundColor: '#80ffdb', borderBottomLeftRadius: 30, borderBottomRightRadius: 30 }}>
+                <View
+                  style={{
+                    marginTop: 20,
+                    marginHorizontal: 20,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <View style={{ alignItems: 'center' }}>
+                    <Image source={{ uri: dataProfile.foto_profil }} style={{ width: 200, height: 200, borderRadius: 100 }} />
+                  </View>
+                  <View style={{ marginTop: 20, alignItems: 'center' }}>
+                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{dataProfile.nama_lengkap}</Text>
+                    <Text style={{ fontSize: 20, fontStyle: 'italic' }}>{dataProfile.tipe}</Text>
+                  </View>
+                </View>
+              </View>
               <View
                 style={{
-                  marginTop: 20,
-                  marginHorizontal: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  height: height / 7,
+                  backgroundColor: '#6930c3',
+                  borderBottomLeftRadius: 30,
+                  borderBottomRightRadius: 30,
+                  marginTop: -30,
+                  zIndex: -1,
                 }}
               >
-                <View style={{ alignItems: 'center' }}>
-                  <Image source={{ uri: dataProfile.foto_profil }} style={{ width: 200, height: 200, borderRadius: 100 }} />
-                </View>
-                <View style={{ marginTop: 20, alignItems: 'center' }}>
-                  <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{dataProfile.nama_lengkap}</Text>
-                  <Text style={{ fontSize: 20, fontStyle: 'italic' }}>{dataProfile.tipe}</Text>
-                </View>
-
                 <View
                   style={{
                     marginVertical: 20,
+                    marginHorizontal: 30,
                     flexDirection: 'row',
                     justifyContent: 'space-evenly',
                     flex: 1,
@@ -101,7 +113,6 @@ const ProfileScreen = ({ navigation }) => {
                   <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <View
                       style={{
-                        backgroundColor: '#bedcfa',
                         height: 100,
                         width: (width - 60) / 3,
                         marginHorizontal: 10,
@@ -110,14 +121,13 @@ const ProfileScreen = ({ navigation }) => {
                         borderRadius: 20,
                       }}
                     >
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderCount}</Text>
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Job Order</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>{dataProfile.jobOrderCount}</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>Job Order</Text>
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => navigation.navigate('Progres')}>
                     <View
                       style={{
-                        backgroundColor: '#98acf8',
                         height: 100,
                         width: (width - 60) / 3,
                         marginHorizontal: 10,
@@ -126,14 +136,13 @@ const ProfileScreen = ({ navigation }) => {
                         borderRadius: 20,
                       }}
                     >
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderProgres}</Text>
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Progress</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>{dataProfile.jobOrderProgres}</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>Progress</Text>
                     </View>
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => navigation.navigate('Done')}>
                     <View
                       style={{
-                        backgroundColor: '#b088f9',
                         height: 100,
                         width: (width - 60) / 3,
                         marginHorizontal: 10,
@@ -142,12 +151,14 @@ const ProfileScreen = ({ navigation }) => {
                         borderRadius: 20,
                       }}
                     >
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderDone}</Text>
-                      <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Done</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>{dataProfile.jobOrderDone}</Text>
+                      <Text style={{ fontWeight: 'bold', fontSize: 20, color: 'white' }}>Done</Text>
                     </View>
                   </TouchableOpacity>
                 </View>
+              </View>
 
+              <View style={{ marginHorizontal: 20, marginTop: 20 }}>
                 <View
                   style={{
                     backgroundColor: 'white',
@@ -256,6 +267,200 @@ const ProfileScreen = ({ navigation }) => {
       </SafeAreaView>
     </>
   );
+
+  // return (
+  //   <>
+  //     <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
+  //     <SafeAreaView style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
+  //       <View style={{ flex: 1 }}>
+  //         <ScrollView showsVerticalScrollIndicator={false}>
+  //           <View
+  //             style={{
+  //               flex: 1,
+  //             }}
+  //           >
+  //             <View
+  //               style={{
+  //                 marginTop: 20,
+  //                 marginHorizontal: 20,
+  //                 alignItems: 'center',
+  //                 justifyContent: 'center',
+  //               }}
+  //             >
+  //               <View style={{ alignItems: 'center' }}>
+  //                 <Image source={{ uri: dataProfile.foto_profil }} style={{ width: 200, height: 200, borderRadius: 100 }} />
+  //               </View>
+  //               <View style={{ marginTop: 20, alignItems: 'center' }}>
+  //                 <Text style={{ fontSize: 25, fontWeight: 'bold' }}>{dataProfile.nama_lengkap}</Text>
+  //                 <Text style={{ fontSize: 20, fontStyle: 'italic' }}>{dataProfile.tipe}</Text>
+  //               </View>
+
+  //               <View
+  //                 style={{
+  //                   marginVertical: 20,
+  //                   flexDirection: 'row',
+  //                   justifyContent: 'space-evenly',
+  //                   flex: 1,
+  //                 }}
+  //               >
+  //                 <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+  //                   <View
+  //                     style={{
+  //                       backgroundColor: '#bedcfa',
+  //                       height: 100,
+  //                       width: (width - 60) / 3,
+  //                       marginHorizontal: 10,
+  //                       alignItems: 'center',
+  //                       justifyContent: 'center',
+  //                       borderRadius: 20,
+  //                     }}
+  //                   >
+  //                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderCount}</Text>
+  //                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Job Order</Text>
+  //                   </View>
+  //                 </TouchableOpacity>
+  //                 <TouchableOpacity onPress={() => navigation.navigate('Progres')}>
+  //                   <View
+  //                     style={{
+  //                       backgroundColor: '#98acf8',
+  //                       height: 100,
+  //                       width: (width - 60) / 3,
+  //                       marginHorizontal: 10,
+  //                       alignItems: 'center',
+  //                       justifyContent: 'center',
+  //                       borderRadius: 20,
+  //                     }}
+  //                   >
+  //                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderProgres}</Text>
+  //                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Progress</Text>
+  //                   </View>
+  //                 </TouchableOpacity>
+  //                 <TouchableOpacity onPress={() => navigation.navigate('Done')}>
+  //                   <View
+  //                     style={{
+  //                       backgroundColor: '#b088f9',
+  //                       height: 100,
+  //                       width: (width - 60) / 3,
+  //                       marginHorizontal: 10,
+  //                       alignItems: 'center',
+  //                       justifyContent: 'center',
+  //                       borderRadius: 20,
+  //                     }}
+  //                   >
+  //                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{dataProfile.jobOrderDone}</Text>
+  //                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>Done</Text>
+  //                   </View>
+  //                 </TouchableOpacity>
+  //               </View>
+
+  //               <View
+  //                 style={{
+  //                   backgroundColor: 'white',
+  //                   height: 100,
+  //                   width: width - 40,
+  //                   borderRadius: 20,
+  //                 }}
+  //               >
+  //                 <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+  //                   <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Alamat</Text>
+  //                   <Text style={{ marginTop: 10 }}>{dataProfile.alamat}</Text>
+  //                 </View>
+  //               </View>
+  //               <View
+  //                 style={{
+  //                   backgroundColor: 'white',
+  //                   height: 100,
+  //                   width: width - 40,
+  //                   borderRadius: 20,
+  //                   marginTop: 10,
+  //                 }}
+  //               >
+  //                 <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+  //                   <Text style={{ fontWeight: 'bold' }}>Telepon</Text>
+  //                   <Text style={{ marginTop: 10 }}>{dataProfile.no_telp}</Text>
+  //                 </View>
+  //               </View>
+  //               <View
+  //                 style={{
+  //                   backgroundColor: 'white',
+  //                   height: 100,
+  //                   width: width - 40,
+  //                   borderRadius: 20,
+  //                   marginTop: 10,
+  //                 }}
+  //               >
+  //                 <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+  //                   <Text style={{ fontWeight: 'bold' }}>Email</Text>
+  //                   <Text style={{ marginTop: 10 }}>{dataProfile.email}</Text>
+  //                 </View>
+  //               </View>
+  //               <View
+  //                 style={{
+  //                   backgroundColor: 'white',
+  //                   height: 100,
+  //                   width: width - 40,
+  //                   borderRadius: 20,
+  //                   marginTop: 10,
+  //                 }}
+  //               >
+  //                 <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+  //                   <Text style={{ fontWeight: 'bold' }}>No Rekening</Text>
+  //                   <View style={{ flexDirection: 'row' }}>
+  //                     <Text style={{ marginTop: 10 }}>{dataProfile.nama_bank}</Text>
+  //                     <Text style={{ marginTop: 10, marginLeft: 20 }}>{dataProfile.no_rekening}</Text>
+  //                   </View>
+  //                 </View>
+  //               </View>
+  //               <View
+  //                 style={{
+  //                   backgroundColor: 'white',
+  //                   height: 100,
+  //                   width: width - 40,
+  //                   borderRadius: 20,
+  //                   marginTop: 10,
+  //                 }}
+  //               >
+  //                 <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+  //                   <Text style={{ fontWeight: 'bold' }}>No KTP</Text>
+  //                   <Text style={{ marginTop: 10 }}>{dataProfile.no_ktp}</Text>
+  //                 </View>
+  //               </View>
+  //               <View
+  //                 style={{
+  //                   backgroundColor: 'white',
+  //                   height: 100,
+  //                   width: width - 40,
+  //                   borderRadius: 20,
+  //                   marginTop: 10,
+  //                 }}
+  //               >
+  //                 <View style={{ marginTop: 20, marginHorizontal: 10 }}>
+  //                   <Text style={{ fontWeight: 'bold' }}>Tanggal Lahir</Text>
+  //                   <Text style={{ marginTop: 10 }}>{dataProfile.tgl_lahir}</Text>
+  //                 </View>
+  //               </View>
+  //               <TouchableOpacity onPress={() => signOut()}>
+  //                 <View
+  //                   style={{
+  //                     backgroundColor: 'red',
+  //                     height: 40,
+  //                     width: width - 40,
+  //                     borderRadius: 20,
+  //                     marginVertical: 10,
+  //                     justifyContent: 'center',
+  //                     alignItems: 'center',
+  //                   }}
+  //                 >
+  //                   <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 15 }}>Logout</Text>
+  //                 </View>
+  //               </TouchableOpacity>
+  //             </View>
+  //           </View>
+  //         </ScrollView>
+  //       </View>
+  //     </SafeAreaView>
+  //   </>
+  // );
 };
 
 export default ProfileScreen;

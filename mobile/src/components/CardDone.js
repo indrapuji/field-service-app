@@ -5,7 +5,6 @@ import { formatFullDate } from 'node-format-date';
 
 const CardList = (props) => {
   const { item } = props;
-  console.log(item);
   const navigation = useNavigation();
 
   return (

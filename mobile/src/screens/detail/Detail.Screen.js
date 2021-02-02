@@ -70,8 +70,8 @@ const DetailScreen = ({ route, navigation }) => {
     latitude: '',
     longitude: '',
     status: 'Done',
-    jam_selesai_kerja: new Date(),
     aktifitas: '',
+    tipe: '',
   });
 
   const [kelengkapan, setKelengkapan] = useState({
@@ -99,7 +99,7 @@ const DetailScreen = ({ route, navigation }) => {
 
   useEffect(() => {
     setTipe(itemData.tipe);
-    setValue({ ...value, job_order_id: itemData.id, latitude: location.latitude, longitude: location.longitude });
+    setValue({ ...value, job_order_id: itemData.id, latitude: location.latitude, longitude: location.longitude, tipe: itemData.tipe });
   }, []);
 
   const handdleJenisEDC = (JenisEDC) => {
