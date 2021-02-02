@@ -14,20 +14,15 @@ import {
   paperRoll,
   edukasi,
 } from '@screens/detail/DetailData';
-import axios from 'axios';
-import host from '@utilities/host';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import BottomSheet from 'reanimated-bottom-sheet';
 import * as ImagePicker from 'react-native-image-picker';
-import Signature from 'react-native-signature-canvas';
-import GetLocation from 'react-native-get-location';
 import ModalLoad from '@components/ModalLoad';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width } = Dimensions.get('screen');
 
 const DetailScreen = ({ route, navigation }) => {
-  const { itemData } = route.params;
+  const { itemData, location } = route.params;
 
   const [tipe, setTipe] = useState(null);
   const [checked, setChecked] = useState(null);
@@ -45,11 +40,6 @@ const DetailScreen = ({ route, navigation }) => {
   const [EDCCompetitor, setEDCCompetitor] = useState(null);
   const [depanMesin, setDepanMesin] = useState(null);
   const [bagianDalam, setBagianDalam] = useState(null);
-  const [scrollEnabled, setScrollEnabled] = useState(true);
-  const [signature, setSignature] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [mError, setMError] = useState(false);
-  const [mSuccess, setMSuccess] = useState(false);
   const [notComplete, setNotComplete] = useState(false);
 
   const [value, setValue] = useState({
@@ -77,8 +67,8 @@ const DetailScreen = ({ route, navigation }) => {
     keluhan: '',
     job_order_id: itemData.id,
     edc_kompetitor: [],
-    latitude: '',
-    longitude: '',
+    latitude: location.latitude,
+    longitude: location.longitude,
     status: 'Done',
     jam_selesai_kerja: new Date(),
     aktifitas: '',
@@ -109,19 +99,7 @@ const DetailScreen = ({ route, navigation }) => {
 
   console.log(itemData.id);
 
-  // get location
   useEffect(() => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 15000,
-    })
-      .then((location) => {
-        setValue({ ...value, latitude: location.latitude, longitude: location.longitude });
-      })
-      .catch((error) => {
-        const { code, message } = error;
-        console.log(code, message);
-      });
     setTipe(itemData.tipe);
   }, []);
 
@@ -293,97 +271,18 @@ const DetailScreen = ({ route, navigation }) => {
     }
   };
 
-  const changeSignature = (data) => {
-    setSignature(data);
-    setMSuccess(true);
-    setTimeout(() => {
-      setMSuccess(false);
-    }, 1000);
-  };
-
   const sendData = async () => {
     if (value.catatan !== '') {
       if (value.alamat_merchant === '') {
         setValue({ ...value, alamat_merchant: itemData.alamat });
       }
-      setLoading(true);
-      try {
-        const foto_toko_1 = {
-          uri: bagianDepan,
-          type: 'image/jpeg',
-          name: 'foto_toko_1.jpg',
-        };
-        const foto_toko_2 = {
-          uri: bagianDalam,
-          type: 'image/jpeg',
-          name: 'foto_toko_2.jpg',
-        };
-        const foto_edc_1 = {
-          uri: depanMesin,
-          type: 'image/jpeg',
-          name: 'foto_edc_1.jpg',
-        };
-        const foto_edc_2 = {
-          uri: EDCCompetitor,
-          type: 'image/jpeg',
-          name: 'foto_edc_2.jpg',
-        };
-        var formData = new FormData();
-        if (bagianDepan) formData.append('foto_toko_1', foto_toko_1);
-        if (bagianDalam) formData.append('foto_toko_2', foto_toko_2);
-        if (depanMesin) formData.append('foto_edc_1', foto_edc_1);
-        if (EDCCompetitor) formData.append('foto_edc_2', foto_edc_2);
-        if (signature) formData.append('tanda_tangan', signature);
-        for (let key in value) {
-          if (key === 'edc_kompetitor') formData.append(`${key}`, JSON.stringify(value[key]));
-          else formData.append(`${key}`, value[key]);
-        }
-        const token = await AsyncStorage.getItem('userToken');
-        console.log('AXIOS');
-        const { data } = await axios({
-          method: 'put',
-          url: `${host}/job-orders/done`,
-          data: formData,
-          headers: { token },
-        });
-        console.log(data);
-        setLoading(false);
-        console.log('berhasil');
-        navigation.navigate('Home');
-      } catch (error) {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(JSON.stringify(error.response.data));
-          console.log(JSON.stringify(error.response.status));
-          console.log(JSON.stringify(error.response.headers));
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(JSON.stringify(error.request));
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(JSON.stringify(error.config));
-        setLoading(false);
-        setMError(true);
-        setTimeout(() => {
-          setMError(false);
-        }, 2000);
-      }
+      navigation.navigate('Signature', { bagianDepan, bagianDalam, depanMesin, EDCCompetitor, value, status: 'update' });
     } else {
       setNotComplete(true);
       setTimeout(() => {
         setNotComplete(false);
       }, 2000);
     }
-    setLoading(false);
-  };
-
-  const hanndleDone = () => {
-    sendData();
   };
 
   const renderContent = () => (
@@ -506,9 +405,6 @@ const DetailScreen = ({ route, navigation }) => {
       <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#e3fdfd" />
       <SafeAreaView style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
         <View style={{ flex: 1 }}>
-          {loading && <ModalLoad title={'sending data'} progres={true} />}
-          {mError && <ModalLoad title={'Failed sending'} progres={false} />}
-          {mSuccess && <ModalLoad title={'Signature Save'} progres={false} />}
           {notComplete && <ModalLoad title={'catatan Tidak Boleh Kosong'} progres={false} />}
           <View style={{ flex: 1, backgroundColor: '#e3fdfd' }}>
             <View style={{ flex: 1 }}>
@@ -534,9 +430,8 @@ const DetailScreen = ({ route, navigation }) => {
               >
                 <Icon name="arrow-left" size={20} color="black" />
               </TouchableOpacity>
-              <ScrollView scrollEnabled={scrollEnabled}>
+              <ScrollView>
                 <View style={{ marginVertical: 20, marginHorizontal: 20 }}>
-                  {/* Data Merchants */}
                   <View>
                     <View
                       style={{
@@ -736,13 +631,13 @@ const DetailScreen = ({ route, navigation }) => {
                           <View style={{ marginRight: 40 }}>
                             <Text>latitude</Text>
                             <View style={{ marginTop: 10, padding: 10, backgroundColor: '#F8F8F8' }}>
-                              <Text>{value.latitude}</Text>
+                              <Text>{location.latitude}</Text>
                             </View>
                           </View>
                           <View>
                             <Text>longitude</Text>
                             <View style={{ marginTop: 10, padding: 10, backgroundColor: '#F8F8F8' }}>
-                              <Text>{value.longitude}</Text>
+                              <Text>{location.longitude}</Text>
                             </View>
                           </View>
                         </View>
@@ -1419,7 +1314,6 @@ const DetailScreen = ({ route, navigation }) => {
                       />
                     </View>
                   </View>
-                  {/* Foto Merchant */}
                   <View>
                     <View
                       style={{
@@ -1499,28 +1393,6 @@ const DetailScreen = ({ route, navigation }) => {
                           />
                         )}
                       </TouchableOpacity>
-                    </View>
-                  </View>
-                  <View style={{ marginTop: 20 }}>
-                    <Text style={{ textAlign: 'center' }}>Tanda tangan PIC</Text>
-                    <View style={{ marginTop: 10, width: width - 40, height: 300 }}>
-                      <Signature
-                        // onOK={setSignature}
-                        onOK={changeSignature}
-                        onEmpty={() => console.log('onEmpty')}
-                        // onClear={() => setSignature(null)}
-                        onBegin={() => setScrollEnabled(false)}
-                        onEnd={() => setScrollEnabled(true)}
-                        // autoClear={true}
-                        descriptionText="Sign"
-                        clearText="Clear"
-                        confirmText="Save"
-                        webStyle={`.m-signature-pad--footer
-                      .button {
-                        background-color: red;
-                        color: #FFF;
-                      }`}
-                      />
                     </View>
                   </View>
                   <View style={{ marginTop: 20 }}>

@@ -5,20 +5,38 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import host from '@utilities/host';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import GetLocation from 'react-native-get-location';
 
 const CardList = (props) => {
   const { list, source } = props;
+  const [location, setLocation] = useState({
+    latitude: '',
+    longitude: '',
+  });
   const [showModal, setShowModal] = useState(false);
   const [merchantName, setMerchantName] = useState('');
   const [newDataID, setNewDataID] = useState('');
   const navigation = useNavigation();
-  console.log(list);
 
   const openModal = (dataID, dataName) => {
     setMerchantName(dataName);
     setNewDataID(dataID);
     setShowModal(true);
   };
+
+  useEffect(() => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then((location) => {
+        setLocation({ ...location, latitude: location.latitude, longitude: location.longitude });
+      })
+      .catch((error) => {
+        const { code, message } = error;
+        console.log(code, message);
+      });
+  }, []);
 
   const changeStatus = async () => {
     try {
@@ -38,7 +56,7 @@ const CardList = (props) => {
 
   const handdleDetail = (allData) => {
     const itemData = { id: allData.id, tipe: allData.tipe, merchant: allData.merchant, alamat: allData.alamat, tid: allData.tid, mid: allData.mid };
-    navigation.navigate('Detail', { itemData });
+    navigation.navigate('Detail', { itemData, location });
   };
 
   return (

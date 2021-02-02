@@ -8,9 +8,9 @@ const useWidth = width - 40;
 
 const NavSection = (props) => {
   const navigation = useNavigation();
-  const { title, color, iconName, navto } = props;
+  const { title, color, iconName, navto, location } = props;
   return (
-    <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => navigation.navigate(navto)}>
+    <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => navigation.navigate(navto, { location })}>
       <View
         style={{
           backgroundColor: color,

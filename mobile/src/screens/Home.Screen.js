@@ -4,8 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChartBeziere from '../components/ChartBeziere';
 import ChartPie from '../components/ChartPie';
 import NavSection from '../components/NavSection';
+import GetLocation from 'react-native-get-location';
 
 const HomeScreen = ({ navigation }) => {
+  const [value, setValue] = useState({
+    latitude: '',
+    longitude: '',
+  });
   const [greet, setGreet] = useState(null);
   const [name, setName] = useState(null);
   const [avatar, setAvatar] = useState(null);
@@ -49,6 +54,17 @@ const HomeScreen = ({ navigation }) => {
     } else {
       setGreet('Good Evening!');
     }
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then((location) => {
+        setValue({ ...value, latitude: location.latitude, longitude: location.longitude });
+      })
+      .catch((error) => {
+        const { code, message } = error;
+        console.log(code, message);
+      });
   }, []);
   return (
     <>
@@ -74,7 +90,7 @@ const HomeScreen = ({ navigation }) => {
                 <NavSection title={'Pickup Sales Draft'} iconName={'files-o'} color={'#e9b0df'} navto={'Pickup'} />
               </View>
               <View style={styles.navContainer}>
-                <NavSection title={'OTS Survey'} iconName={'pencil-square-o'} color={'#ff577f'} navto={'Survey'} />
+                <NavSection title={'OTS Survey'} iconName={'pencil-square-o'} color={'#ff577f'} navto={'Survey'} location={value} />
                 <NavSection title={'Risk Unit'} iconName={'check-square-o'} color={'#6930c3'} navto={'Risk'} />
               </View>
             </View>

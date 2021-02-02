@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { StatusBar, SafeAreaView, View, Text, Dimensions, TouchableOpacity, ScrollView, TextInput, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Signature from 'react-native-signature-canvas';
 import ModalLoad from '@components/ModalLoad';
 import * as ImagePicker from 'react-native-image-picker';
-import GetLocation from 'react-native-get-location';
 import BottomSheet from 'reanimated-bottom-sheet';
-import axios from 'axios';
-import host from '@utilities/host';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('screen');
 
-const CreateScreen = ({ navigation }) => {
+const CreateScreen = ({ navigation, route }) => {
+  const { location } = route.params;
   const [value, setValue] = useState({
     merchant: '',
     alamat: '',
@@ -20,17 +16,14 @@ const CreateScreen = ({ navigation }) => {
     regional: '',
     pic: '',
     no_telp: '',
-    tanggal_impor: new Date(),
-    latitude: '',
-    longitude: '',
+    latitude: location.latitude,
+    longitude: location.longitude,
     tipe: 'Survey',
   });
   const [bagianDepan, setBagianDepan] = useState(null);
   const [bagianDalam, setBagianDalam] = useState(null);
-  const [signature, setSignature] = useState(null);
   const [mSuccess, setMSuccess] = useState(false);
   const [mError, setMError] = useState(false);
-  const [scrollEnabled, setScrollEnabled] = useState(true);
   const [imageStatus, setImageStatus] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -83,29 +76,6 @@ const CreateScreen = ({ navigation }) => {
       }
     );
   };
-
-  const changeSignature = (data) => {
-    setSignature(data);
-    setMSuccess(true);
-    setTimeout(() => {
-      setMSuccess(false);
-    }, 1000);
-  };
-
-  // get location
-  useEffect(() => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 15000,
-    })
-      .then((location) => {
-        setValue({ ...value, latitude: location.latitude, longitude: location.longitude });
-      })
-      .catch((error) => {
-        const { code, message } = error;
-        console.log(code, message);
-      });
-  }, []);
 
   const renderContent = () => (
     <View
@@ -160,59 +130,8 @@ const CreateScreen = ({ navigation }) => {
     </View>
   );
 
-  const sendData = async () => {
-    setLoading(true);
-    try {
-      const foto_toko_1 = {
-        uri: bagianDepan,
-        type: 'image/jpeg',
-        name: 'foto_toko_1.jpg',
-      };
-      const foto_toko_2 = {
-        uri: bagianDalam,
-        type: 'image/jpeg',
-        name: 'foto_toko_2.jpg',
-      };
-      var formData = new FormData();
-      if (bagianDepan) formData.append('foto_toko_1', foto_toko_1);
-      if (bagianDalam) formData.append('foto_toko_2', foto_toko_2);
-      if (signature) formData.append('tanda_tangan', signature);
-      for (let key in value) {
-        formData.append(`${key}`, value[key]);
-      }
-      const token = await AsyncStorage.getItem('userToken');
-      const { data } = await axios({
-        method: 'POST',
-        url: `${host}/job-orders`,
-        data: formData,
-        headers: { token },
-      });
-      setLoading(false);
-      console.log('berhasil');
-      navigation.navigate('Survey');
-    } catch (error) {
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(JSON.stringify(error.response.data));
-        console.log(JSON.stringify(error.response.status));
-        console.log(JSON.stringify(error.response.headers));
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(JSON.stringify(error.request));
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-      console.log(JSON.stringify(error.config));
-      setLoading(false);
-      setMError(true);
-      setTimeout(() => {
-        setMError(false);
-      }, 2000);
-    }
+  const sendData = () => {
+    navigation.navigate('Signature', { bagianDepan, bagianDalam, value, status: 'create' });
   };
 
   return (
@@ -223,6 +142,7 @@ const CreateScreen = ({ navigation }) => {
           {loading && <ModalLoad title={'sending data'} progres={true} />}
           {mSuccess && <ModalLoad title={'Signature Save'} progres={false} />}
           {mError && <ModalLoad title={'Failed sending'} progres={false} />}
+
           <View
             style={{
               width: width,
@@ -244,7 +164,7 @@ const CreateScreen = ({ navigation }) => {
           >
             <Icon name="arrow-left" size={20} color="black" />
           </TouchableOpacity>
-          <ScrollView scrollEnabled={scrollEnabled}>
+          <ScrollView>
             <View style={{ marginVertical: 20, marginHorizontal: 20 }}>
               <View>
                 <View
@@ -372,28 +292,8 @@ const CreateScreen = ({ navigation }) => {
                       )}
                     </TouchableOpacity>
                   </View>
-                  <View style={{ marginTop: 20 }}>
-                    <Text style={{ textAlign: 'center' }}>Tanda tangan PIC</Text>
-                    <View style={{ marginTop: 10, width: width - 40, height: 300 }}>
-                      <Signature
-                        onOK={changeSignature}
-                        onEmpty={() => console.log('onEmpty')}
-                        onBegin={() => setScrollEnabled(false)}
-                        onEnd={() => setScrollEnabled(true)}
-                        descriptionText="Sign"
-                        clearText="Clear"
-                        confirmText="Save"
-                        webStyle={`.m-signature-pad--footer
-                      .button {
-                        background-color: red;
-                        color: #FFF;
-                      }`}
-                      />
-                    </View>
-                  </View>
                 </View>
               </View>
-
               <TouchableOpacity onPress={() => sendData()}>
                 <View
                   style={{

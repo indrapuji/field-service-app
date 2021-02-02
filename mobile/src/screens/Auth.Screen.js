@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import host from '@utilities/host';
+import GetLocation from 'react-native-get-location';
 
 import { AuthContext } from '@components/Context';
 
@@ -30,6 +31,20 @@ const AuthScreen = () => {
   const [failText, setFailText] = useState('');
 
   const { signIn } = useContext(AuthContext);
+
+  useEffect(() => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then((location) => {
+        console.log(location.latitude, location.longitude);
+      })
+      .catch((error) => {
+        const { code, message } = error;
+        console.log(code, message);
+      });
+  }, []);
 
   const seePass = () => {
     setShow(!show);
@@ -71,6 +86,7 @@ const AuthScreen = () => {
         console.log('Finally');
       });
   };
+
   return (
     <>
       <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#84ccf7" />

@@ -12,6 +12,8 @@ import RiskTab from '@navigations/RiskTab';
 import AuthScreen from '@screens/Auth.Screen';
 import HomeScreen from '@screens/Home.Screen';
 import ProfileScreen from '@screens/Profile.Screen';
+import SplashScreen from '@screens/Splash.Screen';
+import SignScreen from '@screens/Sign.Screen';
 
 import DetailScreen from '@screens/detail/Detail.Screen';
 
@@ -189,9 +191,10 @@ const App = () => {
 
   if (loginState.isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
+      // <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      //   <ActivityIndicator size="large" />
+      // </View>
+      <SplashScreen />
     );
   }
   return (
@@ -215,6 +218,7 @@ const App = () => {
               <Stack.Screen name="Risk" component={RiskTab} options={{ title: 'Home', headerShown: true }} />
               <Stack.Screen name="Detail" component={DetailScreen} options={{ title: null, headerShown: false }} />
               <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="Signature" component={SignScreen} options={{ title: null, headerShown: false }} />
             </>
           ) : (
             <Stack.Screen name="Auth" component={AuthScreen} options={{ title: null, headerShown: false }} />

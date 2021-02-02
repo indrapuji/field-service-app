@@ -23,7 +23,7 @@ const wait = (timeout) => {
   });
 };
 
-const PreScreen = ({ navigation }) => {
+const PreScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');

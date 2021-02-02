@@ -12,7 +12,8 @@ const wait = (timeout) => {
   });
 };
 
-const SurveyScreen = ({ navigation }) => {
+const SurveyScreen = ({ navigation, route }) => {
+  const { location } = route.params;
   const [refreshing, setRefreshing] = useState(false);
   const [filtered, setFiltered] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -160,7 +161,7 @@ const SurveyScreen = ({ navigation }) => {
                 )}
               </ScrollView>
               <View style={{ position: 'absolute', right: 30, bottom: 20 }}>
-                <TouchableOpacity onPress={() => navigation.navigate('Create')}>
+                <TouchableOpacity onPress={() => navigation.navigate('Create', { location })}>
                   <View
                     style={{
                       width: 50,
