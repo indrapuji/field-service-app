@@ -11,7 +11,6 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   Dimensions,
-  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
