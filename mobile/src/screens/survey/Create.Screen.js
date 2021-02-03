@@ -17,7 +17,7 @@ const CreateScreen = ({ navigation, route }) => {
     pic: '',
     no_telp: '',
     latitude: '',
-    longitude: location.longitude,
+    longitude: '',
     tipe: '',
   });
   const [bagianDepan, setBagianDepan] = useState(null);

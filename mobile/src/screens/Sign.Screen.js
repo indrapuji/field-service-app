@@ -23,6 +23,7 @@ const SignScreen = ({ navigation, route }) => {
 
   const sendCreate = async (signature) => {
     setLoading(true);
+
     try {
       const foto_toko_1 = {
         uri: bagianDepan,
@@ -49,6 +50,7 @@ const SignScreen = ({ navigation, route }) => {
         headers: { token },
       });
       setLoading(false);
+      console.log(formData);
       console.log('berhasil');
       setMSuccess(true);
       setTimeout(() => {

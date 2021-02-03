@@ -12,6 +12,7 @@ const CardList = (props) => {
   const [merchantName, setMerchantName] = useState('');
   const [newDataID, setNewDataID] = useState('');
   const navigation = useNavigation();
+  const [status, setStatus] = useState('');
 
   const openModal = (dataID, dataName) => {
     setMerchantName(dataName);
@@ -25,7 +26,7 @@ const CardList = (props) => {
       const { data } = await axios({
         method: 'put',
         url: `${host}/job-orders/change-status/${newDataID}`,
-        data: { status: 'Progres' },
+        data: { status },
         headers: { token },
       });
       setShowModal(false);
@@ -36,8 +37,23 @@ const CardList = (props) => {
   };
 
   const handdleDetail = (allData) => {
-    const itemData = { id: allData.id, tipe: allData.tipe, merchant: allData.merchant, alamat: allData.alamat, tid: allData.tid, mid: allData.mid };
-    navigation.navigate('Detail', { itemData, location });
+    if (source !== 'done') {
+      const itemData = { id: allData.id, tipe: allData.tipe, merchant: allData.merchant, alamat: allData.alamat, tid: allData.tid, mid: allData.mid };
+      navigation.navigate('Detail', { itemData, location });
+    } else {
+      navigation.navigate('DetailDone', { id: allData.id });
+    }
+  };
+
+  const handdleChange = (id, merchant) => {
+    if (source === 'home') {
+      setStatus('Progres');
+      openModal(id, merchant);
+    }
+    if (source === 'progres') {
+      setStatus('Assign');
+      openModal(id, merchant);
+    }
   };
 
   return (
@@ -45,8 +61,8 @@ const CardList = (props) => {
       <TouchableHighlight
         activeOpacity={0.6}
         underlayColor="#e3fdfd"
-        onPress={() => (source !== 'done' ? handdleDetail(item) : null)}
-        onLongPress={() => (source === 'home' ? openModal(item.id, item.merchant) : null)}
+        onPress={() => handdleDetail(item)}
+        onLongPress={() => handdleChange(item.id, item.merchant)}
       >
         <View
           style={{
@@ -82,7 +98,7 @@ const CardList = (props) => {
           <View style={styles.modalView}>
             <View style={{ alignItems: 'center' }}>
               <Text style={styles.merchantTitle}>{merchantName}</Text>
-              <Text>Change Status to Progress</Text>
+              <Text>Change Status to {status}</Text>
             </View>
             <View style={styles.buttonPosition}>
               <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => changeStatus()}>
@@ -131,7 +147,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginVertical: 3,
-    height: 130,
+    height: 150,
     width: width - 25,
   },
   contentPosition: {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { StatusBar, View, Text, SafeAreaView, FlatList, TextInput, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native';
-import CardDone from '@components/CardDone';
+import CardSurvey from '@components/CardSurvey';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 import host from '@utilities/host';
@@ -154,7 +154,7 @@ const SurveyScreen = ({ navigation, route }) => {
           <View style={{ flex: 1, paddingHorizontal: 10 }}>
             <FlatList
               data={filtered}
-              renderItem={({ item, index }) => <CardDone item={item} />}
+              renderItem={({ item, index }) => <CardSurvey item={item} />}
               keyExtractor={(key, index) => index.toString()}
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}

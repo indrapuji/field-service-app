@@ -103,6 +103,12 @@ const ProgressScreen = () => {
     }
   }, [searchQuery]);
 
+  const update = (id) => {
+    const newFilter = filtered.filter((x) => x.id !== id);
+    setFiltered(newFilter);
+    setList(newFilter);
+  };
+
   const renderFooter = () => {
     return (
       <>
@@ -173,7 +179,7 @@ const ProgressScreen = () => {
           <View style={{ flex: 1, paddingHorizontal: 10 }}>
             <FlatList
               data={filtered}
-              renderItem={({ item, index }) => <CardList source={'progres'} item={item} location={location} />}
+              renderItem={({ item, index }) => <CardList source={'progres'} update={update} item={item} location={location} />}
               keyExtractor={(key, index) => index.toString()}
               refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
               showsVerticalScrollIndicator={false}

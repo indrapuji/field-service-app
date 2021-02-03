@@ -16,9 +16,11 @@ import SplashScreen from '@screens/Splash.Screen';
 import SignScreen from '@screens/Sign.Screen';
 
 import DetailScreen from '@screens/detail/Detail.Screen';
+import DetailDoneScreen from '@screens/detail/DetailDone.Screen';
 
 import SurveyScreen from '@screens/survey/Survey.Screen';
 import CreateScreen from '@screens/survey/Create.Screen';
+import DetailSurvey from '@screens/survey/DetailSurvey.Screen';
 
 import messaging from '@react-native-firebase/messaging';
 import host from '@utilities/host';
@@ -217,8 +219,10 @@ const App = () => {
               <Stack.Screen name="Create" component={CreateScreen} options={{ title: null, headerShown: false }} />
               <Stack.Screen name="Risk" component={RiskTab} options={{ title: 'Home', headerShown: true }} />
               <Stack.Screen name="Detail" component={DetailScreen} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="DetailDone" component={DetailDoneScreen} options={{ title: null, headerShown: false }} />
               <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: null, headerShown: false }} />
               <Stack.Screen name="Signature" component={SignScreen} options={{ title: null, headerShown: false }} />
+              <Stack.Screen name="DetailSurvey" component={DetailSurvey} options={{ title: null, headerShown: false }} />
             </>
           ) : (
             <Stack.Screen name="Auth" component={AuthScreen} options={{ title: null, headerShown: false }} />

@@ -9,30 +9,30 @@ const CardList = (props) => {
 
   return (
     <View>
-      {/* <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => null}> */}
-      <View
-        style={{
-          ...styles.cardContainer,
-          borderColor: '#ff577f',
-        }}
-      >
-        <View style={styles.contentPosition}>
-          <View style={styles.centerJustify}>
-            <View style={styles.flexRow}>
-              <Text style={styles.boldText}>{item.merchant}</Text>
+      <TouchableHighlight activeOpacity={0.6} underlayColor="#e3fdfd" onPress={() => navigation.navigate('DetailSurvey', { id: item.id })}>
+        <View
+          style={{
+            ...styles.cardContainer,
+            borderColor: '#ff577f',
+          }}
+        >
+          <View style={styles.contentPosition}>
+            <View style={styles.centerJustify}>
+              <View style={styles.flexRow}>
+                <Text style={styles.boldText}>{item.merchant}</Text>
+              </View>
+              <Text style={styles.alamatText} numberOfLines={3}>
+                {item.alamat}
+              </Text>
+              <View>
+                <Text style={styles.boldText}>{item.regional}</Text>
+              </View>
+              <Text>{item.no_telp}</Text>
+              <Text>{formatFullDate(item.createdAt)}</Text>
             </View>
-            <Text style={styles.alamatText} numberOfLines={3}>
-              {item.alamat}
-            </Text>
-            <View>
-              <Text style={styles.boldText}>{item.regional}</Text>
-            </View>
-            <Text>{item.no_telp}</Text>
-            <Text>{formatFullDate(item.createdAt)}</Text>
           </View>
         </View>
-      </View>
-      {/* </TouchableHighlight> */}
+      </TouchableHighlight>
     </View>
   );
 };
