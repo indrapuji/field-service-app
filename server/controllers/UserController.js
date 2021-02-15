@@ -1,5 +1,5 @@
 const createError = require('http-errors');
-const { user, vendor, job_order, vendor_client, user_fcm_token } = require('../models');
+const { user, vendor, job_order, vendor_client, user_fcm_token, user_privilege } = require('../models');
 const { generateToken } = require('../helpers/jwt');
 const { comparePassword } = require('../helpers/bcrypt');
 const serverUrl = require('../helpers/serverUrl');
@@ -15,6 +15,10 @@ class UserController {
         where: {
           email,
         },
+        include: [{
+          model: user_privilege,
+          required: false
+        }]
       });
       if (!userData) throw createError(400, 'Wrong Username/Password');
       const passwordVerification = comparePassword(password, userData.password);
@@ -35,7 +39,9 @@ class UserController {
       const userData = await user.findOne({ where: { id } });
       console.log(userData.tipe);
       if (userData.tipe !== 'Super Admin' && userData.tipe !== 'Admin') throw createError(401, 'Unauthorized');
-      let { nama_lengkap, email, password, gender, alamat, nama_bank, no_rekening, no_telp, tgl_lahir, no_ktp, tipe, vendor_id } = req.body;
+      let { nama_lengkap, email, password, gender, alamat, nama_bank, no_rekening, no_telp, tgl_lahir, no_ktp, tipe, vendor_id, privilege } = req.body;
+      if (!privilege) throw createError(400, "Privilege harus ada");
+      privilege = JSON.parse(privilege);
       if (!nama_lengkap || !email || !password || !tipe) throw createError(400, 'Input all required field');
       if (tipe !== 'Teknisi' && userData.tipe === 'Admin') throw createError(401, 'Unauthorized');
       let foto_profil = null;
@@ -69,6 +75,12 @@ class UserController {
           vendor_id,
         });
       }
+      await Promise.all(privilege.map(async data => {
+        await user_privilege.create({
+          user_id: result.id,
+          name: data
+        });
+      }));
       res.status(201).json(result);
     } catch (err) {
       next(err);
@@ -148,6 +160,29 @@ class UserController {
         user_id: id
       });
       res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+  static editUser = async (req, res, next) => {
+    try {
+      const { id } = req.UserData;
+      const { nama_lengkap, gender, alamat, nama_bank, no_rekening, no_telp, tgl_lahir, no_ktp } = req.body;
+      const query = {};
+      if (nama_lengkap) query.nama_lengkap = nama_lengkap;
+      if (gender) query.gender = gender;
+      if (alamat) query.alamat = alamat;
+      if (nama_bank) query.nama_bank = nama_bank;
+      if (no_rekening) query.no_rekening = no_rekening;
+      if (no_telp) query.no_telp = no_telp;
+      if (tgl_lahir) query.tgl_lahir = tgl_lahir;
+      if (no_ktp) query.no_ktp = no_ktp;
+      await user.update(query, {
+        where: {
+          id
+        }
+      });
+      res.status(200).json({ msg: "Success" });
     } catch (err) {
       next(err);
     }

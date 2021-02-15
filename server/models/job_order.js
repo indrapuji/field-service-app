@@ -190,6 +190,78 @@ module.exports = (sequelize, DataTypes) => {
       keluhan: {
         type: DataTypes.STRING,
       },
+      merchant_open: {
+        type: DataTypes.STRING,
+      },
+      edukasi_fraud: {
+        type: DataTypes.STRING,
+      },
+      edukasi_gestun: {
+        type: DataTypes.STRING,
+      },
+      edukasi_surcharge: {
+        type: DataTypes.STRING,
+      },
+      edukasi_kartu_asing: {
+        type: DataTypes.STRING,
+      },
+      edukasi_double_transaksi: {
+        type: DataTypes.STRING,
+      },
+      no_aplikasi: {
+        type: DataTypes.STRING,
+      },
+      nama_sumber: {
+        type: DataTypes.STRING,
+      },
+      jenis_kelamin: {
+        type: DataTypes.STRING,
+      },
+      hub_sumber_informasi: {
+        type: DataTypes.STRING,
+      },
+      app_kerja: {
+        type: DataTypes.STRING,
+      },
+      bidang_usaha: {
+        type: DataTypes.STRING,
+      },
+      lama_usaha: {
+        type: DataTypes.STRING,
+      },
+      lama_bekerja: {
+        type: DataTypes.STRING,
+      },
+      jabatan_aplikan: {
+        type: DataTypes.STRING,
+      },
+      status_aplikan: {
+        type: DataTypes.STRING,
+      },
+      status_karyawan: {
+        type: DataTypes.STRING,
+      },
+      jumlah_karyawan: {
+        type: DataTypes.STRING,
+      },
+      penghasilan_aplikasi_perbulan: {
+        type: DataTypes.STRING,
+      },
+      status_kepemilikan_kantor: {
+        type: DataTypes.STRING,
+      },
+      kondisi_merchant: {
+        type: DataTypes.STRING,
+      },
+      lokasi_lingkungan_merchant: {
+        type: DataTypes.STRING,
+      },
+      kondisi_bangunan_merchant: {
+        type: DataTypes.STRING,
+      },
+      peralatan_kantor_yang_terlihat: {
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,

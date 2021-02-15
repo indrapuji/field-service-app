@@ -1,4 +1,5 @@
 const { vendor, user } = require('../models');
+const createError = require("http-errors");
 
 class VendorController {
   static getAll = async (req, res, next) => {
@@ -49,6 +50,25 @@ class VendorController {
       next(err);
     }
   };
+  static editVendor = async (req, res, next) => {
+    try {
+      const { nama, alamat } = req.body;
+      const { id } = req.params;
+      const vendorData = await vendor.findOne({ where: { id } });
+      if (!vendorData) throw createError(404, "Data not found");
+      let query = {};
+      if (nama) query.nama = nama;
+      if (alamat) query.alamat = alamat;
+      await vendor.update(query, {
+        where: {
+          id
+        }
+      });
+      res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = VendorController;

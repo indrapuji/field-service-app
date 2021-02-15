@@ -182,7 +182,78 @@ module.exports = {
       keluhan: {
         type: Sequelize.STRING,
       },
-
+      merchant_open: {
+        type: Sequelize.STRING,
+      },
+      edukasi_fraud: {
+        type: Sequelize.STRING,
+      },
+      edukasi_gestun: {
+        type: Sequelize.STRING,
+      },
+      edukasi_surcharge: {
+        type: Sequelize.STRING,
+      },
+      edukasi_kartu_asing: {
+        type: Sequelize.STRING,
+      },
+      edukasi_double_transaksi: {
+        type: Sequelize.STRING,
+      },
+      no_aplikasi: {
+        type: Sequelize.STRING,
+      },
+      nama_sumber: {
+        type: Sequelize.STRING,
+      },
+      jenis_kelamin: {
+        type: Sequelize.STRING,
+      },
+      hub_sumber_informasi: {
+        type: Sequelize.STRING,
+      },
+      app_kerja: {
+        type: Sequelize.STRING,
+      },
+      bidang_usaha: {
+        type: Sequelize.STRING,
+      },
+      lama_usaha: {
+        type: Sequelize.STRING,
+      },
+      lama_bekerja: {
+        type: Sequelize.STRING,
+      },
+      jabatan_aplikan: {
+        type: Sequelize.STRING,
+      },
+      status_aplikan: {
+        type: Sequelize.STRING,
+      },
+      status_karyawan: {
+        type: Sequelize.STRING,
+      },
+      jumlah_karyawan: {
+        type: Sequelize.STRING,
+      },
+      penghasilan_aplikasi_perbulan: {
+        type: Sequelize.STRING,
+      },
+      status_kepemilikan_kantor: {
+        type: Sequelize.STRING,
+      },
+      kondisi_merchant: {
+        type: Sequelize.STRING,
+      },
+      lokasi_lingkungan_merchant: {
+        type: Sequelize.STRING,
+      },
+      kondisi_bangunan_merchant: {
+        type: Sequelize.STRING,
+      },
+      peralatan_kantor_yang_terlihat: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

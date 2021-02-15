@@ -23,5 +23,6 @@ router.put(
   JobOrderController.jobOrderDone
 );
 router.get('/dashboard', authentication, JobOrderController.dashboard);
+router.post('/assign-many/:id', authentication, JobOrderController.assignJobOrderMany);
 
 module.exports = router;

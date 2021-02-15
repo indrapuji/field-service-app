@@ -1,7 +1,8 @@
-const { job_order, vendor, user } = require('../models');
+const { job_order, vendor, user, user_privilege } = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
 const setDate = require('../helpers/setDate');
+const { Op } = require("sequelize");
 
 class JobOrderController {
   static createJobOrder = async (req, res, next) => {
@@ -77,7 +78,7 @@ class JobOrderController {
       const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
       if (!jobOrderData) throw createError(404, 'User Not Found');
       if (jobOrderData.vendor_id !== userData.vendor_id && userData.tipe !== 'Super Admin') throw createError(401, 'You are unauthorized');
-      await job_order.update({ teknisi_id }, { where: { id: job_order_id } });
+      await job_order.update({ teknisi_id, admin_id: id }, { where: { id: job_order_id } });
       res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
@@ -113,16 +114,31 @@ class JobOrderController {
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
+      const userData = await user.findOne({
+        where: { id },
+        include: [{
+          model: user_privilege,
+          required: false
+        }]
+      });
+      const privileges = userData.user_privileges.map(data => data.name);
       let query = {
-        where: {},
+        where: {
+          tipe: {
+            [Op.or]: privileges
+          }
+        },
       };
-      const userData = await user.findOne({ where: { id } });
       if (userData.tipe !== 'Super Admin') {
         query.where.vendor_id = userData.vendor_id;
       }
       query.order = [['createdAt', 'DESC']];
       if (vendor_id) query.where.vendor_id = vendor_id;
-      if (tipe) query.where.tipe = tipe;
+      if (tipe) {
+        const validation = privileges.find(data => data === tipe);
+        if (!validation) throw createError(401, "Not authorized");
+        query.where.tipe = tipe;
+      }
       if (status) query.where.status = status;
       if (by === 'today')
         query.where.updated_at = {
@@ -329,6 +345,30 @@ class JobOrderController {
       next(err);
     }
   };
+  static assignJobOrderMany = async (req, res, next) => {
+    try {
+      let { arrData } = req.body;
+      const teknisi_id = req.params.id;
+      const admin_id = req.UserData.id;
+      if (!arrData) throw createError(400, "Array data required");
+      arrData = JSON.parse(arrData);
+      await Promise.all(arrData.map(async data => {
+        const jobOrderData = await job_order.findOne({ where: { id: data } });
+        if (!jobOrderData) return;
+        await job_order.update({
+          teknisi_id,
+          admin_id
+        }, {
+          where: {
+            id: data
+          }
+        })
+      }));
+      res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = JobOrderController;

@@ -16,7 +16,7 @@ async function seed() {
       regional: data['Regional'],
       tipe,
       vendor_id: 1,
-      teknisi_id: 4,
+      // teknisi_id: 4,
       status: "Assign"
     };
   });
