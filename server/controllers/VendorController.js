@@ -38,6 +38,16 @@ class VendorController {
       next(err);
     }
   };
+  static getOne = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const result = await vendor.findOne({ where: { id } });
+      if (!result) throw createError(404, "Data not found");
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
   static createVendor = async (req, res, next) => {
     try {
       const { nama, alamat } = req.body;
@@ -64,6 +74,15 @@ class VendorController {
           id
         }
       });
+      res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  }
+  static deleteVendor = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await vendor.destroy({ where: { id } });
       res.status(200).json({ msg: "Success" });
     } catch (err) {
       next(err);
