@@ -23,7 +23,6 @@ const SignScreen = ({ navigation, route }) => {
 
   const sendCreate = async (signature) => {
     setLoading(true);
-
     try {
       const foto_toko_1 = {
         uri: bagianDepan,
@@ -50,7 +49,6 @@ const SignScreen = ({ navigation, route }) => {
         headers: { token },
       });
       setLoading(false);
-      console.log(formData);
       console.log('berhasil');
       setMSuccess(true);
       setTimeout(() => {
@@ -169,7 +167,15 @@ const SignScreen = ({ navigation, route }) => {
       {mError && <ModalLoad title={'Failed sending'} progres={false} />}
       {loading && <ModalLoad title={'sending data'} progres={true} />}
       {mSuccess && <ModalLoad title={'Record Data Success'} progres={false} />}
-      <Signature onOK={handleSignature} onEmpty={handleEmpty} descriptionText="Sign" clearText="Clear" confirmText="Save" webStyle={style} />
+      <Signature
+        onOK={handleSignature}
+        onEmpty={handleEmpty}
+        descriptionText="Sign"
+        clearText="Clear"
+        confirmText="Save"
+        imageType="image/jpeg"
+        webStyle={style}
+      />
     </View>
   );
 };

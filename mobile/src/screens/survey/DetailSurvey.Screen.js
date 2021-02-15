@@ -24,7 +24,6 @@ const DetailSurveyScreen = ({ navigation, route }) => {
         headers: { token },
       });
       setLoading(false);
-      console.log(data.latitude);
       setValue(data);
       setBagianDepan(data.foto_toko_1);
       setBagianDalam(data.foto_toko_2);

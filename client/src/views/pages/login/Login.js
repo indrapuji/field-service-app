@@ -74,13 +74,7 @@ const Login = () => {
                           <CIcon name="cil-user" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput
-                        type="text"
-                        placeholder="Username"
-                        autoComplete="username"
-                        name="email"
-                        onChange={onFormChange}
-                      />
+                      <CInput type="text" placeholder="Username" autoComplete="username" name="email" onChange={onFormChange} />
                     </CInputGroup>
                     <CInputGroup className="mb-3">
                       <CInputGroupPrepend>
@@ -88,26 +82,8 @@ const Login = () => {
                           <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput
-                        type="password"
-                        placeholder="Password"
-                        autoComplete="current-password"
-                        name="password"
-                        onChange={onFormChange}
-                      />
+                      <CInput type="password" placeholder="Password" autoComplete="current-password" name="password" onChange={onFormChange} />
                     </CInputGroup>
-                    {/* <CFormGroup className="mb-4">
-                      <CInputGroupPrepend>
-                        <CInputGroupText>
-                          <CIcon name="cil-graph" />
-                        </CInputGroupText>
-                        <CSelect id="select" name="tipe" onChange={onFormChange}>
-                          <option value="0">Please select</option>
-                          <option value="Super Admin">Admin</option>
-                          <option value="Admin">Client</option>
-                        </CSelect>
-                      </CInputGroupPrepend>
-                    </CFormGroup> */}
                     <CButton color="primary" size="lg" block type="submit">
                       Login
                     </CButton>
