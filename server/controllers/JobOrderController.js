@@ -112,7 +112,7 @@ class JobOrderController {
   static getAllJobOrder = async (req, res, next) => {
     try {
       const { id } = req.UserData;
-      let { tipe, page, status, by, vendor_id, notIn } = req.query;
+      let { tipe, page, status, by, vendor_id, teknisi_id, notIn } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
@@ -135,6 +135,9 @@ class JobOrderController {
       };
       if (userData.tipe !== 'Super Admin') {
         query.where.vendor_id = userData.vendor_id;
+      }
+      if (teknisi_id) {
+        query.where.teknisi_id = teknisi_id;
       }
       query.order = [['createdAt', 'DESC']];
       if (vendor_id) query.where.vendor_id = vendor_id;
