@@ -12,5 +12,6 @@ router.get('/profile', authentication, UserController.getUserProfile);
 router.get('/all-users', authentication, UserController.getAllUser);
 router.post('/add-firebase-token', authentication, UserController.addFirebaseToken);
 router.put('/edit', authentication, UserController.editUser);
+router.get('/single/:id', authentication, UserController.singleUser);
 
 module.exports = router;

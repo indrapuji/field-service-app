@@ -3,6 +3,8 @@ const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
 const setDate = require('../helpers/setDate');
 const { Op } = require("sequelize");
+const excelToJson = require('convert-excel-to-json');
+const fs = require('fs');
 
 class JobOrderController {
   static createJobOrder = async (req, res, next) => {
@@ -369,6 +371,103 @@ class JobOrderController {
       next(err);
     }
   }
+  static checkSeedingJobOrder = async (req, res, next) => {
+    try {
+      if (!req.file) throw createError(400, 'Data Excel Required');
+
+      let seedingData = excelToJson({
+        source: fs.readFileSync(req.file.path),
+        sheets: ['Sheet1'],
+        columnToKey: {
+          '*': '{{columnHeader}}',
+        },
+      });
+
+      seedingData = seedingData['Sheet1'].filter((data) => {
+        if (data['MERCHANT'] && data['MID'] && data['TID']) {
+          return data;
+        }
+      });
+      seedingData.shift();
+
+      let status_valid = true;
+
+      const result = await Promise.all(
+        seedingData.map(async (data) => {
+          return {
+            no: data['NO'],
+            merchant: data['MERCHANT'],
+            mid: data['EMPLOYEE ID'],
+            tid: data['KODE PERUSAHAAN'],
+            alamat: data['GENDER'],
+            kota: data['AYAH'],
+            no_telp: data['ALAMAT 1'],
+            edc_connection: data['ALAMAT 2'],
+            sn_edc: data['KOTA'],
+            type_edc: data['KELURAHAN'],
+            regional: data['KECAMATAN'],
+            pic: data['PROVINSI'],
+            tipe: data['KODE POS'],
+            problem_merchant: data['TEMPAT LAHIR'],
+            catatan: data['TANGGAL LAHIR'],
+            status,
+          };
+        })
+      );
+
+      fs.unlinkSync(req.file.path);
+      res.status(200).json({
+        status_valid,
+        data: result,
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+  static seedingJobOrder = async (req, res, next) => {
+    try {
+      const { data } = req.body;
+      const bulkQuery = data.map((data) => {
+        const {
+          merchant,
+          mid,
+          tid,
+          alamat,
+          kota,
+          no_telp,
+          edc_connection,
+          sn_edc,
+          type_edc,
+          regional,
+          pic,
+          tipe,
+          problem_merchant,
+          catatan,
+        } = data;
+        return {
+          tanggal_impor: new Date(),
+          merchant,
+          mid,
+          tid,
+          alamat,
+          kota,
+          no_telp,
+          edc_connection,
+          sn_edc,
+          type_edc,
+          regional,
+          pic,
+          tipe,
+          problem_merchant,
+          catatan,
+        };
+      });
+      await job_order.bulkCreate(bulkQuery);
+      res.status(200).json({ msg: 'Success' });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = JobOrderController;

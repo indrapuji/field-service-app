@@ -24,5 +24,9 @@ router.put(
 );
 router.get('/dashboard', authentication, JobOrderController.dashboard);
 router.post('/assign-many/:id', authentication, JobOrderController.assignJobOrderMany);
+router.post("/check-seed",
+	upload.single("data"),
+	JobOrderController.checkSeedingJobOrder);
+router.post("/create-seed", JobOrderController.seedingJobOrder);
 
 module.exports = router;
