@@ -206,25 +206,25 @@ const Register = () => {
                     </CCol>
                     <CCol md="9">
                       <CFormGroup variant="custom-checkbox" inline>
-                        <CInputCheckbox custom id="inline-checkbox1" value="kunjungan" onChange={onCheck} />
+                        <CInputCheckbox custom id="inline-checkbox1" value="Kunjungan" onChange={onCheck} />
                         <CLabel variant="custom-checkbox" htmlFor="inline-checkbox1">
                           Kunjungan
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-checkbox" inline>
-                        <CInputCheckbox custom id="inline-checkbox2" value="pickup" onChange={onCheck} />
+                        <CInputCheckbox custom id="inline-checkbox2" value="Pickup" onChange={onCheck} />
                         <CLabel variant="custom-checkbox" htmlFor="inline-checkbox2">
                           Pickup Sales Draft
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-checkbox" inline>
-                        <CInputCheckbox custom id="inline-checkbox3" value="survey" onChange={onCheck} />
+                        <CInputCheckbox custom id="inline-checkbox3" value="Survey" onChange={onCheck} />
                         <CLabel variant="custom-checkbox" htmlFor="inline-checkbox3">
                           OTS Survey
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-checkbox" inline>
-                        <CInputCheckbox custom id="inline-checkbox4" value="risk" onChange={onCheck} />
+                        <CInputCheckbox custom id="inline-checkbox4" value="Risk" onChange={onCheck} />
                         <CLabel variant="custom-checkbox" htmlFor="inline-checkbox4">
                           Risk Unit
                         </CLabel>
