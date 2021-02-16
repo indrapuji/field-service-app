@@ -77,7 +77,6 @@ const Register = () => {
   const onFormSubmit = async (e) => {
     try {
       e.preventDefault();
-      console.log(newAssign);
       const arrData = newAssign.map((data) => data.id);
       await axios({
         method: 'POST',
@@ -86,7 +85,7 @@ const Register = () => {
           token: localStorage.getItem('token'),
         },
         data: {
-          arrData,
+          arrData: JSON.stringify(arrData),
         },
       });
       history.push('/users');
@@ -120,7 +119,7 @@ const Register = () => {
                     <CLabel>Count</CLabel>
                   </CCol>
                   <CCol xs="12" md="2">
-                    <CInput disabled value={'299'} />
+                    <CInput disabled value={edit.job_order_count + newAssign.length} />
                   </CCol>
                 </CFormGroup>
               </CCardBody>
@@ -138,16 +137,15 @@ const Register = () => {
               </CCardFooter>
             </CForm>
           </CCard>
+          {newAssign.length > 0 && (
+            <CButton color="success" size="sm" onClick={onFormSubmit}>
+              Submit
+            </CButton>
+          )}
         </CCol>
       </CRow>
 
       <ListUser jobOrderData={jobOrderData} getWorkOrder={getWorkOrder} setNewAssign={setNewAssign} newAssign={newAssign} />
-
-      {newAssign.length === 1 && (
-        <CButton color="success" size="sm" onClick={onFormSubmit}>
-          Submit
-        </CButton>
-      )}
     </CContainer>
   );
 };

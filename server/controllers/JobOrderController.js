@@ -368,6 +368,7 @@ class JobOrderController {
             {
               teknisi_id,
               admin_id,
+              status: 'Assign',
             },
             {
               where: {
