@@ -42,7 +42,6 @@ const Register = () => {
     })
       .then(({ data }) => {
         setEdit(data);
-        console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -53,9 +52,10 @@ const Register = () => {
 
   const getWorkOrder = async (page, newData = newAssign) => {
     try {
+      const query = newData.map((data) => data.id);
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?page=' + page + `&notIn=${JSON.stringify(newData)}`,
+        url: HostUrl + '/job-orders/all?page=' + page + `&notIn=${JSON.stringify(query)}`,
         headers: {
           token: localStorage.getItem('token'),
         },

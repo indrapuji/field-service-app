@@ -21,8 +21,7 @@ const ListUser = (props) => {
   const handleAssign = (item) => {
     const newData = newAssign.concat(item);
     setNewAssign(newData);
-    const query = newData.map((data) => data.id);
-    getWorkOrder(jobOrderData.currentPage, query);
+    getWorkOrder(jobOrderData.currentPage, newData);
   };
   return (
     <>
