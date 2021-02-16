@@ -7,10 +7,7 @@ const multer = require('multer');
 
 const upload = multer({ storage });
 
-router.post('/',
-  authentication,
-  upload.fields([{ name: 'foto_toko_1' }, { name: 'foto_toko_2' }]),
-  JobOrderController.createJobOrder);
+router.post('/', authentication, upload.fields([{ name: 'foto_toko_1' }, { name: 'foto_toko_2' }]), JobOrderController.createJobOrder);
 router.put('/assign', authentication, adminVendorAuth, JobOrderController.assignJobOrder);
 router.put('/change-status/:id', authentication, teknisiAuth, JobOrderController.changeStatus);
 router.get('/all', authentication, JobOrderController.getAllJobOrder);
@@ -24,9 +21,7 @@ router.put(
 );
 router.get('/dashboard', authentication, JobOrderController.dashboard);
 router.post('/assign-many/:id', authentication, JobOrderController.assignJobOrderMany);
-router.post("/check-seed",
-	upload.single("data"),
-	JobOrderController.checkSeedingJobOrder);
-router.post("/create-seed", JobOrderController.seedingJobOrder);
+router.post('/check-seed', authentication, upload.single('data'), JobOrderController.checkSeedingJobOrder);
+router.post('/create-seed', authentication, JobOrderController.seedingJobOrder);
 
 module.exports = router;

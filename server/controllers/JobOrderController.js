@@ -430,6 +430,8 @@ class JobOrderController {
   static seedingJobOrder = async (req, res, next) => {
     try {
       const { data } = req.body;
+      const { id } = req.UserData;
+      const userData = await user.findOne({ where: { id } });
       const bulkQuery = data.map((data) => {
         const { merchant, mid, tid, alamat, kota, no_telp, edc_connection, sn_edc, type_edc, regional, pic, tipe, problem_merchant, catatan } = data;
         return {
@@ -448,6 +450,7 @@ class JobOrderController {
           tipe,
           problem_merchant,
           catatan,
+          vendor_id: userData.vendor_id,
         };
       });
       await job_order.bulkCreate(bulkQuery);

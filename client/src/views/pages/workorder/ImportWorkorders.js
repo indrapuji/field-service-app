@@ -75,8 +75,7 @@ const ImportCompany = () => {
         },
       });
       setLoading(false);
-      setDataWO(data.data);
-      console.log(data.data[0]);
+      setDataWO(data);
       setShow(true);
     } catch (error) {
       setLoading(false);
@@ -88,10 +87,6 @@ const ImportCompany = () => {
     setLoading(true);
     try {
       e.preventDefault();
-      if (!dataWO.status_valid) {
-        newAlert({ status: 'error', message: 'Ada data yg tidak valid' });
-        return;
-      }
       await axios({
         method: 'POST',
         url: HostUrl + '/job-orders/create-seed',
@@ -157,34 +152,24 @@ const ImportCompany = () => {
                         <small>No</small>
                       </CLabel>
                     </CCol>
-                    <CCol md="1">
+                    <CCol md="2">
                       <CLabel>
-                        <small>Kode </small>
+                        <small>Merchant </small>
                       </CLabel>
                     </CCol>
                     <CCol md="3">
                       <CLabel>
-                        <small>Nama</small>
+                        <small>Alamat</small>
                       </CLabel>
                     </CCol>
-                    <CCol md="1">
+                    <CCol md="3">
                       <CLabel>
-                        <small>Gender</small>
+                        <small>Tipe</small>
                       </CLabel>
                     </CCol>
-                    <CCol md="2">
+                    <CCol md="3">
                       <CLabel>
-                        <small>Tanggal Lahir</small>
-                      </CLabel>
-                    </CCol>
-                    <CCol md="2">
-                      <CLabel>
-                        <small>Employee ID</small>
-                      </CLabel>
-                    </CCol>
-                    <CCol md="2">
-                      <CLabel>
-                        <small>Status</small>
+                        <small>Catatan</small>
                       </CLabel>
                     </CCol>
                   </CFormGroup>
@@ -197,36 +182,24 @@ const ImportCompany = () => {
                               <small>{item.no}</small>
                             </CLabel>
                           </CCol>
-                          <CCol md="1">
+                          <CCol md="2">
                             <CLabel>
-                              <small>{item.kode_perusahaan}</small>
+                              <small>{item.merchant}</small>
                             </CLabel>
                           </CCol>
                           <CCol md="3">
                             <CLabel>
-                              <small>{item.nama}</small>
+                              <small>{item.alamat}</small>
                             </CLabel>
                           </CCol>
-                          <CCol md="1">
+                          <CCol md="3">
                             <CLabel>
-                              <small>{item.gender === 1 ? 'Laki-laki' : 'Perempuan'}</small>
+                              <small>{item.tipe}</small>
                             </CLabel>
                           </CCol>
-                          <CCol md="2">
+                          <CCol md="3">
                             <CLabel>
-                              <small>{formatDate(item.tgl_lahir)}</small>
-                            </CLabel>
-                          </CCol>
-                          <CCol md="2">
-                            <CLabel>
-                              <small>{item.emp_id}</small>
-                            </CLabel>
-                          </CCol>
-                          <CCol md="2">
-                            <CLabel>
-                              <CBadge color={getBadge(item.status)}>
-                                {item.status === 0 ? 'accept' : item.status === 1 ? 'kode perusahaan invalid' : 'duplicate xlx'}
-                              </CBadge>
+                              <small>{item.catatan}</small>
                             </CLabel>
                           </CCol>
                         </CFormGroup>
@@ -234,16 +207,10 @@ const ImportCompany = () => {
                     })}
 
                   <CCardFooter>
-                    {!dataWO.status_valid ? (
-                      <CButton size="sm" color="secondary" className="float-right">
-                        <CIcon name="cil-scrubber" /> import
-                      </CButton>
-                    ) : (
-                      <CButton type="submit" size="sm" color="success" className="float-right" disabled={loading ? true : false} onClick={submitFile}>
-                        {loading ? <CSpinner color="success" size="sm" /> : <CIcon name="cil-scrubber" />}
-                        import
-                      </CButton>
-                    )}
+                    <CButton type="submit" size="sm" color="success" className="float-right" disabled={loading ? true : false} onClick={submitFile}>
+                      {loading ? <CSpinner color="success" size="sm" /> : <CIcon name="cil-scrubber" />}
+                      import
+                    </CButton>
                   </CCardFooter>
                 </CForm>
               </CCardBody>
