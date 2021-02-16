@@ -1,7 +1,3 @@
-import DocsLink from './DocsLink'
-import HostUrl from './HostUrl'
+import DocsLink from './DocsLink';
 
-export {
-  DocsLink,
-  HostUrl
-}
+export { DocsLink };

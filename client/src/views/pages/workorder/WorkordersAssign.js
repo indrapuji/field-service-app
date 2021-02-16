@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination } from '@coreui/react';
 
-// import usersData from './UsersData';
-// import token from '../../token';
 import axios from 'axios';
-import { HostUrl } from '../../../reusable';
+import HostUrl from '../../../components/HostUrl';
 
 const getBadge = (status) => {
   switch (status) {
@@ -40,7 +38,7 @@ const Workorders = () => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?status=Progres&page=' + page,
+        url: HostUrl + '/job-orders/all?status=Assign&page=' + page,
         headers: {
           token: localStorage.getItem('token'),
         },

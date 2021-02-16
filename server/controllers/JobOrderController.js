@@ -2,7 +2,7 @@ const { job_order, vendor, user, user_privilege } = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
 const setDate = require('../helpers/setDate');
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 const excelToJson = require('convert-excel-to-json');
 const fs = require('fs');
 
@@ -51,8 +51,8 @@ class JobOrderController {
         status,
         admin_id: teknisi_id === id ? null : id,
         teknisi_id,
-        type
-      }
+        type,
+      };
       if (req.files) {
         if (req.files.foto_toko_1) query.foto_toko_1 = serverUrl + req.files.foto_toko_1[0].path;
         if (req.files.foto_toko_2) query.foto_toko_2 = serverUrl + req.files.foto_toko_2[0].path;
@@ -118,17 +118,19 @@ class JobOrderController {
       const offset = resPerPage * page - resPerPage;
       const userData = await user.findOne({
         where: { id },
-        include: [{
-          model: user_privilege,
-          required: false
-        }]
+        include: [
+          {
+            model: user_privilege,
+            required: false,
+          },
+        ],
       });
-      const privileges = userData.user_privileges.map(data => data.name);
+      const privileges = userData.user_privileges.map((data) => data.name);
       let query = {
         where: {
           tipe: {
-            [Op.or]: privileges
-          }
+            [Op.or]: privileges,
+          },
         },
       };
       if (userData.tipe !== 'Super Admin') {
@@ -137,8 +139,8 @@ class JobOrderController {
       query.order = [['createdAt', 'DESC']];
       if (vendor_id) query.where.vendor_id = vendor_id;
       if (tipe) {
-        const validation = privileges.find(data => data === tipe);
-        if (!validation) throw createError(401, "Not authorized");
+        const validation = privileges.find((data) => data === tipe);
+        if (!validation) throw createError(401, 'Not authorized');
         query.where.tipe = tipe;
       }
       if (status) query.where.status = status;
@@ -352,25 +354,30 @@ class JobOrderController {
       let { arrData } = req.body;
       const teknisi_id = req.params.id;
       const admin_id = req.UserData.id;
-      if (!arrData) throw createError(400, "Array data required");
+      if (!arrData) throw createError(400, 'Array data required');
       arrData = JSON.parse(arrData);
-      await Promise.all(arrData.map(async data => {
-        const jobOrderData = await job_order.findOne({ where: { id: data } });
-        if (!jobOrderData) return;
-        await job_order.update({
-          teknisi_id,
-          admin_id
-        }, {
-          where: {
-            id: data
-          }
+      await Promise.all(
+        arrData.map(async (data) => {
+          const jobOrderData = await job_order.findOne({ where: { id: data } });
+          if (!jobOrderData) return;
+          await job_order.update(
+            {
+              teknisi_id,
+              admin_id,
+            },
+            {
+              where: {
+                id: data,
+              },
+            }
+          );
         })
-      }));
-      res.status(200).json({ msg: "Success" });
+      );
+      res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
     }
-  }
+  };
   static checkSeedingJobOrder = async (req, res, next) => {
     try {
       if (!req.file) throw createError(400, 'Data Excel Required');
@@ -390,8 +397,6 @@ class JobOrderController {
       });
       seedingData.shift();
 
-      let status_valid = true;
-
       const result = await Promise.all(
         seedingData.map(async (data) => {
           return {
@@ -410,14 +415,12 @@ class JobOrderController {
             tipe: data['KODE POS'],
             problem_merchant: data['TEMPAT LAHIR'],
             catatan: data['TANGGAL LAHIR'],
-            status,
           };
         })
       );
 
       fs.unlinkSync(req.file.path);
       res.status(200).json({
-        status_valid,
         data: result,
       });
     } catch (err) {
@@ -428,22 +431,7 @@ class JobOrderController {
     try {
       const { data } = req.body;
       const bulkQuery = data.map((data) => {
-        const {
-          merchant,
-          mid,
-          tid,
-          alamat,
-          kota,
-          no_telp,
-          edc_connection,
-          sn_edc,
-          type_edc,
-          regional,
-          pic,
-          tipe,
-          problem_merchant,
-          catatan,
-        } = data;
+        const { merchant, mid, tid, alamat, kota, no_telp, edc_connection, sn_edc, type_edc, regional, pic, tipe, problem_merchant, catatan } = data;
         return {
           tanggal_impor: new Date(),
           merchant,

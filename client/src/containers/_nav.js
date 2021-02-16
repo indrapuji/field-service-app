@@ -9,40 +9,16 @@ const _Supernav = [
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
   },
   {
-    _tag: 'CSidebarNavDropdown',
+    _tag: 'CSidebarNavItem',
     name: 'Vendors',
-    route: '/vendors',
-    icon: 'cil-puzzle',
-    _children: [
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Vendors',
-        to: '/vendors',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Create New Vendor',
-        to: '/vendors/create',
-      },
-    ],
+    to: '/vendors',
+    icon: <CIcon name="cil-puzzle" customClasses="c-sidebar-nav-icon" />,
   },
   {
-    _tag: 'CSidebarNavDropdown',
+    _tag: 'CSidebarNavItem',
     name: 'Users',
-    route: '/users',
-    icon: 'cil-star',
-    _children: [
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Users',
-        to: '/users',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Create New User',
-        to: '/users/create',
-      },
-    ],
+    to: '/users',
+    icon: <CIcon name="cil-star" customClasses="c-sidebar-nav-icon" />,
   },
 ];
 
@@ -65,8 +41,8 @@ const _Adminnav = [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Progress',
-    to: '/workorders/progress',
+    name: 'Assign',
+    to: '/workorders/assign',
     icon: 'cil-circle',
   },
   {
@@ -77,27 +53,9 @@ const _Adminnav = [
   },
   {
     _tag: 'CSidebarNavItem',
-    name: 'Create',
-    to: '/workorders/create',
-    icon: 'cid-folder-special',
-  },
-  {
-    _tag: 'CSidebarNavDropdown',
     name: 'Users',
-    route: '/users',
-    icon: 'cil-star',
-    _children: [
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Users',
-        to: '/users',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Create New User',
-        to: '/users/create',
-      },
-    ],
+    to: '/users',
+    icon: <CIcon name="cil-user" customClasses="c-sidebar-nav-icon" />,
   },
 ];
 

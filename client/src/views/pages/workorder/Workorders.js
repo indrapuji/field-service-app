@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination } from '@coreui/react';
+import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination, CButton } from '@coreui/react';
 
 // import usersData from './UsersData';
 // import token from '../../token';
 import axios from 'axios';
-import { HostUrl } from '../../../reusable';
+import HostUrl from '../../../components/HostUrl';
 
 const getBadge = (status) => {
   switch (status) {
@@ -64,6 +64,29 @@ const Workorders = () => {
       <CCol>
         <CCard>
           <CCardHeader>All</CCardHeader>
+          {/* <CRow style={{ marginLeft: 5, marginRight: 10, marginTop: 15 }}>
+            <CCol xs="6"> */}
+          <div style={{ marginLeft: 20, marginRight: 20, marginTop: 15, display: 'flex', justifyContent: 'space-between' }}>
+            <div>
+              <CButton color="success" to="/workorders/create">
+                Add
+              </CButton>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <div style={{ marginRight: 10 }}>
+                <CButton color="warning" to="/workorders/import">
+                  Import
+                </CButton>
+              </div>
+              <div>
+                <CButton color="primary" to="/workorders/import">
+                  Download
+                </CButton>
+              </div>
+            </div>
+          </div>
+          {/* </CCol>
+          </CRow> */}
           {jobOrderData && (
             <>
               <CCardBody>

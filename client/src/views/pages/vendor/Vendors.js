@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow } from '@coreui/react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CButton } from '@coreui/react';
 import axios from 'axios';
-import { HostUrl } from '../../../reusable';
-
-// import vendorsData from './VendorsData';
+import HostUrl from '../../../components/HostUrl';
 
 const Vendors = () => {
+  const history = useHistory();
   const queryPage = useLocation().search.match(/page=([0-9]+)/, '');
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const [page, setPage] = useState(currentPage);
@@ -35,13 +34,30 @@ const Vendors = () => {
     }
   };
 
-  const fields = ['nama', 'alamat'];
+  const handleEdit = (id) => {
+    history.push(`/vendors/edit/${id}`);
+  };
+
+  const fields = [
+    { key: 'nama', label: 'Vendor Name', _style: { width: '25%' } },
+    { key: 'alamat', label: 'Vendor Address', _style: { width: '80%' } },
+    { key: 'show_details', label: 'Detail', _style: { width: '5%' } },
+  ];
 
   return (
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>Vendors</CCardHeader>
+          <CCardHeader className="cardHeader">Vendors</CCardHeader>
+          <CCol>
+            <div style={{ marginTop: 15, display: 'flex', marginLeft: 5 }}>
+              <div>
+                <CButton color="primary" to="/vendors/create">
+                  Add New
+                </CButton>
+              </div>
+            </div>
+          </CCol>
           {vendorsList && (
             <CCardBody>
               <CDataTable
@@ -53,6 +69,23 @@ const Vendors = () => {
                 size="sm"
                 itemsPerPage={15}
                 pagination
+                scopedSlots={{
+                  show_details: (item, index) => {
+                    return (
+                      <td>
+                        <CButton
+                          color="warning"
+                          size="sm"
+                          onClick={() => {
+                            handleEdit(item.id);
+                          }}
+                        >
+                          Detail
+                        </CButton>
+                      </td>
+                    );
+                  },
+                }}
               />
             </CCardBody>
           )}
