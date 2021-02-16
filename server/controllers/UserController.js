@@ -190,7 +190,13 @@ class UserController {
   static singleUser = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const result = await user.findOne({ where: { id } });
+      const result = await user.findOne({
+        where: { id },
+        include: [{
+          model: user_privilege,
+          required: false
+        }]
+      });
       if (!result) throw createError(404, "Data not found");
       res.status(200).json(result);
     } catch (err) {
