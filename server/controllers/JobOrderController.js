@@ -399,6 +399,7 @@ class JobOrderController {
 
       const result = await Promise.all(
         seedingData.map(async (data) => {
+          console.log(data);
           return {
             no: data['NO'],
             merchant: data['MERCHANT'],
