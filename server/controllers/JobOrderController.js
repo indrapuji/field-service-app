@@ -127,17 +127,18 @@ class JobOrderController {
       });
       const privileges = userData.user_privileges.map((data) => data.name);
       let query = {
-        where: {
-          tipe: {
-            [Op.or]: privileges,
-          },
-        },
+        where: {},
       };
+      if (userData.tipe !== 'Teknisi' && userData.tipe !== 'Super Admin') {
+        query.where.tipe = { [Op.or]: privileges };
+      }
       if (userData.tipe !== 'Super Admin') {
         query.where.vendor_id = userData.vendor_id;
       }
       if (teknisi_id) {
         query.where.teknisi_id = teknisi_id;
+      } else if (userData.tipe === 'Teknisi') {
+        query.where.teknisi_id = id;
       }
       query.order = [['createdAt', 'DESC']];
       if (vendor_id) query.where.vendor_id = vendor_id;
