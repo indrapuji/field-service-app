@@ -75,7 +75,8 @@ const ImportCompany = () => {
         },
       });
       setLoading(false);
-      setDataWO(data);
+      setDataWO(data.data);
+      console.log(data.data[0]);
       setShow(true);
     } catch (error) {
       setLoading(false);
