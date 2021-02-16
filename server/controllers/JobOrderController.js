@@ -112,7 +112,7 @@ class JobOrderController {
   static getAllJobOrder = async (req, res, next) => {
     try {
       const { id } = req.UserData;
-      let { tipe, page, status, by, vendor_id } = req.query;
+      let { tipe, page, status, by, vendor_id, notIn } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
@@ -144,6 +144,10 @@ class JobOrderController {
         query.where.tipe = tipe;
       }
       if (status) query.where.status = status;
+      if (notIn) {
+        notIn = JSON.parse(notIn);
+        query.where.id = { [Op.notIn]: notIn };
+      }
       if (by === 'today')
         query.where.updated_at = {
           [Op.gte]: setDate(new Date(), 1),

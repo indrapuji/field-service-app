@@ -15,10 +15,12 @@ import {
   CCardHeader,
   CDataTable,
   CPagination,
+  CBadge,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import HostUrl from '../../../components/HostUrl';
+import ListUser from './ListUser';
 
 const Register = () => {
   const { userId } = useParams();
@@ -28,6 +30,7 @@ const Register = () => {
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const [page, setPage] = useState(currentPage);
   const [jobOrderData, setJobOrderData] = useState(null);
+  const [newAssign, setNewAssign] = useState([]);
 
   useEffect(() => {
     axios({
@@ -47,15 +50,11 @@ const Register = () => {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    currentPage !== page && setPage(currentPage);
-  }, [currentPage, page]);
-
-  const getWorkOrder = async (page) => {
+  const getWorkOrder = async (page, newData = newAssign) => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?status=Done&page=' + page,
+        url: HostUrl + '/job-orders/all?page=' + page + `&notIn=${JSON.stringify(newData)}`,
         headers: {
           token: localStorage.getItem('token'),
         },
@@ -67,11 +66,12 @@ const Register = () => {
     }
   };
 
-  const changePage = (page) => {
-    getWorkOrder(page);
+  const redoPick = (id) => {
+    const newData = newAssign.filter((data) => Number(data.id) !== Number(id));
+    setNewAssign(newData);
+    const query = newData.map((data) => data.id);
+    getWorkOrder(jobOrderData.currentPage, query);
   };
-
-  const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status'];
 
   return (
     <CContainer>
@@ -103,29 +103,23 @@ const Register = () => {
                 </CFormGroup>
               </CCardBody>
               <CCardFooter>
-                <CButton to="/users" size="sm" color="primary" className="float-right mb-3">
+                {/* <CButton to="/users" size="sm" color="primary" className="float-right mb-3">
                   <CIcon name="cil-scrubber" /> Back
-                </CButton>
+                </CButton> */}
+                {newAssign.map((item, idx) => {
+                  return (
+                    <CBadge style={{ cursor: 'pointer' }} key={idx} style={{ marginLeft: 5 }} onClick={() => redoPick(item.id)} color="success">
+                      {item.merchant}
+                    </CBadge>
+                  );
+                })}
               </CCardFooter>
             </CForm>
           </CCard>
         </CCol>
       </CRow>
 
-      <CRow className="justify-content-center">
-        <CCol xs="12" md="12">
-          <CCard>
-            {jobOrderData && (
-              <>
-                <CCardBody>
-                  <CDataTable items={jobOrderData.data} fields={fields} hover striped bordered size="sm" />
-                  <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
-                </CCardBody>
-              </>
-            )}
-          </CCard>
-        </CCol>
-      </CRow>
+      <ListUser jobOrderData={jobOrderData} getWorkOrder={getWorkOrder} setNewAssign={setNewAssign} newAssign={newAssign} />
     </CContainer>
   );
 };
