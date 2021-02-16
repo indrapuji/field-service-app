@@ -220,7 +220,7 @@ class UserController {
       if (!result) throw createError(404, 'Data not found');
       const job_order_count = await job_order.count({ where: { teknisi_id: id } });
       res.status(200).json({
-        ...result,
+        ...result.dataValues,
         job_order_count,
       });
     } catch (err) {
