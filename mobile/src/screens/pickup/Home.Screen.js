@@ -50,7 +50,7 @@ const HomeScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?tipe=pickup&status=Assign`,
+        url: `${host}/job-orders/all?tipe=Pickup&status=Assign`,
         headers: { token },
       });
       setList(data.data);
@@ -67,7 +67,7 @@ const HomeScreen = () => {
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'get',
-        url: `${host}/job-orders/all?tipe=pickup&status=Assign&page=${currentPage + 1}`,
+        url: `${host}/job-orders/all?tipe=Pickup&status=Assign&page=${currentPage + 1}`,
         headers: { token },
       });
       setList(list.concat(data.data));
