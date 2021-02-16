@@ -73,6 +73,27 @@ const Register = () => {
     getWorkOrder(jobOrderData.currentPage, query);
   };
 
+  const onFormSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      console.log(newAssign);
+      const arrData = newAssign.map((data) => data.id);
+      await axios({
+        method: 'POST',
+        url: HostUrl + '/job-orders/assign-many/' + userId,
+        headers: {
+          token: localStorage.getItem('token'),
+        },
+        data: {
+          arrData,
+        },
+      });
+      history.push('/users');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <CContainer>
       <CRow className="justify-content-center">
@@ -120,6 +141,12 @@ const Register = () => {
       </CRow>
 
       <ListUser jobOrderData={jobOrderData} getWorkOrder={getWorkOrder} setNewAssign={setNewAssign} newAssign={newAssign} />
+
+      {newAssign.length === 1 && (
+        <CButton color="success" size="sm" onClick={onFormSubmit}>
+          Submit
+        </CButton>
+      )}
     </CContainer>
   );
 };
