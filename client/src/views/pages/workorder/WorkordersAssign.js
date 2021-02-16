@@ -9,14 +9,10 @@ const getBadge = (status) => {
   switch (status) {
     case 'Done':
       return 'success';
-    case 'Inactive':
-      return 'secondary';
-    case 'Progres':
+    case 'Assign':
       return 'warning';
-    case 'Banned':
-      return 'danger';
     default:
-      return 'primary';
+      return 'secondary';
   }
 };
 
@@ -61,7 +57,7 @@ const Workorders = () => {
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>All</CCardHeader>
+          <CCardHeader>Assign Workorders</CCardHeader>
           {jobOrderData && (
             <>
               <CCardBody>

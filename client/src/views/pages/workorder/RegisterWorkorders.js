@@ -93,7 +93,7 @@ const Register = () => {
   return (
     <CContainer>
       <CRow className="justify-content-center">
-        <CCol xs="12" md="10">
+        <CCol xs="12" md="12">
           <CCard>
             <CCardHeader>
               Register

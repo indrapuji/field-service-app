@@ -11,14 +11,10 @@ const getBadge = (status) => {
   switch (status) {
     case 'Done':
       return 'success';
-    case 'Inactive':
-      return 'secondary';
-    case 'Progres':
+    case 'Assign':
       return 'warning';
-    case 'Banned':
-      return 'danger';
     default:
-      return 'primary';
+      return 'secondary';
   }
 };
 
@@ -63,9 +59,7 @@ const Workorders = () => {
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>All</CCardHeader>
-          {/* <CRow style={{ marginLeft: 5, marginRight: 10, marginTop: 15 }}>
-            <CCol xs="6"> */}
+          <CCardHeader>All Workorders</CCardHeader>
           <div style={{ marginLeft: 20, marginRight: 20, marginTop: 15, display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <CButton color="success" to="/workorders/create">
@@ -100,7 +94,7 @@ const Workorders = () => {
                   scopedSlots={{
                     status: (item) => (
                       <td>
-                        <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
+                        <CBadge color={getBadge(item.status)}>{!item.status ? 'Un-Assign' : item.status}</CBadge>
                       </td>
                     ),
                   }}

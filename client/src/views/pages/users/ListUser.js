@@ -1,5 +1,6 @@
 import React from 'react';
 import { CRow, CCol, CButton, CCard, CCardBody, CDataTable, CPagination } from '@coreui/react';
+import CIcon from '@coreui/icons-react';
 
 const ListUser = (props) => {
   const { jobOrderData, getWorkOrder, setNewAssign, newAssign } = props;
@@ -24,49 +25,47 @@ const ListUser = (props) => {
     getWorkOrder(jobOrderData.currentPage, newData);
   };
   return (
-    <>
-      <CRow className="justify-content-center">
-        <CCol xs="12" md="12">
-          <CCard>
-            {jobOrderData && (
-              <>
-                <CCardBody>
-                  <CDataTable
-                    items={jobOrderData.data}
-                    fields={fields}
-                    hover
-                    striped
-                    bordered
-                    size="sm"
-                    scopedSlots={{
-                      status: (item, index) => {
-                        return <td>{!item.status ? 'Unassign' : 'assign'}</td>;
-                      },
-                      assign: (item, index) => {
-                        return (
-                          <td>
-                            <CButton
-                              color="success"
-                              size="sm"
-                              onClick={() => {
-                                handleAssign(item);
-                              }}
-                            >
-                              Assign
-                            </CButton>
-                          </td>
-                        );
-                      },
-                    }}
-                  />
-                  <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
-                </CCardBody>
-              </>
-            )}
-          </CCard>
-        </CCol>
-      </CRow>
-    </>
+    <CRow className="justify-content-center">
+      <CCol xs="12" md="12">
+        <CCard>
+          {jobOrderData && (
+            <>
+              <CCardBody>
+                <CDataTable
+                  items={jobOrderData.data}
+                  fields={fields}
+                  hover
+                  striped
+                  bordered
+                  size="sm"
+                  scopedSlots={{
+                    status: (item, index) => {
+                      return <td>{!item.status ? 'Unassign' : 'assign'}</td>;
+                    },
+                    assign: (item, index) => {
+                      return (
+                        <td>
+                          <CButton
+                            color="success"
+                            size="sm"
+                            onClick={() => {
+                              handleAssign(item);
+                            }}
+                          >
+                            <CIcon name="cib-addthis" />
+                          </CButton>
+                        </td>
+                      );
+                    },
+                  }}
+                />
+                <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
+              </CCardBody>
+            </>
+          )}
+        </CCard>
+      </CCol>
+    </CRow>
   );
 };
 

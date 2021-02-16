@@ -39,7 +39,7 @@ const Register = () => {
     no_telp: '',
     tgl_lahir: '',
     no_ktp: '',
-    tipe: '',
+    tipe: 'Teknisi',
     vendor_id: '',
     foto_profil: null,
     privilege: [],
@@ -98,6 +98,7 @@ const Register = () => {
     try {
       e.preventDefault();
       const formDataTemp = { ...formData, privilege: JSON.stringify(formData.privilege) };
+      console.log(formDataTemp);
       const newFormData = new FormData();
       for (let key in formDataTemp) {
         newFormData.append(key, formDataTemp[key]);
@@ -126,7 +127,7 @@ const Register = () => {
   return (
     <CContainer>
       <CRow className="justify-content-center">
-        <CCol xs="12" md="10">
+        <CCol xs="12" md="12">
           <CCard>
             <CForm onSubmit={onFormSubmit}>
               <CCardHeader>Register New {tipe === 'Admin' ? 'User' : 'Admin'}</CCardHeader>
@@ -169,7 +170,6 @@ const Register = () => {
                     </CCol>
                     <CCol xs="12" md="9">
                       <CSelect custom id="select" name="tipe" disabled onChange={onFormChange}>
-                        <option value="Teknisi">Teknisi</option>
                         <option value="Teknisi">Teknisi</option>
                       </CSelect>
                     </CCol>

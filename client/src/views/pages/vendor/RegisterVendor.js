@@ -60,7 +60,7 @@ const RegisterVendor = () => {
   return (
     <CContainer>
       <CRow className="justify-content-center">
-        <CCol xs="12" md="10">
+        <CCol xs="12" md="12">
           <CCard>
             <CForm onSubmit={submitForm}>
               <CCardHeader>Register New Vendor</CCardHeader>

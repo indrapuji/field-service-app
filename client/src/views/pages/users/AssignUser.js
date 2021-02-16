@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams, useLocation } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import {
   CContainer,
   CRow,
@@ -13,22 +13,17 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
-  CDataTable,
-  CPagination,
   CBadge,
 } from '@coreui/react';
-import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import HostUrl from '../../../components/HostUrl';
 import ListUser from './ListUser';
+import newAlert from '../../../components/NewAlert';
 
 const Register = () => {
   const { userId } = useParams();
   const history = useHistory();
   const [edit, setEdit] = useState({});
-  const queryPage = useLocation().search.match(/page=([0-9]+)/, '');
-  const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
-  const [page, setPage] = useState(currentPage);
   const [jobOrderData, setJobOrderData] = useState(null);
   const [newAssign, setNewAssign] = useState([]);
 
@@ -88,9 +83,11 @@ const Register = () => {
           arrData: JSON.stringify(arrData),
         },
       });
+      newAlert({ status: 'success', message: 'Berhasil Menambahkan' });
       history.push('/users');
     } catch (err) {
       console.log(err);
+      newAlert({ status: 'error', message: 'Gagal Menambahkan' });
     }
   };
 
@@ -107,41 +104,42 @@ const Register = () => {
                     <CLabel>Name</CLabel>
                   </CCol>
                   <CCol xs="12" md="4">
-                    <CInput disabled value={edit.nama_lengkap} />
+                    <CInput size="sm" disabled value={edit.nama_lengkap} />
                   </CCol>
                   <CCol md="1">
                     <CLabel>Tipe</CLabel>
                   </CCol>
                   <CCol xs="12" md="3">
-                    <CInput disabled value={edit.tipe} />
+                    <CInput size="sm" disabled value={edit.tipe} />
                   </CCol>
                   <CCol md="1">
                     <CLabel>Count</CLabel>
                   </CCol>
                   <CCol xs="12" md="2">
-                    <CInput disabled value={edit.job_order_count + newAssign.length} />
+                    <CInput size="sm" disabled value={edit.job_order_count + newAssign.length} />
                   </CCol>
                 </CFormGroup>
               </CCardBody>
-              <CCardFooter>
-                {/* <CButton to="/users" size="sm" color="primary" className="float-right mb-3">
-                  <CIcon name="cil-scrubber" /> Back
-                </CButton> */}
-                {newAssign.map((item, idx) => {
-                  return (
-                    <CBadge style={{ cursor: 'pointer' }} key={idx} style={{ marginLeft: 5 }} onClick={() => redoPick(item.id)} color="success">
-                      {item.merchant}
-                    </CBadge>
-                  );
-                })}
-              </CCardFooter>
+              {newAssign.length > 0 && (
+                <>
+                  <CCardFooter>
+                    {newAssign.map((item, idx) => {
+                      return (
+                        <CBadge key={idx} style={{ marginLeft: 5, cursor: 'pointer' }} onClick={() => redoPick(item.id)} color="success">
+                          {item.merchant}
+                        </CBadge>
+                      );
+                    })}
+                  </CCardFooter>
+                  <CCardFooter>
+                    <CButton size="sm" color="primary" className="float-right mb-3" onClick={onFormSubmit}>
+                      Assign
+                    </CButton>
+                  </CCardFooter>
+                </>
+              )}
             </CForm>
           </CCard>
-          {newAssign.length > 0 && (
-            <CButton color="success" size="sm" onClick={onFormSubmit}>
-              Submit
-            </CButton>
-          )}
         </CCol>
       </CRow>
 

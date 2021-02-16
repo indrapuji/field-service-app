@@ -12,7 +12,6 @@ import {
   CCardHeader,
   CInputFile,
   CCardFooter,
-  CBadge,
   CSpinner,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
@@ -20,7 +19,6 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import HostUrl from '../../../components/HostUrl';
 import newAlert from '../../../components/NewAlert';
-import { formatDate } from 'node-format-date';
 
 const ImportCompany = () => {
   const [fileName, setFileName] = useState('');
@@ -30,19 +28,6 @@ const ImportCompany = () => {
   const [show, setShow] = useState(false);
   const [dataWO, setDataWO] = useState({});
   const [loading, setLoading] = useState(false);
-
-  const getBadge = (status) => {
-    switch (status) {
-      case 0:
-        return 'success';
-      case 1:
-        return 'warning';
-      case 2:
-        return 'danger';
-      default:
-        return 'primary';
-    }
-  };
 
   const history = useHistory();
   const onFormChange = (event) => {
