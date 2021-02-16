@@ -58,7 +58,7 @@ const DoneScreen = () => {
       setPage(data.pages);
       setCurrentPage(data.currentPage);
     } catch (err) {
-      console.log(err);
+      console.log(err.response);
     }
   };
 

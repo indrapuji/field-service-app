@@ -142,7 +142,7 @@ class JobOrderController {
       }
       query.order = [['createdAt', 'DESC']];
       if (vendor_id) query.where.vendor_id = vendor_id;
-      if (tipe) {
+      if (tipe && userData.tipe !== 'Teknisi') {
         const validation = privileges.find((data) => data === tipe);
         if (!validation) throw createError(401, 'Not authorized');
         query.where.tipe = tipe;
