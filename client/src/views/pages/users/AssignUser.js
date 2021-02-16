@@ -42,6 +42,7 @@ const Register = () => {
     })
       .then(({ data }) => {
         setEdit(data);
+        console.log(data);
       })
       .catch((err) => {
         console.log(err);
