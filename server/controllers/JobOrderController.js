@@ -24,7 +24,6 @@ class JobOrderController {
         pic,
         tipe,
         aktifitas,
-        status,
         teknisi_id,
         tanda_tangan,
         type,
@@ -48,7 +47,7 @@ class JobOrderController {
         tipe,
         aktifitas,
         vendor_id: userData.vendor_id,
-        status,
+        status: "Unassign",
         admin_id: teknisi_id === id ? null : id,
         teknisi_id,
         type
@@ -134,11 +133,19 @@ class JobOrderController {
       if (userData.tipe !== 'Super Admin') {
         query.where.vendor_id = userData.vendor_id;
       }
+      if (userData.tipe === "Teknisi") {
+        query.include = [{
+          model: user,
+          required: true,
+          as: "Teknisi",
+          where: { id }
+        }]
+      }
       query.order = [['createdAt', 'DESC']];
       if (vendor_id) query.where.vendor_id = vendor_id;
       if (tipe) {
         const validation = privileges.find(data => data === tipe);
-        if (!validation) throw createError(401, "Not authorized");
+        if (!validation && userData.tipe !== "Teknisi") throw createError(401, "Not authorized");
         query.where.tipe = tipe;
       }
       if (status) query.where.status = status;
@@ -460,6 +467,7 @@ class JobOrderController {
           tipe,
           problem_merchant,
           catatan,
+          status: "Unassign",
         };
       });
       await job_order.bulkCreate(bulkQuery);
