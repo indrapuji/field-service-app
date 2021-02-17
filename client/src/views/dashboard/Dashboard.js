@@ -5,7 +5,7 @@ import ChartPie from '../../components/ChartPie';
 import ChartTrafic from '../../components/ChartTraffic';
 import ChartBars from '../../components/ChartBars';
 import axios from 'axios';
-import { HostUrl } from '../../reusable';
+import HostUrl from '../../components/HostUrl';
 
 const WidgetsDropdown = lazy(() => import('../../components/WidgetsDropdown.js'));
 

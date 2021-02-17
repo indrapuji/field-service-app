@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  CHeader,
-  CToggler,
-  CHeaderBrand,
-  CHeaderNav,
-  // CHeaderNavItem,
-  // CHeaderNavLink,
-  CSubheader,
-  CBreadcrumbRouter,
-} from '@coreui/react';
-import CIcon from '@coreui/icons-react';
+import { CHeader, CToggler, CHeaderBrand, CHeaderNav, CImg, CSubheader, CBreadcrumbRouter } from '@coreui/react';
+import trendcom from '../assets/Images/trendcom-logo.png';
 
 // routes config
 import routes from '../routes';
 
-import { TheHeaderDropdown, TheHeaderDropdownMssg, TheHeaderDropdownNotif } from './index';
+import { TheHeaderDropdown, TheHeaderDropdownMssg } from './index';
 
 const TheHeader = () => {
   const dispatch = useDispatch();
@@ -42,23 +33,11 @@ const TheHeader = () => {
       <CToggler inHeader className="ml-md-3 d-lg-none" onClick={toggleSidebarMobile} />
       <CToggler inHeader className="ml-3 d-md-down-none" onClick={toggleSidebar} />
       <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="logo" height="48" alt="Logo" />
+        <CImg src={trendcom} height={40} className="c-sidebar-brand-full" />
       </CHeaderBrand>
-      <CHeaderNav className="d-md-down-none mr-auto">
-        {/* <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/vendors">Vendors</CHeaderNavLink>
-        </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/users">Users</CHeaderNavLink>
-        </CHeaderNavItem> */}
-      </CHeaderNav>
+      <CHeaderNav className="d-md-down-none mr-auto">{tipe}</CHeaderNav>
       <CHeaderNav className="px-3">
-        {tipe === 'Super Admin' && <TheHeaderDropdownNotif />}
-        {tipe}
-        <TheHeaderDropdownMssg />
+        {tipe !== 'Super Admin' && <TheHeaderDropdownMssg />}
         <TheHeaderDropdown />
       </CHeaderNav>
       <CSubheader className="px-3 justify-content-between">

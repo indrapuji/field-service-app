@@ -17,7 +17,7 @@ import {
 import CIcon from '@coreui/icons-react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { HostUrl } from '../../../reusable';
+import HostUrl from '../../../components/HostUrl';
 import newAlert from '../../../components/NewAlert';
 
 const RegisterVendor = () => {
@@ -33,11 +33,12 @@ const RegisterVendor = () => {
       [name]: value,
     });
   };
-  const submitForm = async () => {
+  const submitForm = async (event) => {
     try {
+      event.preventDefault();
       const { nama, alamat } = formData;
       if (nama === '' || alamat === '') {
-        newAlert({ status: 'error', message: 'Isi Semua Form' });
+        newAlert({ status: 'error', message: 'Fill All Form' });
         return;
       }
       await axios({
@@ -48,7 +49,7 @@ const RegisterVendor = () => {
           token: localStorage.getItem('token'),
         },
       });
-      newAlert({ status: 'success', message: 'Berhasil' });
+      newAlert({ status: 'success', message: 'Success' });
       history.push('/vendors');
     } catch (error) {
       const { msg } = error.response.data;
@@ -59,42 +60,34 @@ const RegisterVendor = () => {
   return (
     <CContainer>
       <CRow className="justify-content-center">
-        <CCol xs="12" md="10">
+        <CCol xs="12" md="12">
           <CCard>
-            <CCardHeader>
-              Register
-              <small> Vendor</small>
-            </CCardHeader>
-            <CCardBody>
-              <CForm action="" method="post">
+            <CForm onSubmit={submitForm}>
+              <CCardHeader>Register New Vendor</CCardHeader>
+              <CCardBody>
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="text-input">Nama Vendor</CLabel>
+                    <CLabel htmlFor="text-input">Vendor Name</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput placeholder="Nama Vendor" name="nama" onChange={onFormChange} />
+                    <CInput name="nama" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="textarea-input">Alamat</CLabel>
+                    <CLabel htmlFor="textarea-input">Vendor Address</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CTextarea
-                      rows="9"
-                      placeholder="Alamat..."
-                      name="alamat"
-                      onChange={onFormChange}
-                    />
+                    <CTextarea rows="6" name="alamat" onChange={onFormChange} />
                   </CCol>
                 </CFormGroup>
-              </CForm>
-            </CCardBody>
-            <CCardFooter>
-              <CButton type="submit" size="sm" color="primary" onClick={submitForm}>
-                <CIcon name="cil-scrubber" /> Submit
-              </CButton>
-            </CCardFooter>
+              </CCardBody>
+              <CCardFooter>
+                <CButton type="submit" size="sm" color="primary" className="float-right mb-3" onClick={submitForm}>
+                  <CIcon name="cil-scrubber" /> Create
+                </CButton>
+              </CCardFooter>
+            </CForm>
           </CCard>
         </CCol>
       </CRow>

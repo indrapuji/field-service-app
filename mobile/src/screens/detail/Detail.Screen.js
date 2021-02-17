@@ -13,6 +13,11 @@ import {
   sticker,
   paperRoll,
   edukasi,
+  fraud,
+  gestun,
+  surcharge,
+  kartu_asing,
+  double_transaksi,
 } from '@screens/detail/DetailData';
 import BottomSheet from 'reanimated-bottom-sheet';
 import * as ImagePicker from 'react-native-image-picker';
@@ -35,6 +40,11 @@ const DetailScreen = ({ route, navigation }) => {
   const [stickerChecked, setStickerChecked] = useState(null);
   const [paperRollChecked, setPaperRollChecked] = useState(null);
   const [edukasiChecked, setEdukasiChecked] = useState(null);
+  const [fraudChecked, setFraudChecked] = useState(null);
+  const [gestunChecked, setGestunChecked] = useState(null);
+  const [surchargeChecked, setSurchargeChecked] = useState(null);
+  const [asingChecked, setAsingChecked] = useState(null);
+  const [doubleChecked, setDoubleChecked] = useState(null);
   const [imageStatus, setImageStatus] = useState(null);
   const [bagianDepan, setBagianDepan] = useState(null);
   const [EDCCompetitor, setEDCCompetitor] = useState(null);
@@ -150,6 +160,22 @@ const DetailScreen = ({ route, navigation }) => {
   const handdleEdukasi = (edukasi) => {
     setEdukasiChecked(edukasi.key);
     setValue({ ...value, edukasi_merchant: edukasi.key });
+  };
+  const handdleFraud = (fraud) => {
+    setFraudChecked(fraud.key);
+  };
+  const handdleGestun = (gestun) => {
+    setGestunChecked(gestun.key);
+  };
+
+  const handdlesurcharge = (surcharge) => {
+    setSurchargeChecked(surcharge.key);
+  };
+  const handdlekartu_asing = (kartu_asing) => {
+    setAsingChecked(kartu_asing.key);
+  };
+  const handdledouble_transaksi = (double_transaksi) => {
+    setDoubleChecked(double_transaksi.key);
   };
 
   const handdleBankLain = (name, newValue) => {
@@ -828,48 +854,49 @@ const DetailScreen = ({ route, navigation }) => {
                         </View>
                       </View>
                     )}
-                    {tipe === 'Pickup' && (
-                      <View style={{ marginTop: 20 }}>
-                        <Text>Sales Draft</Text>
-                        <View style={{}}>
-                          {salesDraft.map((item) => {
-                            return (
-                              <View key={item.key} style={{ marginTop: 15 }}>
-                                <TouchableOpacity onPress={() => handdleSalesDraft(item)}>
-                                  <View style={{ flexDirection: 'row', marginRight: 20 }}>
-                                    <View
-                                      style={{
-                                        height: 20,
-                                        width: 20,
-                                        borderRadius: 10,
-                                        borderWidth: 1,
-                                        borderColor: 'orange',
-                                        justifyContent: 'flex-start',
-                                        marginRight: 10,
-                                      }}
-                                    >
-                                      {salesDraftChecked === item.key && (
-                                        <View
-                                          style={{
-                                            width: 14,
-                                            height: 14,
-                                            borderRadius: 7,
-                                            left: 2,
-                                            top: 2,
-                                            backgroundColor: 'orange',
-                                          }}
-                                        />
-                                      )}
+                    {tipe === 'Pickup' ||
+                      (tipe === 'Risk' && (
+                        <View style={{ marginTop: 20 }}>
+                          <Text>Sales Draft</Text>
+                          <View style={{}}>
+                            {salesDraft.map((item) => {
+                              return (
+                                <View key={item.key} style={{ marginTop: 15 }}>
+                                  <TouchableOpacity onPress={() => handdleSalesDraft(item)}>
+                                    <View style={{ flexDirection: 'row', marginRight: 20 }}>
+                                      <View
+                                        style={{
+                                          height: 20,
+                                          width: 20,
+                                          borderRadius: 10,
+                                          borderWidth: 1,
+                                          borderColor: 'orange',
+                                          justifyContent: 'flex-start',
+                                          marginRight: 10,
+                                        }}
+                                      >
+                                        {salesDraftChecked === item.key && (
+                                          <View
+                                            style={{
+                                              width: 14,
+                                              height: 14,
+                                              borderRadius: 7,
+                                              left: 2,
+                                              top: 2,
+                                              backgroundColor: 'orange',
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Text>{item.text}</Text>
                                     </View>
-                                    <Text>{item.text}</Text>
-                                  </View>
-                                </TouchableOpacity>
-                              </View>
-                            );
-                          })}
+                                  </TouchableOpacity>
+                                </View>
+                              );
+                            })}
+                          </View>
                         </View>
-                      </View>
-                    )}
+                      ))}
                     {tipe === 'Kunjungan' && (
                       <View>
                         <View style={{ marginTop: 20 }}>
@@ -1295,6 +1322,350 @@ const DetailScreen = ({ route, navigation }) => {
                           </View>
                         </View>
                       </View>
+                    )}
+                    {tipe === 'Risk' && (
+                      <>
+                        <View style={{ marginTop: 20 }}>
+                          <Text>Edukasi Merchant</Text>
+                          <View style={{ flexDirection: 'row' }}>
+                            {edukasi.map((item) => {
+                              return (
+                                <View key={item.key} style={{ marginTop: 15 }}>
+                                  <TouchableOpacity onPress={() => handdleEdukasi(item)}>
+                                    <View style={{ flexDirection: 'row', marginRight: 20 }}>
+                                      <View
+                                        style={{
+                                          height: 20,
+                                          width: 20,
+                                          borderRadius: 10,
+                                          borderWidth: 1,
+                                          borderColor: 'orange',
+                                          justifyContent: 'flex-start',
+                                          marginRight: 10,
+                                        }}
+                                      >
+                                        {edukasiChecked === item.key && (
+                                          <View
+                                            style={{
+                                              width: 14,
+                                              height: 14,
+                                              borderRadius: 7,
+                                              left: 2,
+                                              top: 2,
+                                              backgroundColor: 'orange',
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Text>{item.text}</Text>
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
+                              );
+                            })}
+                          </View>
+                        </View>
+                        {edukasiChecked === 'iya' && (
+                          <View style={{ marginTop: 20 }}>
+                            <View style={{}}>
+                              <View style={{ marginRight: 20 }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginVertical: 5,
+                                  }}
+                                >
+                                  <View style={{ marginRight: 5 }}>
+                                    <CheckBox
+                                      disabled={false}
+                                      value={edukasiMerchant.gpn}
+                                      onValueChange={(newValue) => setEdukasiMerchant({ ...edukasiMerchant, gpn: newValue })}
+                                    />
+                                  </View>
+                                  <Text>GPN</Text>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginVertical: 5,
+                                  }}
+                                >
+                                  <View style={{ marginRight: 5 }}>
+                                    <CheckBox
+                                      disabled={false}
+                                      value={edukasiMerchant.gestun}
+                                      onValueChange={(newValue) => setEdukasiMerchant({ ...edukasiMerchant, gestun: newValue })}
+                                    />
+                                  </View>
+                                  <Text>Larangan Gestun</Text>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginVertical: 5,
+                                  }}
+                                >
+                                  <View style={{ marginRight: 5 }}>
+                                    <CheckBox
+                                      disabled={false}
+                                      value={edukasiMerchant.surcharge}
+                                      onValueChange={(newValue) =>
+                                        setEdukasiMerchant({
+                                          ...edukasiMerchant,
+                                          surcharge: newValue,
+                                        })
+                                      }
+                                    />
+                                  </View>
+                                  <Text>Larangan Surcharge</Text>
+                                </View>
+                              </View>
+                              <View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginVertical: 5,
+                                  }}
+                                >
+                                  <View style={{ marginRight: 5 }}>
+                                    <CheckBox
+                                      disabled={false}
+                                      value={edukasiMerchant.split}
+                                      onValueChange={(newValue) => setEdukasiMerchant({ ...edukasiMerchant, split: newValue })}
+                                    />
+                                  </View>
+                                  <Text>Larangan Split Transaksi</Text>
+                                </View>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    marginVertical: 5,
+                                  }}
+                                >
+                                  <View style={{ marginRight: 5 }}>
+                                    <CheckBox
+                                      disabled={false}
+                                      value={edukasiMerchant.edctempatlain}
+                                      onValueChange={(newValue) =>
+                                        setEdukasiMerchant({
+                                          ...edukasiMerchant,
+                                          edctempatlain: newValue,
+                                        })
+                                      }
+                                    />
+                                  </View>
+                                  <Text>Larangan Mesin EDC di tempat Lain</Text>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                        )}
+                        <View style={{ marginTop: 20 }}>
+                          <Text>Edukasi Fraud</Text>
+                          <View style={{ flexDirection: 'row' }}>
+                            {fraud.map((item) => {
+                              return (
+                                <View key={item.key} style={{ marginTop: 15 }}>
+                                  <TouchableOpacity onPress={() => handdleFraud(item)}>
+                                    <View style={{ flexDirection: 'row', marginRight: 20 }}>
+                                      <View
+                                        style={{
+                                          height: 20,
+                                          width: 20,
+                                          borderRadius: 10,
+                                          borderWidth: 1,
+                                          borderColor: 'orange',
+                                          justifyContent: 'flex-start',
+                                          marginRight: 10,
+                                        }}
+                                      >
+                                        {fraudChecked === item.key && (
+                                          <View
+                                            style={{
+                                              width: 14,
+                                              height: 14,
+                                              borderRadius: 7,
+                                              left: 2,
+                                              top: 2,
+                                              backgroundColor: 'orange',
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Text>{item.text}</Text>
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
+                              );
+                            })}
+                          </View>
+                        </View>
+                        <View style={{ marginTop: 20 }}>
+                          <Text>Edukasi Gestun</Text>
+                          <View style={{ flexDirection: 'row' }}>
+                            {gestun.map((item) => {
+                              return (
+                                <View key={item.key} style={{ marginTop: 15 }}>
+                                  <TouchableOpacity onPress={() => handdleGestun(item)}>
+                                    <View style={{ flexDirection: 'row', marginRight: 20 }}>
+                                      <View
+                                        style={{
+                                          height: 20,
+                                          width: 20,
+                                          borderRadius: 10,
+                                          borderWidth: 1,
+                                          borderColor: 'orange',
+                                          justifyContent: 'flex-start',
+                                          marginRight: 10,
+                                        }}
+                                      >
+                                        {gestunChecked === item.key && (
+                                          <View
+                                            style={{
+                                              width: 14,
+                                              height: 14,
+                                              borderRadius: 7,
+                                              left: 2,
+                                              top: 2,
+                                              backgroundColor: 'orange',
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Text>{item.text}</Text>
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
+                              );
+                            })}
+                          </View>
+                        </View>
+                        <View style={{ marginTop: 20 }}>
+                          <Text>Edukasi Surcharge</Text>
+                          <View style={{ flexDirection: 'row' }}>
+                            {surcharge.map((item) => {
+                              return (
+                                <View key={item.key} style={{ marginTop: 15 }}>
+                                  <TouchableOpacity onPress={() => handdlesurcharge(item)}>
+                                    <View style={{ flexDirection: 'row', marginRight: 20 }}>
+                                      <View
+                                        style={{
+                                          height: 20,
+                                          width: 20,
+                                          borderRadius: 10,
+                                          borderWidth: 1,
+                                          borderColor: 'orange',
+                                          justifyContent: 'flex-start',
+                                          marginRight: 10,
+                                        }}
+                                      >
+                                        {surchargeChecked === item.key && (
+                                          <View
+                                            style={{
+                                              width: 14,
+                                              height: 14,
+                                              borderRadius: 7,
+                                              left: 2,
+                                              top: 2,
+                                              backgroundColor: 'orange',
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Text>{item.text}</Text>
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
+                              );
+                            })}
+                          </View>
+                        </View>
+                        <View style={{ marginTop: 20 }}>
+                          <Text>Edukasi Kartu Asing</Text>
+                          <View style={{ flexDirection: 'row' }}>
+                            {kartu_asing.map((item) => {
+                              return (
+                                <View key={item.key} style={{ marginTop: 15 }}>
+                                  <TouchableOpacity onPress={() => handdlekartu_asing(item)}>
+                                    <View style={{ flexDirection: 'row', marginRight: 20 }}>
+                                      <View
+                                        style={{
+                                          height: 20,
+                                          width: 20,
+                                          borderRadius: 10,
+                                          borderWidth: 1,
+                                          borderColor: 'orange',
+                                          justifyContent: 'flex-start',
+                                          marginRight: 10,
+                                        }}
+                                      >
+                                        {asingChecked === item.key && (
+                                          <View
+                                            style={{
+                                              width: 14,
+                                              height: 14,
+                                              borderRadius: 7,
+                                              left: 2,
+                                              top: 2,
+                                              backgroundColor: 'orange',
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Text>{item.text}</Text>
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
+                              );
+                            })}
+                          </View>
+                        </View>
+                        <View style={{ marginTop: 20 }}>
+                          <Text>Edukasi Double Transaksi</Text>
+                          <View style={{ flexDirection: 'row' }}>
+                            {kartu_asing.map((item) => {
+                              return (
+                                <View key={item.key} style={{ marginTop: 15 }}>
+                                  <TouchableOpacity onPress={() => handdledouble_transaksi(item)}>
+                                    <View style={{ flexDirection: 'row', marginRight: 20 }}>
+                                      <View
+                                        style={{
+                                          height: 20,
+                                          width: 20,
+                                          borderRadius: 10,
+                                          borderWidth: 1,
+                                          borderColor: 'orange',
+                                          justifyContent: 'flex-start',
+                                          marginRight: 10,
+                                        }}
+                                      >
+                                        {doubleChecked === item.key && (
+                                          <View
+                                            style={{
+                                              width: 14,
+                                              height: 14,
+                                              borderRadius: 7,
+                                              left: 2,
+                                              top: 2,
+                                              backgroundColor: 'orange',
+                                            }}
+                                          />
+                                        )}
+                                      </View>
+                                      <Text>{item.text}</Text>
+                                    </View>
+                                  </TouchableOpacity>
+                                </View>
+                              );
+                            })}
+                          </View>
+                        </View>
+                      </>
                     )}
                     <View style={{ marginTop: 20 }}>
                       <Text>Keluhan</Text>

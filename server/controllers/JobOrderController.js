@@ -2,7 +2,7 @@ const { job_order, vendor, user, user_privilege } = require('../models');
 const createError = require('http-errors');
 const serverUrl = require('../helpers/serverUrl');
 const setDate = require('../helpers/setDate');
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 const excelToJson = require('convert-excel-to-json');
 const fs = require('fs');
 
@@ -50,8 +50,8 @@ class JobOrderController {
         status: "Unassign",
         admin_id: teknisi_id === id ? null : id,
         teknisi_id,
-        type
-      }
+        type,
+      };
       if (req.files) {
         if (req.files.foto_toko_1) query.foto_toko_1 = serverUrl + req.files.foto_toko_1[0].path;
         if (req.files.foto_toko_2) query.foto_toko_2 = serverUrl + req.files.foto_toko_2[0].path;
@@ -111,44 +111,46 @@ class JobOrderController {
   static getAllJobOrder = async (req, res, next) => {
     try {
       const { id } = req.UserData;
-      let { tipe, page, status, by, vendor_id } = req.query;
+      let { tipe, page, status, by, vendor_id, teknisi_id, notIn } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
       const userData = await user.findOne({
         where: { id },
-        include: [{
-          model: user_privilege,
-          required: false
-        }]
+        include: [
+          {
+            model: user_privilege,
+            required: false,
+          },
+        ],
       });
-      const privileges = userData.user_privileges.map(data => data.name);
+      const privileges = userData.user_privileges.map((data) => data.name);
       let query = {
-        where: {
-          tipe: {
-            [Op.or]: privileges
-          }
-        },
+        where: {},
       };
+      if (userData.tipe !== 'Teknisi' && userData.tipe !== 'Super Admin') {
+        query.where.tipe = { [Op.or]: privileges };
+      }
       if (userData.tipe !== 'Super Admin') {
         query.where.vendor_id = userData.vendor_id;
       }
-      if (userData.tipe === "Teknisi") {
-        query.include = [{
-          model: user,
-          required: true,
-          as: "Teknisi",
-          where: { id }
-        }]
+      if (teknisi_id) {
+        query.where.teknisi_id = teknisi_id;
+      } else if (userData.tipe === 'Teknisi') {
+        query.where.teknisi_id = id;
       }
       query.order = [['createdAt', 'DESC']];
       if (vendor_id) query.where.vendor_id = vendor_id;
-      if (tipe) {
-        const validation = privileges.find(data => data === tipe);
-        if (!validation && userData.tipe !== "Teknisi") throw createError(401, "Not authorized");
+      if (tipe && userData.tipe !== 'Teknisi') {
+        const validation = privileges.find((data) => data === tipe);
+        if (!validation) throw createError(401, 'Not authorized');
         query.where.tipe = tipe;
       }
       if (status) query.where.status = status;
+      if (notIn) {
+        notIn = JSON.parse(notIn);
+        query.where.id = { [Op.notIn]: notIn };
+      }
       if (by === 'today')
         query.where.updated_at = {
           [Op.gte]: setDate(new Date(), 1),
@@ -359,25 +361,31 @@ class JobOrderController {
       let { arrData } = req.body;
       const teknisi_id = req.params.id;
       const admin_id = req.UserData.id;
-      if (!arrData) throw createError(400, "Array data required");
+      if (!arrData) throw createError(400, 'Array data required');
       arrData = JSON.parse(arrData);
-      await Promise.all(arrData.map(async data => {
-        const jobOrderData = await job_order.findOne({ where: { id: data } });
-        if (!jobOrderData) return;
-        await job_order.update({
-          teknisi_id,
-          admin_id
-        }, {
-          where: {
-            id: data
-          }
+      await Promise.all(
+        arrData.map(async (data) => {
+          const jobOrderData = await job_order.findOne({ where: { id: data } });
+          if (!jobOrderData) return;
+          await job_order.update(
+            {
+              teknisi_id,
+              admin_id,
+              status: 'Assign',
+            },
+            {
+              where: {
+                id: data,
+              },
+            }
+          );
         })
-      }));
-      res.status(200).json({ msg: "Success" });
+      );
+      res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
     }
-  }
+  };
   static checkSeedingJobOrder = async (req, res, next) => {
     try {
       if (!req.file) throw createError(400, 'Data Excel Required');
@@ -397,34 +405,30 @@ class JobOrderController {
       });
       seedingData.shift();
 
-      let status_valid = true;
-
       const result = await Promise.all(
         seedingData.map(async (data) => {
           return {
             no: data['NO'],
             merchant: data['MERCHANT'],
-            mid: data['EMPLOYEE ID'],
-            tid: data['KODE PERUSAHAAN'],
-            alamat: data['GENDER'],
-            kota: data['AYAH'],
-            no_telp: data['ALAMAT 1'],
-            edc_connection: data['ALAMAT 2'],
-            sn_edc: data['KOTA'],
-            type_edc: data['KELURAHAN'],
-            regional: data['KECAMATAN'],
-            pic: data['PROVINSI'],
-            tipe: data['KODE POS'],
-            problem_merchant: data['TEMPAT LAHIR'],
-            catatan: data['TANGGAL LAHIR'],
-            status,
+            mid: data['MID'],
+            tid: data['TID'],
+            alamat: data['ALAMAT'],
+            kota: data['KOTA'],
+            no_telp: data['NO TELP'],
+            edc_connection: data['EDC CONNECTION'],
+            sn_edc: data['SN EDC'],
+            type_edc: data['TYPE EDC'],
+            regional: data['REGIONAL'],
+            pic: data['PIC'],
+            tipe: data['TIPE'],
+            problem_merchant: data['PROBLEM MERCHANT'],
+            catatan: data['CATATAN'],
           };
         })
       );
 
       fs.unlinkSync(req.file.path);
       res.status(200).json({
-        status_valid,
         data: result,
       });
     } catch (err) {
@@ -434,23 +438,10 @@ class JobOrderController {
   static seedingJobOrder = async (req, res, next) => {
     try {
       const { data } = req.body;
+      const { id } = req.UserData;
+      const userData = await user.findOne({ where: { id } });
       const bulkQuery = data.map((data) => {
-        const {
-          merchant,
-          mid,
-          tid,
-          alamat,
-          kota,
-          no_telp,
-          edc_connection,
-          sn_edc,
-          type_edc,
-          regional,
-          pic,
-          tipe,
-          problem_merchant,
-          catatan,
-        } = data;
+        const { merchant, mid, tid, alamat, kota, no_telp, edc_connection, sn_edc, type_edc, regional, pic, tipe, problem_merchant, catatan } = data;
         return {
           tanggal_impor: new Date(),
           merchant,
@@ -467,7 +458,11 @@ class JobOrderController {
           tipe,
           problem_merchant,
           catatan,
+<<<<<<< HEAD
           status: "Unassign",
+=======
+          vendor_id: userData.vendor_id,
+>>>>>>> ab5abbee3839d6d17f8e416d6895a2c273d23137
         };
       });
       await job_order.bulkCreate(bulkQuery);

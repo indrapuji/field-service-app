@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableHighlight, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { formatFullDate } from 'node-format-date';
 
 const CardList = (props) => {
   const { item } = props;
@@ -28,7 +27,7 @@ const CardList = (props) => {
                 <Text style={styles.boldText}>{item.regional}</Text>
               </View>
               <Text>{item.no_telp}</Text>
-              <Text>{formatFullDate(item.createdAt)}</Text>
+              <Text>{item.createdAt}</Text>
             </View>
           </View>
         </View>

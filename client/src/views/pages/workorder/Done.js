@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination } from '@coreui/react';
+import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination, CButton } from '@coreui/react';
 
 // import usersData from './UsersData';
 // import token from '../../token';
 import axios from 'axios';
-import { HostUrl } from '../../../reusable';
+import HostUrl from '../../../components/HostUrl';
 
 const getBadge = (status) => {
   switch (status) {
-    case 'Active':
+    case 'Done':
       return 'success';
-    case 'Inactive':
-      return 'secondary';
-    case 'Pending':
+    case 'Assign':
       return 'warning';
-    case 'Banned':
-      return 'danger';
     default:
-      return 'primary';
+      return 'secondary';
   }
 };
 
@@ -56,13 +52,27 @@ const Workorders = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status'];
+  const handleEdit = (id) => {
+    console.log(id);
+  };
+
+  const fields = [
+    { key: 'merchant', label: 'MERCHANT' },
+    { key: 'alamat', label: 'ALAMAT' },
+    { key: 'no_telp', label: 'TELEPON' },
+    { key: 'tipe', label: 'TIPE' },
+    { key: 'regional', label: 'REGIONAL' },
+    { key: 'mid', label: 'MID' },
+    { key: 'tid', label: 'TID' },
+    { key: 'status', label: 'Status' },
+    { key: 'show_details', label: 'Detail' },
+  ];
 
   return (
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>Done</CCardHeader>
+          <CCardHeader>Done Workorders</CCardHeader>
           {jobOrderData && (
             <>
               <CCardBody>
@@ -79,6 +89,21 @@ const Workorders = () => {
                         <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
                       </td>
                     ),
+                    show_details: (item, index) => {
+                      return (
+                        <td>
+                          <CButton
+                            color="warning"
+                            size="sm"
+                            onClick={() => {
+                              handleEdit(item.id);
+                            }}
+                          >
+                            Detail
+                          </CButton>
+                        </td>
+                      );
+                    },
                   }}
                 />
                 <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />

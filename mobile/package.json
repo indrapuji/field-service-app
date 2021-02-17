@@ -21,7 +21,7 @@
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
     "axios": "^0.21.1",
-    "node-format-date": "^1.0.4",
+    "node-format-date": "^1.0.9",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-chart-kit": "^6.10.1",

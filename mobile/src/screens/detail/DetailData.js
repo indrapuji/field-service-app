@@ -176,3 +176,55 @@ export const edukasi = [
     text: 'Tidak',
   },
 ];
+
+export const fraud = [
+  {
+    key: 'iya',
+    text: 'Iya',
+  },
+  {
+    key: 'tidak',
+    text: 'Tidak',
+  },
+];
+export const gestun = [
+  {
+    key: 'iya',
+    text: 'Iya',
+  },
+  {
+    key: 'tidak',
+    text: 'Tidak',
+  },
+];
+
+export const surcharge = [
+  {
+    key: 'iya',
+    text: 'Iya',
+  },
+  {
+    key: 'tidak',
+    text: 'Tidak',
+  },
+];
+export const kartu_asing = [
+  {
+    key: 'iya',
+    text: 'Iya',
+  },
+  {
+    key: 'tidak',
+    text: 'Tidak',
+  },
+];
+export const double_transaksi = [
+  {
+    key: 'iya',
+    text: 'Iya',
+  },
+  {
+    key: 'tidak',
+    text: 'Tidak',
+  },
+];

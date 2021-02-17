@@ -15,10 +15,12 @@ class UserController {
         where: {
           email,
         },
-        include: [{
-          model: user_privilege,
-          required: false
-        }]
+        include: [
+          {
+            model: user_privilege,
+            required: false,
+          },
+        ],
       });
       if (!userData) throw createError(400, 'Wrong Username/Password');
       const passwordVerification = comparePassword(password, userData.password);
@@ -39,8 +41,22 @@ class UserController {
       const userData = await user.findOne({ where: { id } });
       console.log(userData.tipe);
       if (userData.tipe !== 'Super Admin' && userData.tipe !== 'Admin') throw createError(401, 'Unauthorized');
-      let { nama_lengkap, email, password, gender, alamat, nama_bank, no_rekening, no_telp, tgl_lahir, no_ktp, tipe, vendor_id, privilege } = req.body;
-      if (!privilege) throw createError(400, "Privilege harus ada");
+      let {
+        nama_lengkap,
+        email,
+        password,
+        gender,
+        alamat,
+        nama_bank,
+        no_rekening,
+        no_telp,
+        tgl_lahir,
+        no_ktp,
+        tipe,
+        vendor_id,
+        privilege,
+      } = req.body;
+      if (!privilege) throw createError(400, 'Privilege harus ada');
       privilege = JSON.parse(privilege);
       if (!nama_lengkap || !email || !password || !tipe) throw createError(400, 'Input all required field');
       if (tipe !== 'Teknisi' && userData.tipe === 'Admin') throw createError(401, 'Unauthorized');
@@ -75,12 +91,14 @@ class UserController {
           vendor_id,
         });
       }
-      await Promise.all(privilege.map(async data => {
-        await user_privilege.create({
-          user_id: result.id,
-          name: data
-        });
-      }));
+      await Promise.all(
+        privilege.map(async (data) => {
+          await user_privilege.create({
+            user_id: result.id,
+            name: data,
+          });
+        })
+      );
       res.status(201).json(result);
     } catch (err) {
       next(err);
@@ -157,13 +175,13 @@ class UserController {
       await user_fcm_token.destroy({ where: { user_id: id } });
       const result = await user_fcm_token.create({
         token,
-        user_id: id
+        user_id: id,
       });
       res.status(201).json(result);
     } catch (err) {
       next(err);
     }
-  }
+  };
   static editUser = async (req, res, next) => {
     try {
       const { id } = req.UserData;
@@ -179,30 +197,36 @@ class UserController {
       if (no_ktp) query.no_ktp = no_ktp;
       await user.update(query, {
         where: {
-          id
-        }
+          id,
+        },
       });
-      res.status(200).json({ msg: "Success" });
+      res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
     }
-  }
+  };
   static singleUser = async (req, res, next) => {
     try {
       const { id } = req.params;
       const result = await user.findOne({
         where: { id },
-        include: [{
-          model: user_privilege,
-          required: false
-        }]
+        include: [
+          {
+            model: user_privilege,
+            required: false,
+          },
+        ],
       });
-      if (!result) throw createError(404, "Data not found");
-      res.status(200).json(result);
+      if (!result) throw createError(404, 'Data not found');
+      const job_order_count = await job_order.count({ where: { teknisi_id: id } });
+      res.status(200).json({
+        ...result.dataValues,
+        job_order_count,
+      });
     } catch (err) {
       next(err);
     }
-  }
+  };
 }
 
 module.exports = UserController;

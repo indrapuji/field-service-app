@@ -5,7 +5,7 @@ import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPaginat
 // import usersData from './UsersData';
 // import token from '../../token';
 import axios from 'axios';
-import { HostUrl } from '../../../../reusable';
+import HostUrl from '../../../../components/HostUrl';
 
 const getBadge = (status) => {
   switch (status) {
