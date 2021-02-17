@@ -39,8 +39,8 @@ const Vendors = () => {
   };
 
   const fields = [
-    { key: 'nama', label: 'Vendor Name', _style: { width: '25%' } },
-    { key: 'alamat', label: 'Vendor Address', _style: { width: '80%' } },
+    { key: 'nama', label: 'Vendor Name', _style: { width: '40%' } },
+    { key: 'alamat', label: 'Vendor Address', _style: { width: '55%' } },
     { key: 'show_details', label: 'Detail', _style: { width: '5%' } },
   ];
 

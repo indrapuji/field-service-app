@@ -67,10 +67,25 @@ const Register = () => {
       [name]: value,
     });
   };
-  console.log(formData);
 
   const onFormSubmit = async () => {
     try {
+      const { merchant, alamat, no_telp, kota, mid, tid, edc_connection, type_edc, regional, tipe } = formData;
+      if (
+        merchant === '' ||
+        alamat === '' ||
+        no_telp === '' ||
+        kota === '' ||
+        mid === '' ||
+        tid === '' ||
+        edc_connection === '' ||
+        type_edc === '' ||
+        regional === '' ||
+        tipe === ''
+      ) {
+        newAlert({ status: 'error', message: 'Isi Semua Form' });
+        return;
+      }
       const token = localStorage.getItem('token');
       const { data } = await axios({
         method: 'POST',
@@ -181,7 +196,7 @@ const Register = () => {
                 </CFormGroup>
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="text-input">Reegional</CLabel>
+                    <CLabel htmlFor="text-input">Regional</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
                     <CInput placeholder="Masukkan EDC Connection..." name="regional" onChange={onFormChange} />
