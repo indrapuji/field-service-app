@@ -460,11 +460,8 @@ class JobOrderController {
           tipe,
           problem_merchant,
           catatan,
-<<<<<<< HEAD
           status: "Unassign",
-=======
           vendor_id: userData.vendor_id,
->>>>>>> ab5abbee3839d6d17f8e416d6895a2c273d23137
         };
       });
       await job_order.bulkCreate(bulkQuery);
