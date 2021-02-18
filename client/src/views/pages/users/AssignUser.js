@@ -100,7 +100,7 @@ const Register = () => {
           <CCard>
             <CForm>
               <CCardHeader>Assign Workorders</CCardHeader>
-              <CCardBody>
+              <CCardBody className="mb-3">
                 <CFormGroup row>
                   <CCol md="1">
                     <CLabel>Name</CLabel>
@@ -121,6 +121,9 @@ const Register = () => {
                     <CInput size="sm" disabled value={edit.job_order_count + newAssign.length} />
                   </CCol>
                 </CFormGroup>
+                <CButton size="sm" color="primary" className="float-right" disabled={newAssign.length > 0 ? false : true} onClick={onFormSubmit}>
+                  Assign
+                </CButton>
               </CCardBody>
               {newAssign.length > 0 && (
                 <>
@@ -132,19 +135,11 @@ const Register = () => {
                             key={idx}
                             onClick={() => redoPick(item.id)}
                             style={{
-                              backgroundColor:
-                                item.tipe === 'Kunjungan'
-                                  ? '#80ffdb'
-                                  : item.tipe === 'Pickup'
-                                  ? '#e9b0df'
-                                  : item.tipe === 'Survey'
-                                  ? '#ff577f'
-                                  : '#6930c3',
-                              color: item.tipe === 'Risk' ? 'white' : 'black',
                               margin: 3,
                               padding: 5,
                               cursor: 'pointer',
                             }}
+                            color={item.tipe}
                           >
                             {item.merchant}
                           </CBadge>
@@ -153,11 +148,11 @@ const Register = () => {
                       );
                     })}
                   </CCardFooter>
-                  <CCardFooter>
+                  {/* <CCardFooter>
                     <CButton size="sm" color="primary" className="float-right mb-3" onClick={onFormSubmit}>
                       Assign
                     </CButton>
-                  </CCardFooter>
+                  </CCardFooter> */}
                 </>
               )}
             </CForm>

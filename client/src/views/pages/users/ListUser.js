@@ -46,13 +46,13 @@ const ListUser = (props) => {
                       return (
                         <td>
                           <CButton
-                            color="success"
-                            size="sm"
+                            color="outline-success"
+                            // size="sm"
                             onClick={() => {
                               handleAssign(item);
                             }}
                           >
-                            <CIcon name="cib-addthis" />
+                            <CIcon name="cilPaperPlane" />
                           </CButton>
                         </td>
                       );

@@ -4,7 +4,7 @@ import {
   CContainer,
   CRow,
   CCol,
-  // CTextarea,
+  CTextarea,
   CSelect,
   CInput,
   CFormGroup,
@@ -22,15 +22,17 @@ import CIcon from '@coreui/icons-react';
 import axios from 'axios';
 import HostUrl from '../../../components/HostUrl';
 import newAlert from '../../../components/NewAlert';
+import Swal from 'sweetalert2';
 
 const Register = () => {
   const { woId } = useParams();
   const history = useHistory();
-  const [teknisiList, setTeknisiList] = useState(null);
+  // const [teknisiList, setTeknisiList] = useState(null);
   const [detail, setDetail] = useState({});
 
   useEffect(() => {
     getDetailWO();
+    // eslint-disable-next-line
   }, []);
 
   const getDetailWO = async () => {
@@ -44,10 +46,42 @@ const Register = () => {
         },
       });
       console.log(data);
-      // setDetail(data);
+      setDetail(data);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: 'Are You Sure?',
+      text: `${detail.merchant}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios({
+            method: 'DELETE',
+            url: `${HostUrl}/job-orders/delete/${woId}`,
+            headers: {
+              token: localStorage.getItem('token'),
+            },
+          });
+          newAlert({ status: 'success', message: 'Deleted' });
+          history.push('/workorders/all');
+        } catch (error) {
+          const { msg } = error.response.data;
+          newAlert({ status: 'error', message: msg });
+          console.log(error.response.data);
+        }
+      } else {
+        newAlert({ status: 'error', message: 'Cancel' });
+      }
+    });
   };
 
   return (
@@ -55,30 +89,31 @@ const Register = () => {
       <CRow className="justify-content-center">
         <CCol xs="12" md="12">
           <CCard>
-            <CCardHeader>
-              Register
-              <small> New Merchant</small>
-            </CCardHeader>
+            <CCardHeader color={detail.tipe}>Detail Merchant</CCardHeader>
             <CCardBody>
               <CForm>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">Nama Merchant</CLabel>
                   </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Nama Merchant..." name="merchant" />
+                  <CCol xs="12" md="5">
+                    <CLabel>{detail.merchant}</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="5">
+                    <CInput size="sm" value={detail.nama_merchant} />
                   </CCol>
                 </CFormGroup>
+
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">Alamat Merchant</CLabel>
                   </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput placeholder="Masukkan Alamat Merchant..." name="alamat" />
+                  <CCol xs="12" md="5">
+                    <CTextarea name="alamat" />
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">No Telp</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
@@ -86,7 +121,7 @@ const Register = () => {
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">Kota</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
@@ -94,7 +129,7 @@ const Register = () => {
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">MID</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
@@ -102,7 +137,7 @@ const Register = () => {
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">TID</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
@@ -110,7 +145,7 @@ const Register = () => {
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">EDC Connection</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
@@ -118,7 +153,7 @@ const Register = () => {
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">Tipe EDC</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
@@ -126,7 +161,7 @@ const Register = () => {
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="text-input">Regional</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
@@ -134,7 +169,7 @@ const Register = () => {
                   </CCol>
                 </CFormGroup>
                 <CFormGroup row>
-                  <CCol md="3">
+                  <CCol md="2">
                     <CLabel htmlFor="select">Tipe</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
@@ -150,8 +185,11 @@ const Register = () => {
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton type="submit" size="sm" color="primary">
-                <CIcon name="cil-scrubber" /> Submit
+              <CButton type="submit" size="sm" color="warning" onClick={handleDelete}>
+                <CIcon name="cil-scrubber" /> Delete
+              </CButton>
+              <CButton type="submit" size="sm" className="float-right" color="success">
+                <CIcon name="cil-scrubber" /> Close
               </CButton>
             </CCardFooter>
           </CCard>
