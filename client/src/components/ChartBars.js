@@ -1,8 +1,23 @@
-import React from 'react'; // useEffect, useState
+import React, { useEffect, useState } from 'react'; // useEffect, useState
 import { CCard, CCardBody, CCardHeader } from '@coreui/react';
 import { CChartBar } from '@coreui/react-chartjs';
 
-const ChartBars = () => {
+const ChartBars = (props) => {
+  const { data } = props;
+  const [dataChart, setDataChart] = useState({
+    data: [],
+    labels: []
+  });
+  useEffect(() => {
+    if (data) {
+      const labelsTemp = data.map(data => data.regional);
+      const dataTemp = data.map(data => data.count);
+      setDataChart({
+        data: dataTemp,
+        labels: labelsTemp
+      });
+    }
+  }, [data]);
   return (
     <CCard>
       <CCardHeader>Regional</CCardHeader>
@@ -12,10 +27,10 @@ const ChartBars = () => {
             {
               label: 'Jumlah',
               backgroundColor: '#f9b115',
-              data: [400, 200, 120, 390, 200, 400, 390],
+              data: dataChart.data,
             },
           ]}
-          labels={['Jakarta', 'Jogjakarta', 'Bali', 'Medan', 'Surabaya', 'Semarang', 'Bandung']}
+          labels={dataChart.labels}
           options={{
             tooltips: {
               enabled: true,

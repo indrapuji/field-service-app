@@ -34,28 +34,33 @@ const ChartPie = (props) => {
   //     console.log(err);
   //   }
   // };
-  const { title, dataSet, label } = props;
+  const { title, dataSet, label, dateData } = props;
   return (
-    <CCard>
-      <CCardHeader>
-        <h4 id="traffic" className="card-title mb-0">
-          {title}
-        </h4>
-        <div className="small text-muted">Month / Januari 2021</div>
-      </CCardHeader>
+    <>
+      {
+        dateData &&
+        <CCard>
+          <CCardHeader>
+            <h4 id="traffic" className="card-title mb-0">
+              {title}
+            </h4>
+            <div className="small text-muted">Month / {dateData.month} {dateData.year}</div>
+          </CCardHeader>
 
-      <CCardBody>
-        <CChartPie
-          datasets={[dataSet]}
-          labels={label}
-          options={{
-            tooltips: {
-              enabled: true,
-            },
-          }}
-        />
-      </CCardBody>
-    </CCard>
+          <CCardBody>
+            <CChartPie
+              datasets={[dataSet]}
+              labels={label}
+              options={{
+                tooltips: {
+                  enabled: true,
+                },
+              }}
+            />
+          </CCardBody>
+        </CCard>
+      }
+    </>
   );
 };
 
