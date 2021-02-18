@@ -9,7 +9,7 @@ const upload = multer({ storage });
 
 router.post('/', authentication, upload.fields([{ name: 'foto_toko_1' }, { name: 'foto_toko_2' }]), JobOrderController.createJobOrder);
 router.put('/assign', authentication, adminVendorAuth, JobOrderController.assignJobOrder);
-router.put('/change-status/:id', authentication, teknisiAuth, JobOrderController.changeStatus);
+router.put('/change-verify/:id', authentication, JobOrderController.changeVerify);
 router.get('/all', authentication, JobOrderController.getAllJobOrder);
 router.get('/single/:id', authentication, teknisiAuth, JobOrderController.getSingleOrder);
 router.put(

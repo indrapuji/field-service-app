@@ -262,6 +262,10 @@ module.exports = (sequelize, DataTypes) => {
       peralatan_kantor_yang_terlihat: {
         type: DataTypes.STRING,
       },
+      verify: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+      },
     },
     {
       sequelize,

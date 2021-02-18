@@ -85,17 +85,15 @@ class JobOrderController {
       next(err);
     }
   };
-  static changeStatus = async (req, res, next) => {
+  static changeVerify = async (req, res, next) => {
     try {
       const { id } = req.params;
-      const { status } = req.body;
-      const user_id = req.UserData.id;
-      const userData = await user.findOne({ where: { id: user_id } });
+      const { verify } = req.body;
       const jobOrderData = await job_order.findOne({ where: { id } });
-      if (jobOrderData.teknisi_id !== userData.id) throw createError(401, 'You are unauthorized');
+      if (jobOrderData) throw createError(401, 'Data Not Found');
       await job_order.update(
         {
-          status,
+          verify,
         },
         {
           where: {

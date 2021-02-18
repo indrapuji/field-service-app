@@ -254,6 +254,9 @@ module.exports = {
       peralatan_kantor_yang_terlihat: {
         type: Sequelize.STRING,
       },
+      verify: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
