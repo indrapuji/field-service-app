@@ -19,6 +19,7 @@ import axios from 'axios';
 import HostUrl from '../../../components/HostUrl';
 import ListUser from './ListUser';
 import newAlert from '../../../components/NewAlert';
+import ToastAlert from '../../../components/ToastAlert';
 
 const Register = () => {
   const { userId } = useParams();
@@ -50,11 +51,12 @@ const Register = () => {
       const query = newData.map((data) => data.id);
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?page=' + page + `&notIn=${JSON.stringify(query)}`,
+        url: HostUrl + '/job-orders/all?status=Unassign&page=' + page + `&notIn=${JSON.stringify(query)}`,
         headers: {
           token: localStorage.getItem('token'),
         },
       });
+      console.log(data.data);
       setJobOrderData(data);
     } catch (err) {
       console.log('ERROR');
@@ -124,28 +126,30 @@ const Register = () => {
                 <>
                   <CCardFooter>
                     {newAssign.map((item, idx) => {
-                      console.log(item);
                       return (
-                        <CBadge
-                          key={idx}
-                          onClick={() => redoPick(item.id)}
-                          style={{
-                            backgroundColor:
-                              item.tipe === 'Kunjungan'
-                                ? '#80ffdb'
-                                : item.tipe === 'Pickup'
-                                ? '#e9b0df'
-                                : item.tipe === 'Survey'
-                                ? '#ff577f'
-                                : '#6930c3',
-                            color: item.tipe === 'Risk' ? 'white' : 'black',
-                            margin: 3,
-                            padding: 5,
-                            cursor: 'pointer',
-                          }}
-                        >
-                          {item.merchant}
-                        </CBadge>
+                        <>
+                          <CBadge
+                            key={idx}
+                            onClick={() => redoPick(item.id)}
+                            style={{
+                              backgroundColor:
+                                item.tipe === 'Kunjungan'
+                                  ? '#80ffdb'
+                                  : item.tipe === 'Pickup'
+                                  ? '#e9b0df'
+                                  : item.tipe === 'Survey'
+                                  ? '#ff577f'
+                                  : '#6930c3',
+                              color: item.tipe === 'Risk' ? 'white' : 'black',
+                              margin: 3,
+                              padding: 5,
+                              cursor: 'pointer',
+                            }}
+                          >
+                            {item.merchant}
+                          </CBadge>
+                          <ToastAlert item={item} />
+                        </>
                       );
                     })}
                   </CCardFooter>

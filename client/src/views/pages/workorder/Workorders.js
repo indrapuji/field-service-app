@@ -58,7 +58,6 @@ const Workorders = () => {
     console.log(id);
   };
 
-  // const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status', 'detail'];
   const fields = [
     { key: 'merchant', label: 'MERCHANT' },
     { key: 'alamat', label: 'ALAMAT' },
@@ -112,7 +111,7 @@ const Workorders = () => {
                   scopedSlots={{
                     status: (item) => (
                       <td>
-                        <CBadge color={getBadge(item.status)}>{!item.status ? 'Un-Assign' : item.status}</CBadge>
+                        <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
                       </td>
                     ),
                     show_details: (item, index) => {

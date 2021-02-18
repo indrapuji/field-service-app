@@ -12,6 +12,7 @@ const Users = () => {
   const [page, setPage] = useState(currentPage);
   const [usersList, setUsersList] = useState(null);
   const [tipe, setTipe] = useState(null);
+  const [vendorsList, setVendorsList] = useState(null);
 
   useEffect(() => {
     currentPage !== page && setPage(currentPage);
@@ -19,6 +20,7 @@ const Users = () => {
 
   useEffect(() => {
     getUsersList();
+    getVendorsList();
     setTipe(localStorage.getItem('tipe'));
   }, []);
 
@@ -32,7 +34,21 @@ const Users = () => {
         },
       });
       setUsersList(UserCheck(data.data));
-      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getVendorsList = async () => {
+    try {
+      const { data } = await axios({
+        method: 'GET',
+        url: HostUrl + '/vendors',
+        headers: {
+          token: localStorage.getItem('token'),
+        },
+      });
+      console.log(data.data);
+      setVendorsList(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +66,7 @@ const Users = () => {
     { key: 'nama_lengkap', label: 'Name' },
     { key: 'tipe', label: 'Type' },
     { key: 'email', label: 'Email' },
-    { key: 'gender', label: 'Gender' },
+    { key: 'show_vendor', label: 'Vendor' },
     { key: 'show_details', label: '', _style: { width: '5%' } },
   ];
 
@@ -59,6 +75,16 @@ const Users = () => {
   };
   const handleAssign = (id) => {
     history.push(`/users/assign/${id}`);
+  };
+
+  const vendorName = (id) => {
+    if (vendorsList) {
+      for (let i = 0; i < vendorsList.length; i++) {
+        if (vendorsList[i].id === id) {
+          return vendorsList[i].nama;
+        }
+      }
+    }
   };
 
   return (
@@ -101,6 +127,10 @@ const Users = () => {
                         </CButton>
                       </td>
                     );
+                  },
+                  show_vendor: (item, index) => {
+                    return <td>{vendorName(item.vendor_id)}</td>;
+                    // return <td>{item.vendor_id}</td>;
                   },
                   assign: (item, index) => {
                     return (

@@ -40,7 +40,7 @@ const ListUser = (props) => {
                   size="sm"
                   scopedSlots={{
                     status: (item, index) => {
-                      return <td>{!item.status ? 'Unassign' : 'assign'}</td>;
+                      return <td>{item.status}</td>;
                     },
                     assign: (item, index) => {
                       return (

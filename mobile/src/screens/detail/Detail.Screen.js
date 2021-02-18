@@ -82,6 +82,7 @@ const DetailScreen = ({ route, navigation }) => {
     status: 'Done',
     aktifitas: '',
     tipe: '',
+    merchant_open: '',
   });
 
   const [kelengkapan, setKelengkapan] = useState({
@@ -132,6 +133,7 @@ const DetailScreen = ({ route, navigation }) => {
       setValue({ ...value, kondisi_merchant: options.key });
     } else {
       setChecked(options.key);
+      setValue({ ...value, merchant_open: options.key });
     }
   };
   const handdleOptionNext = (optionsBuka) => {
