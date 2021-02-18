@@ -31,23 +31,23 @@ const ChartTrafic = (props) => {
             <CRow className="text-center">
               <CCol md sm="12" className="mb-sm-2 mb-0">
                 <div className="text-muted">Merchant Buka</div>
-                <strong>{merchantBuka} Merchants ({((merchantBuka / (merchantBuka + merchantTutup))*100).toFixed(2)}%)</strong>
-                <CProgress className="progress-xs mt-2" precision={1} color="success" value={30} />
+                <strong>{merchantBuka} Merchants ({ merchantBuka !== 0 ? ((merchantBuka / (merchantBuka + merchantTutup))*100).toFixed(2) : 0}%)</strong>
+                <CProgress className="progress-xs mt-2" precision={1} color="success" value={merchantBuka ? (merchantBuka * 100).toFixed(2) : 0} />
               </CCol>
               <CCol md sm="12" className="mb-sm-2 mb-0 d-md-down-none">
                 <div className="text-muted">Merchant Tutup</div>
-                <strong>{merchantTutup} Merchants ({((merchantTutup / (merchantBuka + merchantTutup))*100).toFixed(2)}%)</strong>
-                <CProgress className="progress-xs mt-2" precision={1} color="info" value={40} />
+                <strong>{merchantTutup} Merchants ({ merchantTutup !== 0 ? ((merchantTutup / (merchantBuka + merchantTutup))*100).toFixed(2) : 0}%)</strong>
+                <CProgress className="progress-xs mt-2" precision={1} color="info" value={merchantTutup ? (merchantTutup * 100).toFixed(2) : 0} />
               </CCol>
               <CCol md sm="12" className="mb-sm-2 mb-0">
                 <div className="text-muted">Merchant Tetap</div>
-                <strong>{merchantTetap} Merchants ({((merchantTetap / (merchantTetap + merchantPindah))*100).toFixed(2)}%)</strong>
-                <CProgress className="progress-xs mt-2" precision={1} color="warning" value={20} />
+                <strong>{merchantTetap} Merchants ({ merchantTetap !== 0 ? ((merchantTetap / (merchantTetap + merchantPindah))*100).toFixed(2) : 0}%)</strong>
+                <CProgress className="progress-xs mt-2" precision={1} color="warning" value={merchantTetap ? (merchantTetap * 100).toFixed(2) : 0} />
               </CCol>
               <CCol md sm="12" className="mb-sm-2 mb-0">
                 <div className="text-muted">Merchant Pindah</div>
-                <strong>{merchantPindah} Merchants ({((merchantPindah / (merchantTetap + merchantPindah))*100).toFixed(2)}%)</strong>
-                <CProgress className="progress-xs mt-2" precision={1} color="danger" value={60} />
+                <strong>{merchantPindah} Merchants ({ merchantPindah !== 0 ? ((merchantPindah / (merchantTetap + merchantPindah))*100).toFixed(2) : 0}%)</strong>
+                <CProgress className="progress-xs mt-2" precision={1} color="danger" value={merchantPindah ? (merchantPindah * 100).toFixed(2) : 0} />
               </CCol>
             </CRow>
           </CCardFooter>

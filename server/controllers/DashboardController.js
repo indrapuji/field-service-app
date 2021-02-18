@@ -36,6 +36,7 @@ class DashboardController {
 					const jobOrderKunjunganCount = await job_order.count({
 						where: {
 							tipe: "Kunjungan",
+							status: "Done",
 							createdAt: {
 								[Op.between]: [from, until]
 							}
@@ -44,6 +45,7 @@ class DashboardController {
 					const jobOrderPickupCount = await job_order.count({
 						where: {
 							tipe: "Pickup",
+							status: "Done",
 							createdAt: {
 								[Op.between]: [from, until]
 							}
@@ -52,6 +54,7 @@ class DashboardController {
 					const jobOrderSurveyCount = await job_order.count({
 						where: {
 							tipe: "Survey",
+							status: "Done",
 							createdAt: {
 								[Op.between]: [from, until]
 							}
@@ -60,6 +63,7 @@ class DashboardController {
 					const jobOrderRiskCount = await job_order.count({
 						where: {
 							tipe: "Risk",
+							status: "Done",
 							createdAt: {
 								[Op.between]: [from, until]
 							}
@@ -83,6 +87,7 @@ class DashboardController {
 			const jobOrderKunjunganCountProgress = await job_order.count({
 				where: {
 					tipe: "Kunjungan",
+					status: "Done",
 					createdAt: {
 						[Op.between]: [fromProgress, untilProgress]
 					}
@@ -91,6 +96,7 @@ class DashboardController {
 			const jobOrderPickupCountProgress = await job_order.count({
 				where: {
 					tipe: "Pickup",
+					status: "Done",
 					createdAt: {
 						[Op.between]: [fromProgress, untilProgress]
 					}
@@ -99,6 +105,7 @@ class DashboardController {
 			const jobOrderSurveyCountProgress = await job_order.count({
 				where: {
 					tipe: "Survey",
+					status: "Done",
 					createdAt: {
 						[Op.between]: [fromProgress, untilProgress]
 					}
@@ -107,6 +114,7 @@ class DashboardController {
 			const jobOrderRiskCountProgress = await job_order.count({
 				where: {
 					tipe: "Risk",
+					status: "Done",
 					createdAt: {
 						[Op.between]: [fromProgress, untilProgress]
 					}
@@ -120,47 +128,39 @@ class DashboardController {
 				const until = new Date(date.getFullYear(), date.getMonth(), day + 1).setHours(24,0,0,0);
 				const merchantBuka = await job_order.count({
 					where: {
-						merchant_open: "buka"
+						merchant_open: "buka",
+						status: "Done",
+						createdAt: {
+							[Op.between]: [from, until]
+						}
 					},
-					where: {
-					tipe: "Survey",
-					createdAt: {
-						[Op.between]: [from, until]
-					}
-				}
 				});
 				const merchantTutup = await job_order.count({
 					where: {
-						merchant_open: "tutup"
+						merchant_open: "tutup",
+						status: "Done",
+						createdAt: {
+							[Op.between]: [from, until]
+						}
 					},
-					where: {
-					tipe: "Survey",
-					createdAt: {
-						[Op.between]: [from, until]
-					}
-				}
 				});
 				const merchantTetap = await job_order.count({
 					where: {
-						kondisi_merchant: "tetap"
+						kondisi_merchant: "tetap",
+						status: "Done",
+						createdAt: {
+							[Op.between]: [from, until]
+						}
 					},
-					where: {
-					tipe: "Survey",
-					createdAt: {
-						[Op.between]: [from, until]
-					}
-				}
 				});
 				const merchantPindah = await job_order.count({
 					where: {
-						kondisi_merchant: "pindah"
+						kondisi_merchant: "pindah",
+						status: "Done",
+						createdAt: {
+							[Op.between]: [from, until]
+						}
 					},
-					where: {
-					tipe: "Survey",
-					createdAt: {
-						[Op.between]: [from, until]
-					}
-				}
 				});
 				return {
 					day,
@@ -175,47 +175,39 @@ class DashboardController {
 			const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 1).setHours(24,0,0,0);
 			const merchantBuka = await job_order.count({
 				where: {
-					merchant_open: "buka"
+					merchant_open: "buka",
+					status: "Done",
+					createdAt: {
+						[Op.between]: [firstDay, lastDay]
+					}
 				},
-				where: {
-				tipe: "Survey",
-				createdAt: {
-					[Op.between]: [firstDay, lastDay]
-				}
-			}
 			});
 			const merchantTutup = await job_order.count({
 				where: {
-					merchant_open: "tutup"
+					merchant_open: "tutup",
+					status: "Done",
+					createdAt: {
+						[Op.between]: [firstDay, lastDay]
+					}
 				},
-				where: {
-				tipe: "Survey",
-				createdAt: {
-					[Op.between]: [firstDay, lastDay]
-				}
-			}
 			});
 			const merchantTetap = await job_order.count({
 				where: {
-					kondisi_merchant: "tetap"
+					kondisi_merchant: "tetap",
+					status: "Done",
+					createdAt: {
+						[Op.between]: [firstDay, lastDay]
+					}
 				},
-				where: {
-				tipe: "Survey",
-				createdAt: {
-					[Op.between]: [firstDay, lastDay]
-				}
-			}
 			});
 			const merchantPindah = await job_order.count({
 				where: {
-					kondisi_merchant: "pindah"
+					kondisi_merchant: "pindah",
+					status: "Done",
+					createdAt: {
+						[Op.between]: [firstDay, lastDay]
+					}
 				},
-				where: {
-				tipe: "Survey",
-				createdAt: {
-					[Op.between]: [firstDay, lastDay]
-				}
-			}
 			});
 			res.status(200).json({
 				jobOrderKunjunganCount,
