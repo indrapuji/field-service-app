@@ -11,7 +11,7 @@ router.post('/', authentication, upload.fields([{ name: 'foto_toko_1' }, { name:
 router.put('/assign', authentication, adminVendorAuth, JobOrderController.assignJobOrder);
 router.put('/change-verify/:id', authentication, JobOrderController.changeVerify);
 router.get('/all', authentication, JobOrderController.getAllJobOrder);
-router.get('/single/:id', authentication, teknisiAuth, JobOrderController.getSingleOrder);
+router.get('/single/:id', authentication, JobOrderController.getSingleOrder);
 router.put(
   '/done',
   authentication,
@@ -23,5 +23,6 @@ router.get('/dashboard', authentication, JobOrderController.dashboard);
 router.post('/assign-many/:id', authentication, JobOrderController.assignJobOrderMany);
 router.post('/check-seed', authentication, upload.single('data'), JobOrderController.checkSeedingJobOrder);
 router.post('/create-seed', authentication, JobOrderController.seedingJobOrder);
+router.delete('/delete/:id', authentication, JobOrderController.deleteJobOrder);
 
 module.exports = router;

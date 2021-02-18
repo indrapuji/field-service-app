@@ -13,5 +13,6 @@ router.get('/all-users', authentication, UserController.getAllUser);
 router.post('/add-firebase-token', authentication, UserController.addFirebaseToken);
 router.put('/edit', authentication, UserController.editUser);
 router.get('/single/:id', authentication, UserController.singleUser);
+router.delete('/delete/:id', authentication, UserController.deleteUser);
 
 module.exports = router;

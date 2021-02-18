@@ -468,6 +468,19 @@ class JobOrderController {
       next(err);
     }
   };
+  static deleteJobOrder = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const jobOrderData = await job_order.findOne({ where: { id } });
+      if (!jobOrderData) throw createError(404, "Data not Found");
+      await job_order.destroy({
+        where: { id }
+      });
+      res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = JobOrderController;

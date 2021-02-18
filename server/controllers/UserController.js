@@ -227,6 +227,17 @@ class UserController {
       next(err);
     }
   };
+  static deleteUser = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const userData = await user.findOne({ where: { id } });
+      if (!userData) throw createError(404, "User not Found");
+      await user.destroy({ where: { id } });
+      res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = UserController;
