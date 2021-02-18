@@ -124,8 +124,26 @@ const Register = () => {
                 <>
                   <CCardFooter>
                     {newAssign.map((item, idx) => {
+                      console.log(item);
                       return (
-                        <CBadge key={idx} style={{ marginLeft: 5, cursor: 'pointer' }} onClick={() => redoPick(item.id)} color="success">
+                        <CBadge
+                          key={idx}
+                          onClick={() => redoPick(item.id)}
+                          style={{
+                            backgroundColor:
+                              item.tipe === 'Kunjungan'
+                                ? '#80ffdb'
+                                : item.tipe === 'Pickup'
+                                ? '#e9b0df'
+                                : item.tipe === 'Survey'
+                                ? '#ff577f'
+                                : '#6930c3',
+                            color: item.tipe === 'Risk' ? 'white' : 'black',
+                            margin: 3,
+                            padding: 5,
+                            cursor: 'pointer',
+                          }}
+                        >
                           {item.merchant}
                         </CBadge>
                       );
