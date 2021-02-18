@@ -19,6 +19,7 @@ import {
   CDataTable,
   CBadge,
   CPagination,
+  CImg,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
@@ -156,6 +157,11 @@ const EditUsers = () => {
               </CCardHeader>
               <CCollapse show={accordion === 0}>
                 <CCardBody>
+                  {edit.foto_profil && (
+                    <CRow className="justify-content-center">
+                      <CImg src={edit.foto_profil} style={{ width: 150, marginBottom: 20, borderRadius: 20 }} />
+                    </CRow>
+                  )}
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel>Vendor Name</CLabel>
@@ -265,14 +271,6 @@ const EditUsers = () => {
                         </CCol>
                         <CCol xs="12" md="9">
                           <CInput disabled value={edit.no_ktp} />
-                        </CCol>
-                      </CFormGroup>
-                      <CFormGroup row>
-                        <CLabel col md="3">
-                          Picture
-                        </CLabel>
-                        <CCol xs="12" md="9">
-                          <CInput disabled value={edit.foto_profil} />
                         </CCol>
                       </CFormGroup>
                     </>

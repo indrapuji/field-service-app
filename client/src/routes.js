@@ -10,11 +10,12 @@ const AssignUser = React.lazy(() => import('./views/pages/users/AssignUser'));
 const Vendors = React.lazy(() => import('./views/pages/vendor/Vendors'));
 const RegisterVendor = React.lazy(() => import('./views/pages/vendor/RegisterVendor'));
 const EditVendor = React.lazy(() => import('./views/pages/vendor/EditVendor'));
-const Workorders = React.lazy(() => import('./views/pages/workorder/Workorders'));
+const Workorders = React.lazy(() => import('./views/pages/workorder/AllWorkorders'));
 const WorkordersImport = React.lazy(() => import('./views/pages/workorder/ImportWorkorders'));
 const WorkordersCreate = React.lazy(() => import('./views/pages/workorder/RegisterWorkorders'));
 const WorkordersAssign = React.lazy(() => import('./views/pages/workorder/AssignWorkorders'));
-const WorkordersDone = React.lazy(() => import('./views/pages/workorder/Done'));
+const WorkordersDone = React.lazy(() => import('./views/pages/workorder/DoneWorkorders'));
+const WorkordersDetail = React.lazy(() => import('./views/pages/workorder/DetailWorkorders'));
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -31,6 +32,7 @@ const routes = [
   { path: '/workorders/import', exact: true, name: 'Import WorkOrder', component: WorkordersImport },
   { path: '/workorders/assign', exact: true, name: 'Assign Workorders', component: WorkordersAssign },
   { path: '/workorders/done', exact: true, name: 'Done Workorders', component: WorkordersDone },
+  { path: '/workorders/detail/:woId', exact: true, name: 'Detail Workorders', component: WorkordersDetail },
 ];
 
 export default routes;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination, CButton } from '@coreui/react';
 
 // import usersData from './UsersData';
@@ -19,6 +19,7 @@ const getBadge = (status) => {
 };
 
 const Workorders = () => {
+  const history = useHistory();
   const queryPage = useLocation().search.match(/page=([0-9]+)/, '');
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
   const [page, setPage] = useState(currentPage);
@@ -55,7 +56,7 @@ const Workorders = () => {
     getWorkOrder(page);
   };
   const handleEdit = (id) => {
-    console.log(id);
+    history.push(`/workorders/detail/${id}`);
   };
 
   const fields = [
