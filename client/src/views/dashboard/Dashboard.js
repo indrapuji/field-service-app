@@ -32,11 +32,14 @@ const Dashboard = () => {
       const { data } = await axios({
         method: 'GET',
         url: HostUrl + '/dashboard/home',
+        headers: {
+          token: localStorage.getItem("token")
+        }
       });
       setDashboardData(data);
       setTipe({
         ...tipe,
-        data: [data.jobOrderKunjunganCount, data.jobOrderPickupCount, data.jobOrderRiskCount, data.jobOrderSurveyCount]
+        data: [data.jobOrderKunjunganTipeCount, data.jobOrderPickupTipeCount, data.jobOrderRiskCountTipe, data.jobOrderSurveyCountTipe]
       });
       setStatus({
         ...tipe,
