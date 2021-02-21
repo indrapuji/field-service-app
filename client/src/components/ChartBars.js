@@ -6,15 +6,15 @@ const ChartBars = (props) => {
   const { data } = props;
   const [dataChart, setDataChart] = useState({
     data: [],
-    labels: []
+    labels: [],
   });
   useEffect(() => {
     if (data) {
-      const labelsTemp = data.map(data => data.regional);
-      const dataTemp = data.map(data => data.count);
+      const labelsTemp = data.map((data) => data.regional);
+      const dataTemp = data.map((data) => data.count);
       setDataChart({
         data: dataTemp,
-        labels: labelsTemp
+        labels: labelsTemp,
       });
     }
   }, [data]);
@@ -28,12 +28,22 @@ const ChartBars = (props) => {
               label: 'Jumlah',
               backgroundColor: '#f9b115',
               data: dataChart.data,
+              minBarLength: 1,
             },
           ]}
           labels={dataChart.labels}
           options={{
             tooltips: {
               enabled: true,
+            },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true,
+                  },
+                },
+              ],
             },
           }}
         />

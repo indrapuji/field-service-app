@@ -143,6 +143,7 @@ const EditUsers = () => {
       console.log(err);
     }
   };
+  console.log(edit.tipe);
 
   return (
     <CContainer>

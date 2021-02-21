@@ -27,7 +27,7 @@ import newAlert from '../../../components/NewAlert';
 const Register = () => {
   const history = useHistory();
   const [vendorsList, setVendorsList] = useState(null);
-  const [tipe, setTipe] = useState(null);
+  const [tipe, setTipe] = useState(localStorage.getItem('tipe'));
   const [formData, setFormData] = useState({
     nama_lengkap: '',
     email: '',
@@ -39,11 +39,13 @@ const Register = () => {
     no_telp: '',
     tgl_lahir: '',
     no_ktp: '',
-    tipe: 'Teknisi',
+    tipe: tipe === 'Super Admin' ? '' : 'Teknisi',
     vendor_id: '',
     foto_profil: null,
     privilege: [],
   });
+
+  const [pass, setPass] = useState('');
 
   useEffect(() => {
     getVendorsList();
@@ -59,7 +61,6 @@ const Register = () => {
           token: localStorage.getItem('token'),
         },
       });
-
       setVendorsList(data);
     } catch (error) {
       console.log(error);
@@ -74,6 +75,12 @@ const Register = () => {
       const newData = formData.privilege.filter((x) => x !== value);
       setFormData({ ...formData, privilege: newData });
     }
+  };
+
+  console.log(tipe);
+
+  const onCheckPass = (event) => {
+    setPass(event.target.value);
   };
 
   const onFormChange = (event) => {
@@ -97,6 +104,34 @@ const Register = () => {
   const onFormSubmit = async (e) => {
     try {
       e.preventDefault();
+      const { nama_lengkap, email, gender, alamat, nama_bank, no_rekening, no_telp, tgl_lahir, no_ktp, foto_profil, privilege } = formData;
+
+      if (tipe === 'Super Admin') {
+        if (formData.tipe === '' || nama_lengkap === '' || email === '' || privilege.length === 0) {
+          console.log(formData.tipe);
+          newAlert({ status: 'error', message: 'Isi Semua Form' });
+          return;
+        }
+      } else {
+        if (
+          formData.tipe === '' ||
+          nama_lengkap === '' ||
+          email === '' ||
+          privilege.length === 0 ||
+          gender === '' ||
+          alamat === '' ||
+          nama_bank === '' ||
+          no_rekening === '' ||
+          no_telp === '' ||
+          tgl_lahir === '' ||
+          no_ktp === '' ||
+          foto_profil === ''
+        ) {
+          console.log(formData.tipe);
+          newAlert({ status: 'error', message: 'Isi Semua Form' });
+          return;
+        }
+      }
       const formDataTemp = { ...formData, privilege: JSON.stringify(formData.privilege) };
       console.log(formDataTemp);
       const newFormData = new FormData();
@@ -157,7 +192,7 @@ const Register = () => {
                     </CCol>
                     <CCol xs="12" md="9">
                       <CSelect name="tipe" onChange={onFormChange}>
-                        <option value="0">Please select</option>
+                        <option value="">Please select</option>
                         <option value="Client">Client</option>
                         <option value="Admin">Admin</option>
                       </CSelect>
@@ -196,7 +231,27 @@ const Register = () => {
                     <CLabel htmlFor="password-input">Password</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
-                    <CInput type="password" autoComplete="new-password" name="password" onChange={onFormChange} />
+                    <CInput
+                      type="password"
+                      autoComplete="new-password"
+                      // valid={formData.password === '' ? false : pass === formData.password ? true : false}
+                      name="test_password"
+                      onChange={onCheckPass}
+                    />
+                  </CCol>
+                </CFormGroup>
+                <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel htmlFor="password-input">Repeat Password</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    <CInput
+                      type="password"
+                      autoComplete="new-password"
+                      valid={formData.password === '' ? false : pass === formData.password ? true : false}
+                      name="password"
+                      onChange={onFormChange}
+                    />
                   </CCol>
                 </CFormGroup>
                 {tipe === 'Super Admin' && (
@@ -313,7 +368,13 @@ const Register = () => {
                 )}
               </CCardBody>
               <CCardFooter>
-                <CButton type="submit" size="sm" color="primary">
+                <CButton
+                  type="submit"
+                  size="sm"
+                  disabled={!formData.password ? true : pass === formData.password ? false : true}
+                  color="primary"
+                  className="float-right mb-3"
+                >
                   <CIcon name="cil-scrubber" /> Submit
                 </CButton>
               </CCardFooter>

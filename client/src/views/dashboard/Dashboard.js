@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CRow, CCol, CWidgetDropdown } from '@coreui/react';
 import ChartWeeks from '../../components/ChartWeeks';
 import ChartPie from '../../components/ChartPie';
@@ -7,21 +7,26 @@ import ChartBars from '../../components/ChartBars';
 import axios from 'axios';
 import HostUrl from '../../components/HostUrl';
 
-const WidgetsDropdown = lazy(() => import('../../components/WidgetsDropdown.js'));
+// const WidgetsDropdown = lazy(() => import('../../components/WidgetsDropdown.js'));
 
 const Dashboard = () => {
+  const Kunjungan = '#80ffdb';
+  const Pickup = '#e9b0df';
+  const Survey = '#ff577f';
+  const Risk = '#6930c3';
   const [dashboardData, setDashboardData] = useState({});
   const labelStatus = ['Assign', 'Progress', 'Done', 'Unassign'];
   const [status, setStatus] = useState({
-    backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+    backgroundColor: ['#00D8FF', '#E46651', '#41B883', '#DD1B16'],
     data: [0, 0, 0, 0],
   });
 
-  const labelTipe = ['Kunjungan', 'Pickup Sales Draft', "OTS Survey", "Risk Unit"];
+  const labelTipe = ['Kunjungan', 'Pickup Sales Draft', 'OTS Survey', 'Risk Unit'];
   const [tipe, setTipe] = useState({
-    backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+    backgroundColor: [Kunjungan, Pickup, Survey, Risk],
     data: [],
   });
+
   useEffect(() => {
     getDashboardData();
     // eslint-disable-next-line
@@ -33,44 +38,44 @@ const Dashboard = () => {
         method: 'GET',
         url: HostUrl + '/dashboard/home',
         headers: {
-          token: localStorage.getItem("token")
-        }
+          token: localStorage.getItem('token'),
+        },
       });
       setDashboardData(data);
       setTipe({
         ...tipe,
-        data: [data.jobOrderKunjunganTipeCount, data.jobOrderPickupTipeCount, data.jobOrderRiskCountTipe, data.jobOrderSurveyCountTipe]
+        data: [data.jobOrderKunjunganTipeCount, data.jobOrderPickupTipeCount, data.jobOrderRiskCountTipe, data.jobOrderSurveyCountTipe],
       });
       setStatus({
-        ...tipe,
-        data: [data.jobOrderAssignStatusCount, data.jobOrderProgresStatusCount, data.jobOrderDoneStatusCount, data.jobOrderUnassignStatusCount]
+        ...status,
+        data: [data.jobOrderAssignStatusCount, data.jobOrderProgresStatusCount, data.jobOrderDoneStatusCount, data.jobOrderUnassignStatusCount],
       });
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const renderWidget = () => {
     const widgetColor = [
       {
         header: `${dashboardData.jobOrderKunjunganCount ? dashboardData.jobOrderKunjunganCount : 0}`,
         text: 'Kunjungan',
-        color: 'gradient-primary',
+        color: 'Kunjungan',
       },
       {
         header: `${dashboardData.jobOrderPickupCount ? dashboardData.jobOrderPickupCount : 0}`,
         text: 'Pickup Sales Draft',
-        color: 'gradient-info',
+        color: 'Pickup',
       },
       {
         header: `${dashboardData.jobOrderRiskCount ? dashboardData.jobOrderRiskCount : 0}`,
         text: 'OTS Survey',
-        color: 'gradient-warning',
+        color: 'Survey',
       },
       {
         header: `${dashboardData.jobOrderSurveyCount ? dashboardData.jobOrderSurveyCount : 0}`,
         text: 'Risk Unit',
-        color: 'gradient-danger',
+        color: 'Risk',
       },
     ];
     const result = widgetColor.map((data, idx) => {
@@ -87,8 +92,7 @@ const Dashboard = () => {
   return (
     <>
       {/* <WidgetsDropdown /> */}
-      {
-        dashboardData &&
+      {dashboardData && (
         <>
           <CRow>{renderWidget()}</CRow>
           <ChartBars data={dashboardData.allRegional} />
@@ -116,7 +120,7 @@ const Dashboard = () => {
             merchantPindah={dashboardData.merchantPindah}
           />
         </>
-      }
+      )}
     </>
   );
 };

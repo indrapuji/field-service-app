@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { CBadge, CCard, CCardBody, CCardHeader, CCol, CDataTable, CRow, CPagination, CButton } from '@coreui/react';
+import {
+  CBadge,
+  CCard,
+  CCardBody,
+  CCardHeader,
+  CCol,
+  CDataTable,
+  CRow,
+  CPagination,
+  CButton,
+} from '@coreui/react';
 
 // import usersData from './UsersData';
 // import token from '../../token';
@@ -42,6 +52,7 @@ const Workorders = () => {
         },
       });
       setJobOrderData(data);
+      console.log(data);
     } catch (err) {
       console.log('ERROR');
       console.log(err);
@@ -106,7 +117,11 @@ const Workorders = () => {
                     },
                   }}
                 />
-                <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />
+                <CPagination
+                  activePage={jobOrderData.currentPage}
+                  pages={jobOrderData.pages}
+                  onActivePageChange={changePage}
+                />
               </CCardBody>
             </>
           )}

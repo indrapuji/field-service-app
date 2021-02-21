@@ -10,16 +10,16 @@ const MainChartExample = (props) => {
   const { trafficData } = props;
 
   const defaultDatasets = (() => {
-    const merchantBuka = trafficData.map(data => {
+    const merchantBuka = trafficData.map((data) => {
       return data.merchantBuka;
     });
-    const merchantTutup = trafficData.map(data => {
+    const merchantTutup = trafficData.map((data) => {
       return data.merchantTutup;
     });
-    const merchantTetap = trafficData.map(data => {
+    const merchantTetap = trafficData.map((data) => {
       return data.merchantTetap;
     });
-    const merchantPindah = trafficData.map(data => {
+    const merchantPindah = trafficData.map((data) => {
       return data.merchantPindah;
     });
     return [
@@ -60,9 +60,9 @@ const MainChartExample = (props) => {
     ];
   })();
 
-  const labels = () => {
-    return trafficData.map(data => data.day);
-  }
+  // const labels = () => {
+  //   return trafficData.map(data => data.day);
+  // }
 
   const defaultOptions = (() => {
     return {
@@ -106,15 +106,14 @@ const MainChartExample = (props) => {
   // render
   return (
     <>
-      {
-        trafficData &&
+      {trafficData && (
         <CChartLine
           style={{ height: '300px', marginTop: '40px' }}
           datasets={defaultDatasets}
           options={defaultOptions}
-          labels={trafficData.map(data => data.day)}
+          labels={trafficData.map((data) => data.day)}
         />
-      }
+      )}
     </>
   );
 };

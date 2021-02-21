@@ -20,29 +20,30 @@ const ChartWeeks = (props) => {
               <span className="progress-group-text">{data.hari}</span>
             </div>
             <div className="progress-group-bars">
-              <CProgress className="progress-xs" color="info" value={data.jobOrderKunjunganCount ? data.jobOrderKunjunganCount : 0} />
-              <CProgress className="progress-xs" color="danger" value={data.jobOrderPickupCount ? data.jobOrderPickupCount : 0} />
-              <CProgress className="progress-xs" color="primary" value={data.jobOrderSurveyCount ? data.jobOrderSurveyCount : 0} />
-              <CProgress className="progress-xs" color="warning" value={data.jobOrderRiskCount ? data.jobOrderRiskCount : 0} />
+              <CProgress className="progress-xs" color="Kunjungan" value={data.jobOrderKunjunganCount ? data.jobOrderKunjunganCount : 0} />
+              <CProgress className="progress-xs" color="Pickup" value={data.jobOrderPickupCount ? data.jobOrderPickupCount : 0} />
+              <CProgress className="progress-xs" color="Survey" value={data.jobOrderSurveyCount ? data.jobOrderSurveyCount : 0} />
+              <CProgress className="progress-xs" color="Risk" value={data.jobOrderRiskCount ? data.jobOrderRiskCount : 0} />
             </div>
           </div>
-        )
-      })
+        );
+      });
       return result;
     } else {
-      return (<></>);
+      return <></>;
     }
-  }
+  };
   return (
     <>
-      {
-        (dataChart && dateData) &&
+      {dataChart && dateData && (
         <CCard>
           <CCardHeader>
             <h4 id="traffic" className="card-title mb-0">
               Progress Work Orders
             </h4>
-            <div className="small text-muted">Week {dateData.dayOfWeek} / {dateData.month} {dateData.year}</div>
+            <div className="small text-muted">
+              Week {dateData.dayOfWeek} / {dateData.month} {dateData.year}
+            </div>
           </CCardHeader>
           <CCardBody>
             <CRow>
@@ -109,7 +110,7 @@ const ChartWeeks = (props) => {
             </div>
           </CCardBody>
         </CCard>
-      }
+      )}
     </>
   );
 };

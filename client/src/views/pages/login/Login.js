@@ -48,7 +48,6 @@ const Login = () => {
         console.log(data);
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('tipe', data.tipe);
-        localStorage.setItem('image', data.userData.foto_profil);
         newAlert({ status: 'success', message: 'Berhasil' });
         history.push('/');
       } else {
