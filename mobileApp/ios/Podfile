@@ -32,5 +32,4 @@ target 'mobileApp-tvOS' do
   end
 end
 
-pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 

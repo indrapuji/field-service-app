@@ -1,14 +1,8 @@
 import React from 'react';
-import { View, Text, StatusBar, Image, ActivityIndicator, ImageBackground, StyleSheet, Dimensions } from 'react-native';
-import SplashScreen from './src/screens/Splash.Screen';
+import NavigationScreen from './src/navigations';
 
 const App = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" hidden={false} backgroundColor="#84ccf7" />
-      <SplashScreen />
-    </>
-  );
+  return <NavigationScreen />;
 };
 
 export default App;
