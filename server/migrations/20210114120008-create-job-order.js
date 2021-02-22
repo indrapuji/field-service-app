@@ -9,10 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       tanggal_assign: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
       },
       tanggal_done: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
       },
       merchant: {
         type: Sequelize.STRING,

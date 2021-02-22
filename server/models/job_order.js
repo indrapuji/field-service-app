@@ -17,10 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   job_order.init(
     {
       tanggal_assign: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
       },
       tanggal_done: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATE,
       },
       merchant: {
         type: DataTypes.STRING,
