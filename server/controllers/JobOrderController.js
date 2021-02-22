@@ -106,6 +106,27 @@ class JobOrderController {
       next(err);
     }
   };
+  static changeStatus = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const jobOrderData = await job_order.findOne({ where: { id } });
+      if (jobOrderData) throw createError(401, 'Data Not Found');
+      await job_order.update(
+        {
+          status,
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      res.status(200).json({ msg: 'Success' });
+    } catch (err) {
+      next(err);
+    }
+  }
   static getAllJobOrder = async (req, res, next) => {
     try {
       const { id } = req.UserData;
@@ -258,6 +279,30 @@ class JobOrderController {
         latitude,
         longitude,
         keluhan,
+        merchant_open,
+        edukasi_fraud,
+        edukasi_gestun,
+        edukasi_surcharge,
+        edukasi_kartu_asing,
+        edukasi_double_transaksi,
+        no_aplikasi,
+        nama_sumber,
+        jenis_kelamin,
+        hub_sumber_informasi,
+        app_kerja,
+        bidang_usaha,
+        lama_usaha,
+        lama_bekerja,
+        jabatan_aplikan,
+        status_aplikan,
+        status_karyawan,
+        jumlah_karyawan,
+        penghasilan_aplikasi_perbulan,
+        status_kepemilikan_kantor,
+        kondisi_merchant,
+        lokasi_lingkungan_merchant,
+        kondisi_bangunan_merchant,
+        peralatan_kantor_yang_terlihat,
       } = req.body;
       const { id } = req.UserData;
       if (!job_order_id) throw createError(400, 'Need Job Order Id');
@@ -321,6 +366,30 @@ class JobOrderController {
         longitude,
         keluhan,
         status: 'Done',
+        merchant_open,
+        edukasi_fraud,
+        edukasi_gestun,
+        edukasi_surcharge,
+        edukasi_kartu_asing,
+        edukasi_double_transaksi,
+        no_aplikasi,
+        nama_sumber,
+        jenis_kelamin,
+        hub_sumber_informasi,
+        app_kerja,
+        bidang_usaha,
+        lama_usaha,
+        lama_bekerja,
+        jabatan_aplikan,
+        status_aplikan,
+        status_karyawan,
+        jumlah_karyawan,
+        penghasilan_aplikasi_perbulan,
+        status_kepemilikan_kantor,
+        kondisi_merchant,
+        lokasi_lingkungan_merchant,
+        kondisi_bangunan_merchant,
+        peralatan_kantor_yang_terlihat,
       };
       if (req.files) {
         if (req.files.foto_toko_1) jobOrderQuery.foto_toko_1 = serverUrl + req.files.foto_toko_1[0].path;
