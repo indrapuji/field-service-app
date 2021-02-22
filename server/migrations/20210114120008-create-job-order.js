@@ -9,10 +9,10 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       tanggal_assign: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       tanggal_done: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
       },
       tanggal_tugas: {
         type: Sequelize.STRING,
