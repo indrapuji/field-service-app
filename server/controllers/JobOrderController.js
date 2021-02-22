@@ -77,7 +77,7 @@ class JobOrderController {
       const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
       if (!jobOrderData) throw createError(404, 'User Not Found');
       if (jobOrderData.vendor_id !== userData.vendor_id && userData.tipe !== 'Super Admin') throw createError(401, 'You are unauthorized');
-      await job_order.update({ teknisi_id, admin_id: id, tanggal_assign: new Date(), }, { where: { id: job_order_id } });
+      await job_order.update({ teknisi_id, admin_id: id, tanggal_assign: new Date() }, { where: { id: job_order_id } });
       res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
