@@ -110,6 +110,7 @@ class JobOrderController {
     try {
       const { id } = req.params;
       const { status } = req.body;
+      console.log(id);
       const jobOrderData = await job_order.findOne({ where: { id } });
       if (jobOrderData) throw createError(404, 'Data Not Found');
       await job_order.update(
