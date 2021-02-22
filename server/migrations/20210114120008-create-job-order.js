@@ -14,9 +14,6 @@ module.exports = {
       tanggal_done: {
         type: Sequelize.STRING,
       },
-      tanggal_tugas: {
-        type: Sequelize.STRING,
-      },
       merchant: {
         type: Sequelize.STRING,
       },

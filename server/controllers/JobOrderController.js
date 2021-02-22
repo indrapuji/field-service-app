@@ -77,7 +77,7 @@ class JobOrderController {
       const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
       if (!jobOrderData) throw createError(404, 'User Not Found');
       if (jobOrderData.vendor_id !== userData.vendor_id && userData.tipe !== 'Super Admin') throw createError(401, 'You are unauthorized');
-      await job_order.update({ teknisi_id, admin_id: id }, { where: { id: job_order_id } });
+      await job_order.update({ teknisi_id, admin_id: id, tanggal_assign: new Date(), }, { where: { id: job_order_id } });
       res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
@@ -219,7 +219,6 @@ class JobOrderController {
     try {
       const {
         job_order_id,
-        tanggal_tugas,
         merchant,
         mid,
         tid,
@@ -310,7 +309,6 @@ class JobOrderController {
       if (jobOrderData.teknisi_id !== id) throw createError(401, 'You are not authorized');
       const jobOrderQuery = {
         tanggal_done: new Date(),
-        tanggal_tugas,
         merchant,
         mid,
         tid,
@@ -509,7 +507,6 @@ class JobOrderController {
       const bulkQuery = data.map((data) => {
         const { merchant, mid, tid, alamat, kota, no_telp, edc_connection, sn_edc, type_edc, regional, pic, tipe, problem_merchant, catatan } = data;
         return {
-          tanggal_assign: new Date(),
           merchant,
           mid,
           tid,
