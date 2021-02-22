@@ -10,7 +10,6 @@ class JobOrderController {
   static createJobOrder = async (req, res, next) => {
     try {
       let {
-        tanggal_impor,
         merchant,
         mid,
         tid,
@@ -32,7 +31,6 @@ class JobOrderController {
       if (!teknisi_id) teknisi_id = id;
       const userData = await user.findOne({ where: { id } });
       let query = {
-        tanggal_impor,
         merchant,
         mid,
         tid,
@@ -221,7 +219,6 @@ class JobOrderController {
     try {
       const {
         job_order_id,
-        tanggal_impor,
         tanggal_tugas,
         merchant,
         mid,
@@ -312,7 +309,7 @@ class JobOrderController {
       if (!jobOrderData) throw createError(404, 'Job Order Not Found');
       if (jobOrderData.teknisi_id !== id) throw createError(401, 'You are not authorized');
       const jobOrderQuery = {
-        tanggal_impor,
+        tanggal_done: new Date(),
         tanggal_tugas,
         merchant,
         mid,
@@ -512,7 +509,7 @@ class JobOrderController {
       const bulkQuery = data.map((data) => {
         const { merchant, mid, tid, alamat, kota, no_telp, edc_connection, sn_edc, type_edc, regional, pic, tipe, problem_merchant, catatan } = data;
         return {
-          tanggal_impor: new Date(),
+          tanggal_assign: new Date(),
           merchant,
           mid,
           tid,

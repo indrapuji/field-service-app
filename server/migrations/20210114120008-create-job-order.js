@@ -8,8 +8,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      tanggal_impor: {
-        type: Sequelize.STRING,
+      tanggal_assign: {
+        type: DataTypes.STRING,
+      },
+      tanggal_done: {
+        type: DataTypes.STRING,
       },
       tanggal_tugas: {
         type: Sequelize.STRING,

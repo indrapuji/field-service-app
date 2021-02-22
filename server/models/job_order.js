@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   job_order.init(
     {
-      tanggal_impor: {
+      tanggal_assign: {
+        type: DataTypes.STRING,
+      },
+      tanggal_done: {
         type: DataTypes.STRING,
       },
       tanggal_tugas: {
