@@ -22,18 +22,19 @@ const CardList = (props) => {
 
   const changeStatus = async () => {
     try {
+      console.log(newDataID);
       const token = await AsyncStorage.getItem('userToken');
       const { data } = await axios({
         method: 'put',
         url: `${host}/job-orders/change-status/${newDataID}`,
         data: { status },
-        headers: { token },
+        // headers: { token },
       });
       setShowModal(false);
       props.update(newDataID);
     } catch (err) {
       setShowModal(false);
-      console.log(newDataID);
+      console.log(err);
     }
   };
 

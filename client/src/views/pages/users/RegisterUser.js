@@ -77,8 +77,6 @@ const Register = () => {
     }
   };
 
-  console.log(tipe);
-
   const onCheckPass = (event) => {
     setPass(event.target.value);
   };
@@ -117,7 +115,6 @@ const Register = () => {
           formData.tipe === '' ||
           nama_lengkap === '' ||
           email === '' ||
-          privilege.length === 0 ||
           gender === '' ||
           alamat === '' ||
           nama_bank === '' ||
@@ -127,7 +124,7 @@ const Register = () => {
           no_ktp === '' ||
           foto_profil === ''
         ) {
-          console.log(formData.tipe);
+          console.log(formData);
           newAlert({ status: 'error', message: 'Isi Semua Form' });
           return;
         }
