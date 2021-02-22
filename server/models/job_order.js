@@ -22,9 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       tanggal_done: {
         type: DataTypes.STRING,
       },
-      tanggal_tugas: {
-        type: DataTypes.STRING,
-      },
       merchant: {
         type: DataTypes.STRING,
       },
