@@ -36,7 +36,7 @@ const Workorders = () => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?/job-orders=Done&page=' + page,
+        url: HostUrl + '/job-orders/all?verify=true&page=' + page,
         headers: {
           token: localStorage.getItem('token'),
         },

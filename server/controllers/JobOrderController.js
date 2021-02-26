@@ -106,9 +106,12 @@ class JobOrderController {
       const { verify } = req.body;
       const jobOrderData = await job_order.findOne({ where: { id } });
       if (!jobOrderData) throw createError(404, 'Data Not Found');
+      const user_id = req.UserData.id;
+      const userData = await user.findOne({ where: { id: user_id } });
       await job_order.update(
         {
           verify,
+          di_close_oleh: userData.nama_lengkap,
         },
         {
           where: {
