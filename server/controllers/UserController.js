@@ -138,7 +138,6 @@ class UserController {
       let query = {
         where: {},
       };
-      query.offset = offset;
       const userData = await user.findOne({ where: { id } });
       if (userData.tipe === 'Admin') {
         if (tipe === 'Super Admin') throw createError(401, 'Not Authorized');
@@ -156,6 +155,7 @@ class UserController {
       if (!pagination) {
         query.limit = resPerPage;
       }
+      query.offset = offset;
       const result = await user.findAll(query);
       res.status(200).json({
         data: result,
