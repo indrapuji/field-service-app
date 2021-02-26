@@ -138,6 +138,7 @@ class UserController {
       let query = {
         where: {},
       };
+      if (teknisi) query.where.tipe = 'Teknisi';
       const numOfResult = await user.count(query);
       if (!pagination) {
         query.limit = resPerPage;
@@ -157,7 +158,6 @@ class UserController {
           };
         }
       }
-      if (teknisi) query.tipe = 'Teknisi';
       const result = await user.findAll(query);
       res.status(200).json({
         data: result,

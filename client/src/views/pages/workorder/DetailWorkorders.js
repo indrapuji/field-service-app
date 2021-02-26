@@ -55,6 +55,7 @@ const Register = () => {
           token,
         },
       });
+      console.log(data);
       setTeknisiData(data.data);
     } catch (err) {
       console.log(err);

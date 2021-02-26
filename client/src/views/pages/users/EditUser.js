@@ -164,10 +164,12 @@ const EditUsers = () => {
               token: localStorage.getItem('token'),
             },
           });
-          newAlert({ status: 'success', message: 'Deleted' });
+          newAlert({ status: 'success', message: 'Removed' });
           getWorkOrder(1);
         } catch (err) {
-          console.log(err);
+          const message = err.response.data.msg;
+          newAlert({ status: 'error', message });
+          console.log(err.response.data.msg);
         }
       } else {
         newAlert({ status: 'error', message: 'Cancel' });
