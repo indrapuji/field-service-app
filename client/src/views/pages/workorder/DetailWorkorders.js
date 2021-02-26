@@ -31,7 +31,7 @@ const Register = () => {
   // const [teknisiList, setTeknisiList] = useState(null);
   const [detail, setDetail] = useState({});
   const [nama, setNama] = useState('');
-  const [assignData, setAssignData] = useState(null);
+  const [assignData, setAssignData] = useState({});
   const [teknisiData, setTeknisiData] = useState([]);
 
   useEffect(() => {
@@ -138,7 +138,8 @@ const Register = () => {
   const onSubmitAssign = async (e) => {
     try {
       e.preventDefault();
-      if (!assignData.teknisi_id) {
+      console.log('TESTTT');
+      if (assignData.teknisi_id) {
         await axios({
           method: 'PUT',
           url: `${HostUrl}/job-orders/assign`,
@@ -161,7 +162,7 @@ const Register = () => {
   const onSubmitReassign = async (e) => {
     try {
       e.preventDefault();
-      if (!assignData.teknisi_id) {
+      if (assignData.teknisi_id) {
         await axios({
           method: 'PUT',
           url: `${HostUrl}/job-orders/reassign`,
