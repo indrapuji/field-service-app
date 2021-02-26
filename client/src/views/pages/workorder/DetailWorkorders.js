@@ -32,14 +32,16 @@ const Register = () => {
   const [detail, setDetail] = useState({});
   const [nama, setNama] = useState('');
   const [assignData, setAssignData] = useState(null);
+  const [teknisiData, setTeknisiData] = useState([]);
 
   useEffect(() => {
     getDetailWO();
+    getDataTeknisi();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    getUsers();
+    if (detail.teknisi_id) getUsers();
     // eslint-disable-next-line
   }, [detail]);
 
@@ -48,12 +50,12 @@ const Register = () => {
       const token = localStorage.getItem('token');
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/users/all-users?teknisi=true',
+        url: HostUrl + '/users/all-users?teknisi=true&pagination=false',
         headers: {
           token,
         },
       });
-      console.log(data);
+      setTeknisiData(data.data);
     } catch (err) {
       console.log(err);
     }
@@ -125,12 +127,57 @@ const Register = () => {
   };
   const onChangeTeknisi = (e) => {
     e.preventDefault();
-    const { value, name } = e;
+    const { value, name } = e.target;
     setAssignData({
       ...assignData,
       [name]: value,
     });
-    console.log(value, name);
+  };
+
+  const onSubmitAssign = async (e) => {
+    try {
+      e.preventDefault();
+      if (!assignData.teknisi_id) {
+        await axios({
+          method: 'PUT',
+          url: `${HostUrl}/job-orders/assign`,
+          data: {
+            job_order_id: woId,
+            teknisi_id: assignData.teknisi_id,
+          },
+          headers: {
+            token: localStorage.getItem('token'),
+          },
+        });
+        newAlert({ status: 'success', message: 'Success' });
+        history.push('/workorders/all');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onSubmitReassign = async (e) => {
+    try {
+      e.preventDefault();
+      if (!assignData.teknisi_id) {
+        await axios({
+          method: 'PUT',
+          url: `${HostUrl}/job-orders/reassign`,
+          data: {
+            job_order_id: woId,
+            teknisi_id: assignData.teknisi_id,
+          },
+          headers: {
+            token: localStorage.getItem('token'),
+          },
+        });
+        newAlert({ status: 'success', message: 'Success' });
+        history.push('/workorders/all');
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -159,16 +206,17 @@ const Register = () => {
                   {nama && detail.status !== 'Done' && (
                     <>
                       <CCol xs="8" md="7">
-                        <CSelect name="vendor_id" size="sm">
-                          <option value="0" disabled>
-                            {nama}
-                          </option>
+                        <CSelect name="teknisi_id" size="sm" onChange={onChangeTeknisi}>
                           <option value="0">Please select</option>
-                          <option value="0">Please select</option>
+                          {teknisiData.length !== 0
+                            ? teknisiData.map((data) => {
+                                return <option value={data.id}>{data.nama_lengkap}</option>;
+                              })
+                            : ''}
                         </CSelect>
                       </CCol>
-                      <CCol xs="4" md="2">
-                        <CButton color="success" size="sm" className="float-right">
+                      <CCol xs="4" md="1">
+                        <CButton color="success" size="sm" className="float-right" onClick={onSubmitReassign}>
                           Re-Assign
                         </CButton>
                       </CCol>
@@ -179,12 +227,15 @@ const Register = () => {
                       <CCol xs="8" md="8">
                         <CSelect name="teknisi_id" size="sm" onChange={onChangeTeknisi}>
                           <option value="0">Please select</option>
-                          <option value="0">Please select</option>
-                          <option value="0">Please select</option>
+                          {teknisiData.length !== 0
+                            ? teknisiData.map((data) => {
+                                return <option value={data.id}>{data.nama_lengkap}</option>;
+                              })
+                            : ''}
                         </CSelect>
                       </CCol>
                       <CCol xs="4" md="1">
-                        <CButton color="success" size="sm" className="float-right">
+                        <CButton color="success" size="sm" className="float-right" onClick={onSubmitAssign}>
                           Assign
                         </CButton>
                       </CCol>
