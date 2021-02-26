@@ -154,8 +154,8 @@ class UserController {
       const numOfResult = await user.count(query);
       if (!pagination) {
         query.limit = resPerPage;
+        query.offset = offset;
       }
-      query.offset = offset;
       const result = await user.findAll(query);
       res.status(200).json({
         data: result,
