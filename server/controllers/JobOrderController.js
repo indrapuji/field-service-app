@@ -75,7 +75,7 @@ class JobOrderController {
       if (!teknisiData) throw createError(404, 'User Not Found');
       const jobOrderData = await job_order.findOne({ where: { id: job_order_id } });
       if (!jobOrderData) throw createError(404, 'Job Order Not Found');
-      await job_order.update({ teknisi_id, admin_id: id, tanggal_assign: new Date() }, { where: { id: job_order_id } });
+      await job_order.update({ status: 'Assign', teknisi_id, admin_id: id, tanggal_assign: new Date() }, { where: { id: job_order_id } });
       res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
