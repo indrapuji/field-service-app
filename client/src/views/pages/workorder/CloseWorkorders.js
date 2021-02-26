@@ -36,7 +36,7 @@ const Workorders = () => {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?status=Assign&page=' + page,
+        url: HostUrl + '/job-orders/all?status=Done&page=' + page,
         headers: {
           token: localStorage.getItem('token'),
         },
@@ -52,6 +52,7 @@ const Workorders = () => {
   const changePage = (page) => {
     getWorkOrder(page);
   };
+
   const handleEdit = (id) => {
     console.log(id);
   };
@@ -72,7 +73,7 @@ const Workorders = () => {
     <CRow>
       <CCol>
         <CCard>
-          <CCardHeader>Assign Workorders</CCardHeader>
+          <CCardHeader>Close Workorders</CCardHeader>
           {jobOrderData && (
             <>
               <CCardBody>

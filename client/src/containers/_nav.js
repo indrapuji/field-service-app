@@ -43,13 +43,19 @@ const _Adminnav = [
     _tag: 'CSidebarNavItem',
     name: 'Assign',
     to: '/workorders/assign',
-    icon: 'cil-circle',
+    icon: 'cil-asterisk-circle',
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Done',
     to: '/workorders/done',
     icon: 'cil-check-circle',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Close',
+    to: '/workorders/close',
+    icon: 'cil-check',
   },
   {
     _tag: 'CSidebarNavItem',

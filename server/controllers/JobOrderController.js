@@ -45,7 +45,7 @@ class JobOrderController {
         tipe,
         aktifitas,
         vendor_id: userData.vendor_id,
-        status: "Unassign",
+        status: 'Unassign',
         admin_id: teknisi_id === id ? null : id,
         teknisi_id,
         type,
@@ -124,7 +124,7 @@ class JobOrderController {
     } catch (err) {
       next(err);
     }
-  }
+  };
   static getAllJobOrder = async (req, res, next) => {
     try {
       const { id } = req.UserData;
@@ -436,7 +436,7 @@ class JobOrderController {
               teknisi_id,
               admin_id,
               status: 'Assign',
-              tanggal_assign: new Date()
+              tanggal_assign: new Date(),
             },
             {
               where: {
@@ -522,7 +522,7 @@ class JobOrderController {
           tipe,
           problem_merchant,
           catatan,
-          status: "Unassign",
+          status: 'Unassign',
           vendor_id: userData.vendor_id,
         };
       });
@@ -536,15 +536,37 @@ class JobOrderController {
     try {
       const { id } = req.params;
       const jobOrderData = await job_order.findOne({ where: { id } });
-      if (!jobOrderData) throw createError(404, "Data not Found");
+      if (!jobOrderData) throw createError(404, 'Data not Found');
       await job_order.destroy({
-        where: { id }
+        where: { id },
       });
-      res.status(200).json({ msg: "Success" });
+      res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
     }
-  }
+  };
+  static removeJobOrder = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const jobOrderData = await job_order.findOne({ where: { id } });
+      if (!jobOrderData) throw createError(404, 'Data not Found');
+      if (jobOrderData.status === 'Done' || jobOrderData.verify === true) throw createError(401, 'Not authorized');
+      await job_order.update(
+        {
+          teknisi_id: null,
+          status: 'Unassign',
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+      res.status(200).json({ msg: 'Success' });
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = JobOrderController;

@@ -13,6 +13,8 @@ const getBadge = (status) => {
       return 'success';
     case 'Assign':
       return 'warning';
+    case 'Close':
+      return 'Primary';
     default:
       return 'secondary';
   }

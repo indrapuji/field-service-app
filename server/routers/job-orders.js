@@ -25,5 +25,7 @@ router.post('/assign-many/:id', authentication, JobOrderController.assignJobOrde
 router.post('/check-seed', authentication, upload.single('data'), JobOrderController.checkSeedingJobOrder);
 router.post('/create-seed', authentication, JobOrderController.seedingJobOrder);
 router.delete('/delete/:id', authentication, JobOrderController.deleteJobOrder);
+router.delete('/remove/:id', authentication, JobOrderController.removeJobOrder);
+// router.put('/reject/:id', authentication, JobOrderController.rejectJobOrder);
 
 module.exports = router;

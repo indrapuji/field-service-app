@@ -131,7 +131,7 @@ class UserController {
   static getAllUser = async (req, res, next) => {
     try {
       const { id } = req.UserData;
-      let { page, tipe, pagination } = req.query;
+      let { page, tipe, pagination, teknisi } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
@@ -157,6 +157,7 @@ class UserController {
           };
         }
       }
+      if (teknisi) query.tipe = 'Teknisi';
       const result = await user.findAll(query);
       res.status(200).json({
         data: result,
@@ -231,13 +232,13 @@ class UserController {
     try {
       const { id } = req.params;
       const userData = await user.findOne({ where: { id } });
-      if (!userData) throw createError(404, "User not Found");
+      if (!userData) throw createError(404, 'User not Found');
       await user.destroy({ where: { id } });
-      res.status(200).json({ msg: "Success" });
+      res.status(200).json({ msg: 'Success' });
     } catch (err) {
       next(err);
     }
-  }
+  };
 }
 
 module.exports = UserController;

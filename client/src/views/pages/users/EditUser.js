@@ -125,7 +125,7 @@ const EditUsers = () => {
     getWorkOrder(page);
   };
 
-  const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status'];
+  const fields = ['merchant', 'alamat', 'no_telp', 'tipe', 'regional', 'mid', 'tid', 'status', 'remove'];
 
   const getWorkOrder = async (page) => {
     try {
@@ -144,6 +144,36 @@ const EditUsers = () => {
     }
   };
   console.log(edit.tipe);
+
+  const handleRemove = async (id) => {
+    Swal.fire({
+      title: 'Are You Sure?',
+      text: `Are You Sure You Want To Remove This?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios({
+            method: 'DELETE',
+            url: HostUrl + `/job-orders/remove/${id}`,
+            headers: {
+              token: localStorage.getItem('token'),
+            },
+          });
+          newAlert({ status: 'success', message: 'Deleted' });
+          getWorkOrder(1);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        newAlert({ status: 'error', message: 'Cancel' });
+      }
+    });
+  };
 
   return (
     <CContainer>
@@ -310,6 +340,21 @@ const EditUsers = () => {
                             <CBadge color={getBadge(item.status)}>{!item.status ? 'Un-Assign' : item.status}</CBadge>
                           </td>
                         ),
+                        remove: (item, index) => {
+                          return (
+                            <td>
+                              <CButton
+                                color="danger"
+                                size="sm"
+                                onClick={() => {
+                                  handleRemove(item.id);
+                                }}
+                              >
+                                Remove
+                              </CButton>
+                            </td>
+                          );
+                        },
                       }}
                     />
                     <CPagination activePage={jobOrderData.currentPage} pages={jobOrderData.pages} onActivePageChange={changePage} />

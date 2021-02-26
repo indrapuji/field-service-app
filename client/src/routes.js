@@ -15,6 +15,7 @@ const WorkordersImport = React.lazy(() => import('./views/pages/workorder/Import
 const WorkordersCreate = React.lazy(() => import('./views/pages/workorder/RegisterWorkorders'));
 const WorkordersAssign = React.lazy(() => import('./views/pages/workorder/AssignWorkorders'));
 const WorkordersDone = React.lazy(() => import('./views/pages/workorder/DoneWorkorders'));
+const WorkordersClose = React.lazy(() => import('./views/pages/workorder/CloseWorkorders'));
 const WorkordersDetail = React.lazy(() => import('./views/pages/workorder/DetailWorkorders'));
 
 const routes = [
@@ -32,6 +33,7 @@ const routes = [
   { path: '/workorders/import', exact: true, name: 'Import WorkOrder', component: WorkordersImport },
   { path: '/workorders/assign', exact: true, name: 'Assign Workorders', component: WorkordersAssign },
   { path: '/workorders/done', exact: true, name: 'Done Workorders', component: WorkordersDone },
+  { path: '/workorders/close', exact: true, name: 'Close Workorders', component: WorkordersClose },
   { path: '/workorders/detail/:woId', exact: true, name: 'Detail Workorders', component: WorkordersDetail },
 ];
 

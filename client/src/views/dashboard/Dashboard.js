@@ -68,12 +68,12 @@ const Dashboard = () => {
         color: 'Pickup',
       },
       {
-        header: `${dashboardData.jobOrderRiskCount ? dashboardData.jobOrderRiskCount : 0}`,
+        header: `${dashboardData.jobOrderSurveyCount ? dashboardData.jobOrderSurveyCount : 0}`,
         text: 'OTS Survey',
         color: 'Survey',
       },
       {
-        header: `${dashboardData.jobOrderSurveyCount ? dashboardData.jobOrderSurveyCount : 0}`,
+        header: `${dashboardData.jobOrderRiskCount ? dashboardData.jobOrderRiskCount : 0}`,
         text: 'Risk Unit',
         color: 'Risk',
       },

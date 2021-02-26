@@ -5,7 +5,7 @@ import {
   CRow,
   CCol,
   CTextarea,
-  // CSelect,
+  CSelect,
   CInput,
   CFormGroup,
   CForm,
@@ -23,7 +23,7 @@ import axios from 'axios';
 import HostUrl from '../../../components/HostUrl';
 import newAlert from '../../../components/NewAlert';
 import Swal from 'sweetalert2';
-import { formatDate, formatTime } from 'node-format-date';
+import { formatTime, formatFullDate } from 'node-format-date';
 
 const Register = () => {
   const { woId } = useParams();
@@ -31,6 +31,7 @@ const Register = () => {
   // const [teknisiList, setTeknisiList] = useState(null);
   const [detail, setDetail] = useState({});
   const [nama, setNama] = useState('');
+  const [assignData, setAssignData] = useState(null);
 
   useEffect(() => {
     getDetailWO();
@@ -41,6 +42,22 @@ const Register = () => {
     getUsers();
     // eslint-disable-next-line
   }, [detail]);
+
+  const getDataTeknisi = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const { data } = await axios({
+        method: 'GET',
+        url: HostUrl + '/users/all-users?teknisi=true',
+        headers: {
+          token,
+        },
+      });
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const getDetailWO = async () => {
     try {
@@ -106,6 +123,15 @@ const Register = () => {
       }
     });
   };
+  const onChangeTeknisi = (e) => {
+    e.preventDefault();
+    const { value, name } = e;
+    setAssignData({
+      ...assignData,
+      [name]: value,
+    });
+    console.log(value, name);
+  };
 
   return (
     <CContainer>
@@ -120,31 +146,100 @@ const Register = () => {
             </CCardHeader>
             <CCardBody>
               <CForm>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <div>
-                    Tanggal Import
-                    <div>{formatTime(detail.createdAt)}</div>
-                    <p>{formatDate(detail.createdAt)}</p>
-                  </div>
-                  <div>
-                    Tanggal Assign
-                    <div>{detail.tanggal_assign ? formatTime(detail.tanggal_assign) : '-'}</div>
-                    <p>{detail.tanggal_assign ? formatDate(detail.tanggal_assign) : ''}</p>
-                  </div>
-                  <div>
-                    Tanggal Done
-                    <div>{detail.tanggal_done ? formatTime(detail.tanggal_done) : '-'}</div>
-                    <p>{detail.tanggal_done ? formatDate(detail.tanggal_done) : ''}</p>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <div style={{ textAlign: 'right' }}>
+                    <bold>Tanggal Import</bold>
+                    <p>{formatFullDate(detail.createdAt)}</p>
                   </div>
                 </div>
                 <CFormGroup row>
                   <CCol md="2">
                     <CLabel>Assign</CLabel>
                   </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput size="sm" style={{ backgroundColor: !nama ? 'red' : null }} value={nama} disabled />
-                  </CCol>
+                  {nama && detail.status !== 'Done' && (
+                    <>
+                      <CCol xs="8" md="7">
+                        <CSelect name="vendor_id" size="sm">
+                          <option value="0" disabled>
+                            {nama}
+                          </option>
+                          <option value="0">Please select</option>
+                          <option value="0">Please select</option>
+                        </CSelect>
+                      </CCol>
+                      <CCol xs="4" md="2">
+                        <CButton color="success" size="sm" className="float-right">
+                          Re-Assign
+                        </CButton>
+                      </CCol>
+                    </>
+                  )}
+                  {!nama && (
+                    <>
+                      <CCol xs="8" md="8">
+                        <CSelect name="teknisi_id" size="sm" onChange={onChangeTeknisi}>
+                          <option value="0">Please select</option>
+                          <option value="0">Please select</option>
+                          <option value="0">Please select</option>
+                        </CSelect>
+                      </CCol>
+                      <CCol xs="4" md="1">
+                        <CButton color="success" size="sm" className="float-right">
+                          Assign
+                        </CButton>
+                      </CCol>
+                    </>
+                  )}
+                  {nama && detail.verify && (
+                    <CCol xs="8" md="9">
+                      <CInput size="sm" style={{ backgroundColor: !nama ? 'red' : null }} value={nama} disabled />
+                    </CCol>
+                  )}
+                  {nama && detail.status === 'Done' && (
+                    <CCol xs="8" md="9">
+                      <CInput size="sm" style={{ backgroundColor: !nama ? 'red' : null }} value={nama} disabled />
+                    </CCol>
+                  )}
                 </CFormGroup>
+                {detail.tanggal_assign && (
+                  <CFormGroup row>
+                    <CCol md="2">
+                      <CLabel>Tanggal Assign</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="2">
+                      <CInput size="sm" value={formatTime(detail.tanggal_assign)} disabled />
+                    </CCol>
+                    <CCol xs="12" md="4">
+                      <CInput size="sm" value={formatFullDate(detail.tanggal_assign)} disabled />
+                    </CCol>
+                  </CFormGroup>
+                )}
+                {detail.tanggal_done && (
+                  <CFormGroup row>
+                    <CCol md="2">
+                      <CLabel>Tanggal Done</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="2">
+                      <CInput size="sm" value={formatTime(detail.tanggal_done)} disabled />
+                    </CCol>
+                    <CCol xs="12" md="4">
+                      <CInput size="sm" value={formatFullDate(detail.tanggal_done)} disabled />
+                    </CCol>
+                  </CFormGroup>
+                )}
+                {detail.close && (
+                  <CFormGroup row>
+                    <CCol md="2">
+                      <CLabel>Tanggal Close</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="2">
+                      <CInput size="sm" value={formatTime(detail.close)} disabled />
+                    </CCol>
+                    <CCol xs="12" md="4">
+                      <CInput size="sm" value={formatFullDate(detail.close)} disabled />
+                    </CCol>
+                  </CFormGroup>
+                )}
                 <CFormGroup row>
                   <CCol md="2">
                     <CLabel>Nama Merchant</CLabel>
