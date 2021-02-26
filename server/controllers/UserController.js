@@ -138,13 +138,6 @@ class UserController {
       let query = {
         where: {},
       };
-      if (teknisi) query.where.tipe = 'Teknisi';
-      const numOfResult = await user.count(query);
-      if (!pagination) {
-        query.limit = resPerPage;
-      } else {
-        query.limit = numOfResult;
-      }
       query.offset = offset;
       const userData = await user.findOne({ where: { id } });
       if (userData.tipe === 'Admin') {
@@ -157,6 +150,11 @@ class UserController {
             [Op.ne]: 'Super Admin',
           };
         }
+      }
+      if (teknisi) query.where.tipe = 'Teknisi';
+      const numOfResult = await user.count(query);
+      if (!pagination) {
+        query.limit = resPerPage;
       }
       const result = await user.findAll(query);
       res.status(200).json({
