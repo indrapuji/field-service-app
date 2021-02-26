@@ -145,7 +145,7 @@ class JobOrderController {
   static getAllJobOrder = async (req, res, next) => {
     try {
       const { id } = req.UserData;
-      let { tipe, page, status, by, vendor_id, teknisi_id, notIn } = req.query;
+      let { tipe, page, status, by, vendor_id, teknisi_id, notIn, verify } = req.query;
       if (!page || page < 1) page = 1;
       const resPerPage = 15;
       const offset = resPerPage * page - resPerPage;
@@ -203,6 +203,9 @@ class JobOrderController {
         query.where.updated_at = {
           [Op.gte]: setDate(new Date(), 365),
         };
+      if (verify) {
+        query.where.verify = true;
+      }
       const numOfResult = await job_order.count(query);
       query.limit = resPerPage;
       query.offset = offset;

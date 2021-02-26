@@ -182,6 +182,25 @@ const Register = () => {
     }
   };
 
+  const handleVerify = async () => {
+    try {
+      await axios({
+        method: 'PUT',
+        url: `${HostUrl}/job-orders/change-verify/${woId}`,
+        data: { verify: true },
+        headers: {
+          token: localStorage.getItem('token'),
+        },
+      });
+      newAlert({ status: 'success', message: 'Job Closed' });
+      history.push('/workorders/all');
+    } catch (error) {
+      const { msg } = error.response.data;
+      newAlert({ status: 'error', message: msg });
+      console.log(error.response.data);
+    }
+  };
+
   return (
     <CContainer>
       <CRow className="justify-content-center">
@@ -394,12 +413,21 @@ const Register = () => {
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton size="sm" color="warning" onClick={handleDelete}>
-                <CIcon name="cil-scrubber" /> Delete
-              </CButton>
-              <CButton size="sm" className="float-right" color="success">
-                <CIcon name="cil-scrubber" /> Close
-              </CButton>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                  <CButton size="sm" color="danger" onClick={handleDelete}>
+                    <CIcon name="cil-scrubber" /> Delete
+                  </CButton>
+                </div>
+                <div style={{ display: 'flex' }}>
+                  <CButton size="sm" color="warning" className="mr-3">
+                    <CIcon name="cil-scrubber" /> Reject
+                  </CButton>
+                  <CButton size="sm" color="success" onClick={handleVerify}>
+                    <CIcon name="cil-scrubber" /> Close
+                  </CButton>
+                </div>
+              </div>
             </CCardFooter>
           </CCard>
         </CCol>
