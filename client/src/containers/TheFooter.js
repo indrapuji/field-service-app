@@ -7,7 +7,7 @@ const TheFooter = () => {
       <div className="mfs-auto">
         <span className="mr-1">Powered by</span>
         <a href="http://www.trendcom-intl.com" target="_blank" rel="noopener noreferrer">
-          TrendCom 2020
+          TrendCom 2021
         </a>
       </div>
     </CFooter>

@@ -15,8 +15,6 @@ import {
   CCard,
   CCardBody,
   CCardHeader,
-  // CInputRadio,
-  // CInputFile,
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import axios from 'axios';
@@ -28,7 +26,6 @@ import { formatTime, formatFullDate } from 'node-format-date';
 const Register = () => {
   const { woId } = useParams();
   const history = useHistory();
-  // const [teknisiList, setTeknisiList] = useState(null);
   const [detail, setDetail] = useState({});
   const [nama, setNama] = useState('');
   const [assignData, setAssignData] = useState({});
@@ -55,7 +52,6 @@ const Register = () => {
           token,
         },
       });
-      console.log(data);
       setTeknisiData(data.data);
     } catch (err) {
       console.log(err);
@@ -72,8 +68,6 @@ const Register = () => {
           token,
         },
       });
-
-      console.log(data);
       setDetail(data);
     } catch (error) {
       console.log(error);
@@ -126,6 +120,7 @@ const Register = () => {
       }
     });
   };
+
   const onChangeTeknisi = (e) => {
     e.preventDefault();
     const { value, name } = e.target;
@@ -138,7 +133,6 @@ const Register = () => {
   const onSubmitAssign = async (e) => {
     try {
       e.preventDefault();
-      console.log('TESTTT');
       if (assignData.teknisi_id) {
         await axios({
           method: 'PUT',
@@ -201,6 +195,24 @@ const Register = () => {
     }
   };
 
+  const handleReject = () => {
+    Swal.fire({
+      title: 'Are You Sure?',
+      text: `${detail.merchant}`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes!',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        newAlert({ status: 'success', message: 'Rejected' });
+      } else {
+        newAlert({ status: 'error', message: 'Cancel' });
+      }
+    });
+  };
+
   return (
     <CContainer>
       <CRow className="justify-content-center">
@@ -216,7 +228,7 @@ const Register = () => {
               <CForm>
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <div style={{ textAlign: 'right' }}>
-                    <bold>Tanggal Import</bold>
+                    Tanggal Import
                     <p>{formatFullDate(detail.createdAt)}</p>
                   </div>
                 </div>
@@ -229,15 +241,23 @@ const Register = () => {
                       <CCol xs="8" md="7">
                         <CSelect name="teknisi_id" size="sm" onChange={onChangeTeknisi}>
                           <option value="0">Please select</option>
-                          {teknisiData.length !== 0
-                            ? teknisiData.map((data) => {
-                                return <option value={data.id}>{data.nama_lengkap}</option>;
-                              })
-                            : ''}
+                          {teknisiData &&
+                            teknisiData.map((data) => {
+                              return (
+                                <option key={data.id} value={data.id}>
+                                  {data.nama_lengkap}
+                                </option>
+                              );
+                            })}
                         </CSelect>
                       </CCol>
                       <CCol xs="4" md="1">
-                        <CButton color="success" size="sm" className="float-right" onClick={onSubmitReassign}>
+                        <CButton
+                          color="success"
+                          size="sm"
+                          className="float-right"
+                          onClick={onSubmitReassign}
+                        >
                           Re-Assign
                         </CButton>
                       </CCol>
@@ -250,13 +270,22 @@ const Register = () => {
                           <option value="0">Please select</option>
                           {teknisiData.length !== 0
                             ? teknisiData.map((data) => {
-                                return <option value={data.id}>{data.nama_lengkap}</option>;
+                                return (
+                                  <option key={data.id} value={data.id}>
+                                    {data.nama_lengkap}
+                                  </option>
+                                );
                               })
                             : ''}
                         </CSelect>
                       </CCol>
                       <CCol xs="4" md="1">
-                        <CButton color="success" size="sm" className="float-right" onClick={onSubmitAssign}>
+                        <CButton
+                          color="success"
+                          size="sm"
+                          className="float-right"
+                          onClick={onSubmitAssign}
+                        >
                           Assign
                         </CButton>
                       </CCol>
@@ -264,12 +293,22 @@ const Register = () => {
                   )}
                   {nama && detail.verify && (
                     <CCol xs="8" md="9">
-                      <CInput size="sm" style={{ backgroundColor: !nama ? 'red' : null }} value={nama} disabled />
+                      <CInput
+                        size="sm"
+                        style={{ backgroundColor: !nama ? 'red' : null }}
+                        value={nama}
+                        disabled
+                      />
                     </CCol>
                   )}
                   {nama && detail.status === 'Done' && (
                     <CCol xs="8" md="9">
-                      <CInput size="sm" style={{ backgroundColor: !nama ? 'red' : null }} value={nama} disabled />
+                      <CInput
+                        size="sm"
+                        style={{ backgroundColor: !nama ? 'red' : null }}
+                        value={nama}
+                        disabled
+                      />
                     </CCol>
                   )}
                 </CFormGroup>
@@ -320,12 +359,6 @@ const Register = () => {
                     <CInput size="sm" value={detail.merchant} disabled />
                   </CCol>
                 </CFormGroup>
-                {/* <CFormGroup row>
-                  <CCol md="2" />
-                  <CCol xs="12" md="9">
-                    <CInput size="sm" value={detail.nama_merchant} />
-                  </CCol>
-                </CFormGroup> */}
                 <CFormGroup row>
                   <CCol md="2">
                     <CLabel>Alamat Merchant</CLabel>
@@ -334,12 +367,6 @@ const Register = () => {
                     <CTextarea value={detail.alamat} name="alamat" disabled />
                   </CCol>
                 </CFormGroup>
-                {/* <CFormGroup row>
-                  <CCol md="2" />
-                  <CCol xs="12" md="9">
-                    <CTextarea value={detail.alamat_merchant} name="alamat" />
-                  </CCol>
-                </CFormGroup> */}
                 <CFormGroup row>
                   <CCol md="2">
                     <CLabel>No Telp</CLabel>
@@ -348,12 +375,6 @@ const Register = () => {
                     <CInput value={detail.no_telp} name="no_telp" disabled />
                   </CCol>
                 </CFormGroup>
-                {/* <CFormGroup row>
-                  <CCol md="2" />
-                  <CCol xs="12" md="9">
-                    <CInput name="no_telp_merchant" />
-                  </CCol>
-                </CFormGroup> */}
                 <CFormGroup row>
                   <CCol md="2">
                     <CLabel>Kota</CLabel>
@@ -420,9 +441,11 @@ const Register = () => {
                   </CButton>
                 </div>
                 <div style={{ display: 'flex' }}>
-                  <CButton size="sm" color="warning" className="mr-3">
-                    <CIcon name="cil-scrubber" /> Reject
-                  </CButton>
+                  {detail.status === 'Done' && (
+                    <CButton size="sm" color="warning" className="mr-3" onClick={handleReject}>
+                      <CIcon name="cil-scrubber" /> Reject
+                    </CButton>
+                  )}
                   <CButton size="sm" color="success" onClick={handleVerify}>
                     <CIcon name="cil-scrubber" /> Close
                   </CButton>

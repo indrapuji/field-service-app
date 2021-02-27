@@ -41,6 +41,7 @@ const Dashboard = () => {
           token: localStorage.getItem('token'),
         },
       });
+      console.log(data);
       setDashboardData(data);
       setTipe({
         ...tipe,
@@ -113,6 +114,7 @@ const Dashboard = () => {
             jobOrderRiskCountProgress={dashboardData.jobOrderRiskCountProgress}
           />
           <ChartTrafic
+            dateMonth={dashboardData.dateData}
             trafficData={dashboardData.traffic}
             merchantBuka={dashboardData.merchantBuka}
             merchantTutup={dashboardData.merchantTutup}
