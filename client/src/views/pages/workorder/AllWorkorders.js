@@ -50,7 +50,7 @@ const Workorders = () => {
     'Desember',
   ];
 
-  const week = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+  const week = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
 
   const history = useHistory();
   const queryPage = useLocation().search.match(/page=([0-9]+)/, '');
@@ -59,27 +59,48 @@ const Workorders = () => {
   const [jobOrderData, setJobOrderData] = useState(null);
   const [tipe, setTipe] = useState(localStorage.getItem('tipe'));
   const [next, setNext] = useState(month);
+  const [queryData, setQueryData] = useState({
+    status: "",
+    sort: "status",
+    resPerPage: 20,
+    search: "merchant",
+    searchQuery: "",
+    filter: "month",
+    filterQuery: ""
+  });
 
   useEffect(() => {
     currentPage !== page && setPage(currentPage);
   }, [currentPage, page]);
 
   useEffect(() => {
-    getWorkOrder(1);
     setTipe(localStorage.getItem('tipe'));
+    const date = new Date();
+    const idx = date.getMonth();
+    setQueryData({
+      ...queryData,
+      filterQuery: idx
+    })
   }, []);
+  
+  useEffect(() => {
+    getWorkOrder(1);
+  }, [queryData]);
 
   const getWorkOrder = async (page) => {
     try {
+      let newQuery = [];
+      for (let key in queryData) {
+        newQuery = newQuery.concat(`${key}=${queryData[key]}`);
+      };
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + '/job-orders/all?page=' + page,
+        url: HostUrl + `/job-orders/all?page=${page}&${newQuery.join("&")}`,
         headers: {
           token: localStorage.getItem('token'),
         },
       });
       setJobOrderData(data);
-      console.log(data);
     } catch (err) {
       console.log('ERROR');
       console.log(err);
@@ -105,15 +126,43 @@ const Workorders = () => {
     { key: 'show_details', label: 'Detail' },
   ];
 
+  const getWeekOfMonth = () => {
+    const date = new Date();
+    var firstWeekday = new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+    var offsetDate = date.getDate() + firstWeekday - 1;
+    return Math.floor(offsetDate / 7);
+  };
+
   const onTime = (e) => {
     const { value } = e.target;
-    console.log(value);
-    if (value === 'monthly') {
+    if (value === 'month') {
+      const date = new Date();
+      const idx = date.getMonth();
+      setQueryData({
+        ...queryData,
+        filter: value,
+        filterQuery: idx
+      });
       setNext(month);
-    } else if (value === 'weekly') {
+    } else if (value === 'week') {
+      const idx = getWeekOfMonth();
+      setQueryData({
+        ...queryData,
+        filter: value,
+        filterQuery: idx - 1
+      });
       setNext(week);
     }
   };
+
+  const onChangeQuery = async (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    setQueryData({
+      ...queryData,
+      [name]: value
+    })
+  }
 
   return (
     <CRow>
@@ -131,27 +180,34 @@ const Workorders = () => {
               <CCol xs="12" md="6">
                 <CForm inline className="mr-2">
                   <CLabel className="mr-sm-2">Filter by </CLabel>
-                  <CSelect id="select" name="searchby" className="mr-sm-2">
-                    <option value="monthly" defaultValue>
+                  <CSelect id="select" name="status" className="mr-sm-2" onChange={ onChangeQuery }>
+                    <option value="" defaultValue>
                       All
                     </option>
-                    <option value="monthly" defaultValue>
+                    <option value="Unassign" defaultValue>
                       Unassign
                     </option>
-                    <option value="weekly">Assign</option>
-                    <option value="weekly">Done</option>
-                    <option value="weekly">Close</option>
+                    <option value="Assign">Assign</option>
+                    <option value="Done">Done</option>
+                    <option value="Close">Close</option>
                   </CSelect>
-                  <CSelect id="select" name="searchby" className="mr-sm-2" onChange={onTime}>
-                    <option value="monthly" defaultValue>
+                  <CSelect id="select" name="filter" className="mr-sm-2" onChange={onTime}>
+                    <option value="month" defaultValue>
                       Monthly
                     </option>
-                    <option value="weekly">Weekly</option>
+                    <option value="week">Weekly</option>
                   </CSelect>
-                  <CSelect id="select" name="searchby" className="mr-sm-2">
+                  <CSelect id="select" name="filterQuery" className="mr-sm-2" onChange={ onChangeQuery }>
                     {next &&
-                      next.map((data) => {
-                        return <option value={data}>{data}</option>;
+                      next.map((data, index) => {
+                        const date = new Date();
+                        let idx = 0;
+                        if (queryData.filter === "month") {
+                          idx = date.getMonth();
+                        } else {
+                          idx = getWeekOfMonth() - 1;
+                        }
+                        return <option value={index} selected={ index === idx ? true : false }>{data}</option>;
                       })}
                   </CSelect>
                 </CForm>
@@ -161,18 +217,18 @@ const Workorders = () => {
                   <CCol>
                     <CForm inline className="float-right">
                       <CLabel className="mr-sm-2">Sort by </CLabel>
-                      <CSelect id="select-sort" name="sort">
-                        <option value="nama" defaultValue>
+                      <CSelect id="select-sort" name="sort" onChange={ onChangeQuery }>
+                        <option value="status" defaultValue>
                           Status
                         </option>
-                        <option value="nomor">Region</option>
+                        <option value="region">Region</option>
                       </CSelect>
                     </CForm>
                   </CCol>
                   <CCol>
                     <CForm inline className="float-right">
                       <CLabel className="mr-2">Items per page </CLabel>
-                      <CSelect id="select-items" name="resPerPage">
+                      <CSelect id="select-items" name="resPerPage" onChange={ onChangeQuery }>
                         <option value="20" defaultValue>
                           20
                         </option>
@@ -216,15 +272,15 @@ const Workorders = () => {
               </CCol>
               <CCol xs="12" md="6">
                 <CForm inline className="float-right">
-                  <CInput className="mr-sm-2" placeholder="Search" name="val" />
-                  <CSelect id="select" name="searchby" className="mr-sm-2">
-                    <option value="Merchant" defaultValue>
+                  <CInput className="mr-sm-2" placeholder="Search" name="searchQuery" onChange={ onChangeQuery } />
+                  <CSelect id="select" name="search" className="mr-sm-2" onChange={ onChangeQuery }>
+                    <option value="merchant" defaultValue>
                       Merchant
                     </option>
-                    <option value="MID">MID</option>
-                    <option value="TID">TID</option>
+                    <option value="mid">MID</option>
+                    <option value="tid">TID</option>
                   </CSelect>
-                  <CButton color="light" className="my-2 my-sm-0" type="submit">
+                  <CButton color="light" className="my-2 my-sm-0" type="submit" onClick={ (e) => e.preventDefault() }>
                     Search
                   </CButton>
                 </CForm>

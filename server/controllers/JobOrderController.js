@@ -148,9 +148,10 @@ class JobOrderController {
   static getAllJobOrder = async (req, res, next) => {
     try {
       const { id } = req.UserData;
-      let { tipe, page, status, by, vendor_id, teknisi_id, notIn, verify } = req.query;
+      let { tipe, page, status, by, vendor_id, teknisi_id, notIn, verify, sort, resPerPage, search, searchQuery, filter, filterQuery } = req.query;
       if (!page || page < 1) page = 1;
-      const resPerPage = 15;
+      if (!resPerPage) resPerPage = 20;
+      console.log(resPerPage);
       const offset = resPerPage * page - resPerPage;
       const userData = await user.findOne({
         where: { id },
@@ -208,6 +209,48 @@ class JobOrderController {
         };
       if (verify) {
         query.where.verify = true;
+      }
+      if (sort === "status") {
+        query.order = [["status", "ASC"]];
+      } else if (sort === "region") {
+        query.order = [["regional", "ASC"]];
+      }
+      if (search && searchQuery) {
+        query.where[search] = { [Op.iLike]: `%${searchQuery}%` };
+      }
+      if (filter && filterQuery) {
+        const date = new Date();
+        if (filter === "month") {
+          const firstDay = new Date(date.getFullYear(), Number(filterQuery), 2).setHours(0,0,0,0);
+          const lastDay = new Date(date.getFullYear(), Number(filterQuery) + 1, 1).setHours(24,0,0,0);
+          query.where.createdAt = {
+            [Op.between]: [firstDay, lastDay]
+          }
+        } else if (filter === "week") {
+          const week = Number(filterQuery) + 1;
+          const date = new Date();
+          const first = (week - 1) * 7;
+          const last = (week) * 7;
+          if (week === 5) {
+            const firstDay = new Date(date); //copy
+            firstDay.setDate(first);
+            firstDay.setHours(24,0,0,0);
+            const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 1).setHours(24,0,0,0);
+            query.where.createdAt = {
+              [Op.between]: [firstDay, lastDay]
+            }
+          } else {
+            const firstDay = new Date(date); //copy
+            firstDay.setDate(first);
+            firstDay.setHours(24, 0, 0, 0);
+            const lastDay = new Date(date); //copy
+            lastDay.setDate(last);
+            lastDay.setHours(24, 0, 0, 0);
+            query.where.createdAt = {
+              [Op.between]: [firstDay, lastDay]
+            }
+          }
+        }
       }
       const numOfResult = await job_order.count(query);
       query.limit = resPerPage;
