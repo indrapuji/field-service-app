@@ -16,10 +16,10 @@ import {
   CInput,
 } from '@coreui/react';
 
-// import usersData from './UsersData';
-// import token from '../../token';
 import axios from 'axios';
 import HostUrl from '../../../components/HostUrl';
+import getColumn from '../../../components/GetColumn';
+import ReactExport from 'react-export-excel';
 
 const getBadge = (status) => {
   switch (status) {
@@ -52,6 +52,10 @@ const Workorders = () => {
 
   const week = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
 
+  const ExcelFile = ReactExport.ExcelFile;
+  const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+  const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
   const history = useHistory();
   const queryPage = useLocation().search.match(/page=([0-9]+)/, '');
   const currentPage = Number(queryPage && queryPage[1] ? queryPage[1] : 1);
@@ -60,14 +64,15 @@ const Workorders = () => {
   const [tipe, setTipe] = useState(localStorage.getItem('tipe'));
   const [next, setNext] = useState(month);
   const [queryData, setQueryData] = useState({
-    status: "",
-    sort: "status",
+    status: '',
+    sort: 'status',
     resPerPage: 20,
-    search: "merchant",
-    searchQuery: "",
-    filter: "month",
-    filterQuery: ""
+    search: 'merchant',
+    searchQuery: '',
+    filter: 'month',
+    filterQuery: '',
   });
+  const [exData, setExData] = useState([]);
 
   useEffect(() => {
     currentPage !== page && setPage(currentPage);
@@ -79,12 +84,14 @@ const Workorders = () => {
     const idx = date.getMonth();
     setQueryData({
       ...queryData,
-      filterQuery: idx
-    })
+      filterQuery: idx,
+    });
+    // eslint-disable-next-line
   }, []);
-  
+
   useEffect(() => {
     getWorkOrder(1);
+    // eslint-disable-next-line
   }, [queryData]);
 
   const getWorkOrder = async (page) => {
@@ -92,14 +99,15 @@ const Workorders = () => {
       let newQuery = [];
       for (let key in queryData) {
         newQuery = newQuery.concat(`${key}=${queryData[key]}`);
-      };
+      }
       const { data } = await axios({
         method: 'GET',
-        url: HostUrl + `/job-orders/all?page=${page}&${newQuery.join("&")}`,
+        url: HostUrl + `/job-orders/all?page=${page}&${newQuery.join('&')}`,
         headers: {
           token: localStorage.getItem('token'),
         },
       });
+      setExData(getColumn(data.data));
       setJobOrderData(data);
     } catch (err) {
       console.log('ERROR');
@@ -141,7 +149,7 @@ const Workorders = () => {
       setQueryData({
         ...queryData,
         filter: value,
-        filterQuery: idx
+        filterQuery: idx,
       });
       setNext(month);
     } else if (value === 'week') {
@@ -149,7 +157,7 @@ const Workorders = () => {
       setQueryData({
         ...queryData,
         filter: value,
-        filterQuery: idx - 1
+        filterQuery: idx - 1,
       });
       setNext(week);
     }
@@ -160,9 +168,9 @@ const Workorders = () => {
     const { name, value } = e.target;
     setQueryData({
       ...queryData,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
   return (
     <CRow>
@@ -180,34 +188,45 @@ const Workorders = () => {
               <CCol xs="12" md="6">
                 <CForm inline className="mr-2">
                   <CLabel className="mr-sm-2">Filter by </CLabel>
-                  <CSelect id="select" name="status" className="mr-sm-2" onChange={ onChangeQuery }>
-                    <option value="" defaultValue>
+                  <CSelect id="select" name="status" className="mr-sm-2" onChange={onChangeQuery}>
+                    <option value="" selected>
                       All
                     </option>
-                    <option value="Unassign" defaultValue>
-                      Unassign
-                    </option>
+                    <option value="Unassign">Unassign</option>
                     <option value="Assign">Assign</option>
                     <option value="Done">Done</option>
                     <option value="Close">Close</option>
                   </CSelect>
                   <CSelect id="select" name="filter" className="mr-sm-2" onChange={onTime}>
-                    <option value="month" defaultValue>
+                    <option value="month" selected>
                       Monthly
                     </option>
                     <option value="week">Weekly</option>
                   </CSelect>
-                  <CSelect id="select" name="filterQuery" className="mr-sm-2" onChange={ onChangeQuery }>
+                  <CSelect
+                    id="select"
+                    name="filterQuery"
+                    className="mr-sm-2"
+                    onChange={onChangeQuery}
+                  >
                     {next &&
                       next.map((data, index) => {
                         const date = new Date();
                         let idx = 0;
-                        if (queryData.filter === "month") {
+                        if (queryData.filter === 'month') {
                           idx = date.getMonth();
                         } else {
                           idx = getWeekOfMonth() - 1;
                         }
-                        return <option value={index} selected={ index === idx ? true : false }>{data}</option>;
+                        return (
+                          <option
+                            key={data.id}
+                            value={index}
+                            selected={index === idx ? true : false}
+                          >
+                            {data}
+                          </option>
+                        );
                       })}
                   </CSelect>
                 </CForm>
@@ -217,8 +236,8 @@ const Workorders = () => {
                   <CCol>
                     <CForm inline className="float-right">
                       <CLabel className="mr-sm-2">Sort by </CLabel>
-                      <CSelect id="select-sort" name="sort" onChange={ onChangeQuery }>
-                        <option value="status" defaultValue>
+                      <CSelect id="select-sort" name="sort" onChange={onChangeQuery}>
+                        <option value="status" selected>
                           Status
                         </option>
                         <option value="region">Region</option>
@@ -228,8 +247,8 @@ const Workorders = () => {
                   <CCol>
                     <CForm inline className="float-right">
                       <CLabel className="mr-2">Items per page </CLabel>
-                      <CSelect id="select-items" name="resPerPage" onChange={ onChangeQuery }>
-                        <option value="20" defaultValue>
+                      <CSelect id="select-items" name="resPerPage" onChange={onChangeQuery}>
+                        <option value="20" selected>
                           20
                         </option>
                         <option value="50">50</option>
@@ -261,26 +280,47 @@ const Workorders = () => {
                       </CButton>
                     </div>
                   )}
+
                   <div>
-                    <div>
-                      <CButton color="primary" to="/workorders/import">
-                        Download
-                      </CButton>
-                    </div>
+                    {jobOrderData && (
+                      <ExcelFile
+                        element={<CButton color="primary">Download</CButton>}
+                        filename="WORK ORDER"
+                      >
+                        <ExcelSheet data={jobOrderData.data} name="DATA">
+                          {exData &&
+                            exData.map((item) => {
+                              return (
+                                <ExcelColumn key={item.id} label={item.header} value={item.field} />
+                              );
+                            })}
+                        </ExcelSheet>
+                      </ExcelFile>
+                    )}
                   </div>
                 </div>
               </CCol>
               <CCol xs="12" md="6">
                 <CForm inline className="float-right">
-                  <CInput className="mr-sm-2" placeholder="Search" name="searchQuery" onChange={ onChangeQuery } />
-                  <CSelect id="select" name="search" className="mr-sm-2" onChange={ onChangeQuery }>
-                    <option value="merchant" defaultValue>
+                  <CInput
+                    className="mr-sm-2"
+                    placeholder="Search"
+                    name="searchQuery"
+                    onChange={onChangeQuery}
+                  />
+                  <CSelect id="select" name="search" className="mr-sm-2" onChange={onChangeQuery}>
+                    <option value="merchant" selected>
                       Merchant
                     </option>
                     <option value="mid">MID</option>
                     <option value="tid">TID</option>
                   </CSelect>
-                  <CButton color="light" className="my-2 my-sm-0" type="submit" onClick={ (e) => e.preventDefault() }>
+                  <CButton
+                    color="light"
+                    className="my-2 my-sm-0"
+                    type="submit"
+                    onClick={(e) => e.preventDefault()}
+                  >
                     Search
                   </CButton>
                 </CForm>
